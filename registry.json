@@ -1,0 +1,1113 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "moonlight",
+  "homepage": "http://localhost:4111",
+  "items": [
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "Moonlight Avatar",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Moonlight Badge",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Moonlight Breadcrumb",
+      "dependencies": [
+        "@base-ui/react",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Moonlight Button",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Moonlight Card",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "Moonlight Chart",
+      "dependencies": [
+        "cn",
+        "recharts"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Moonlight Checkbox",
+      "dependencies": [
+        "@base-ui/react",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Moonlight Dropdown Menu",
+      "dependencies": [
+        "@base-ui/react",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Moonlight Field",
+      "dependencies": [
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/label.json",
+        "http://localhost:4111/r/separator.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "frame",
+      "type": "registry:ui",
+      "title": "Frame",
+      "description": "Moonlight Frame",
+      "dependencies": [
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/frame.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Moonlight Hover Card",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "icon-tile",
+      "type": "registry:ui",
+      "title": "Icon Tile",
+      "description": "Moonlight Icon Tile",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/icon-tile.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Moonlight Input Group",
+      "dependencies": [
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/input.json",
+        "http://localhost:4111/r/textarea.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Moonlight Input",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "Moonlight Item",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/separator.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Moonlight Kbd",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Moonlight Label",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Moonlight Popover",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Moonlight Progress",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Moonlight Scroll Area",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Moonlight Select",
+      "dependencies": [
+        "@base-ui/react",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Moonlight Separator",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Moonlight Sheet",
+      "dependencies": [
+        "@base-ui/react",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Moonlight Sidebar",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/input.json",
+        "http://localhost:4111/r/separator.json",
+        "http://localhost:4111/r/sheet.json",
+        "http://localhost:4111/r/skeleton.json",
+        "http://localhost:4111/r/tooltip.json",
+        "http://localhost:4111/r/use-mobile.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Moonlight Skeleton",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Moonlight Spinner",
+      "dependencies": [
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Moonlight Switch",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Moonlight Table",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Moonlight Tabs",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Moonlight Textarea",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Moonlight Toggle Group",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/toggle.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Moonlight Toggle",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Moonlight Tooltip",
+      "dependencies": [
+        "@base-ui/react",
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "registry:ui",
+      "title": "Tree",
+      "description": "Moonlight Tree",
+      "dependencies": [
+        "@base-ui/react",
+        "@headless-tree/core",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "components/ui/tree.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data Grid",
+      "description": "Moonlight Data Grid",
+      "dependencies": [
+        "@base-ui/react",
+        "@dnd-kit/core",
+        "@dnd-kit/modifiers",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "@tanstack/react-table",
+        "@tanstack/react-virtual",
+        "cn",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/checkbox.json",
+        "http://localhost:4111/r/dropdown-menu.json",
+        "http://localhost:4111/r/input.json",
+        "http://localhost:4111/r/popover.json",
+        "http://localhost:4111/r/select.json",
+        "http://localhost:4111/r/separator.json",
+        "http://localhost:4111/r/skeleton.json",
+        "http://localhost:4111/r/spinner.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/data-grid/data-grid-cell-selection.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-cell-selection.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-column-filter.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-column-filter.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-column-header.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-column-header.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-column-visibility.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-column-visibility.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-i18n.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-i18n.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-pagination.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-pagination.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-scroll-area.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-scroll-area.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-table-dnd-rows.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-table-dnd-rows.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-table-dnd.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-table-dnd.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-table-virtual.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-table-virtual.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid-table.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid-table.tsx"
+        },
+        {
+          "path": "components/ui/data-grid/data-grid.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/data-grid/data-grid.tsx"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "Moonlight Utils",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "Use Mobile",
+      "description": "Moonlight Use Mobile",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-theme-toggle",
+      "type": "registry:component",
+      "title": "Theme Toggle",
+      "description": "Moonlight Theme Toggle",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "components/app/theme.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-page-header",
+      "type": "registry:component",
+      "title": "Page Header",
+      "description": "Moonlight Page Header",
+      "dependencies": [],
+      "registryDependencies": [
+        "http://localhost:4111/r/breadcrumb.json",
+        "http://localhost:4111/r/moonlight-theme-toggle.json",
+        "http://localhost:4111/r/separator.json",
+        "http://localhost:4111/r/sidebar.json"
+      ],
+      "files": [
+        {
+          "path": "components/app/page-header.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-page-body",
+      "type": "registry:component",
+      "title": "Page Body",
+      "description": "Moonlight Page Body",
+      "dependencies": [],
+      "registryDependencies": [
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/app/page-body.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-range-toggle",
+      "type": "registry:component",
+      "title": "Range Toggle",
+      "description": "Moonlight Range Toggle",
+      "dependencies": [],
+      "registryDependencies": [
+        "http://localhost:4111/r/toggle-group.json"
+      ],
+      "files": [
+        {
+          "path": "components/app/range-toggle.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-run-strip",
+      "type": "registry:component",
+      "title": "Run Strip",
+      "description": "Moonlight Run Strip",
+      "dependencies": [],
+      "registryDependencies": [
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/app/run-strip.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-app-sidebar",
+      "type": "registry:component",
+      "title": "App Sidebar",
+      "description": "Moonlight App Sidebar",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/kbd.json",
+        "http://localhost:4111/r/sidebar.json"
+      ],
+      "files": [
+        {
+          "path": "registry/starter/app-sidebar.tsx",
+          "type": "registry:component",
+          "target": "components/app/app-sidebar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-layout",
+      "type": "registry:page",
+      "title": "Layout",
+      "description": "Moonlight Layout",
+      "dependencies": [],
+      "registryDependencies": [
+        "http://localhost:4111/r/moonlight-theme-toggle.json",
+        "http://localhost:4111/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "registry/starter/layout.tsx",
+          "type": "registry:page",
+          "target": "app/layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-home",
+      "type": "registry:page",
+      "title": "Home",
+      "description": "Moonlight Home",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/moonlight-app-sidebar.json",
+        "http://localhost:4111/r/moonlight-page-body.json",
+        "http://localhost:4111/r/moonlight-page-header.json",
+        "http://localhost:4111/r/sidebar.json",
+        "http://localhost:4111/r/table.json"
+      ],
+      "files": [
+        {
+          "path": "registry/starter/page.tsx",
+          "type": "registry:page",
+          "target": "app/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "moonlight-theme",
+      "type": "registry:style",
+      "title": "Moonlight theme",
+      "description": "Moonlight design tokens: neutral palette, 0.625rem radius, success/info/warning/invert/focus status colors, light + dark. Install this once per project.",
+      "extends": "none",
+      "dependencies": [
+        "tw-animate-css",
+        "class-variance-authority",
+        "lucide-react",
+        "cn",
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/utils.json"
+      ],
+      "cssVars": {
+        "theme": {
+          "font-sans": "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+          "font-heading": "var(--font-sans)",
+          "color-background": "var(--background)",
+          "color-foreground": "var(--foreground)",
+          "color-card": "var(--card)",
+          "color-card-foreground": "var(--card-foreground)",
+          "color-popover": "var(--popover)",
+          "color-popover-foreground": "var(--popover-foreground)",
+          "color-primary": "var(--primary)",
+          "color-primary-foreground": "var(--primary-foreground)",
+          "color-secondary": "var(--secondary)",
+          "color-secondary-foreground": "var(--secondary-foreground)",
+          "color-muted": "var(--muted)",
+          "color-muted-foreground": "var(--muted-foreground)",
+          "color-accent": "var(--accent)",
+          "color-accent-foreground": "var(--accent-foreground)",
+          "color-destructive": "var(--destructive)",
+          "color-destructive-foreground": "var(--destructive-foreground)",
+          "color-border": "var(--border)",
+          "color-input": "var(--input)",
+          "color-ring": "var(--ring)",
+          "color-chart-1": "var(--chart-1)",
+          "color-chart-2": "var(--chart-2)",
+          "color-chart-3": "var(--chart-3)",
+          "color-chart-4": "var(--chart-4)",
+          "color-chart-5": "var(--chart-5)",
+          "color-success": "var(--success)",
+          "color-success-foreground": "var(--success-foreground)",
+          "color-info": "var(--info)",
+          "color-info-foreground": "var(--info-foreground)",
+          "color-warning": "var(--warning)",
+          "color-warning-foreground": "var(--warning-foreground)",
+          "color-invert": "var(--invert)",
+          "color-invert-foreground": "var(--invert-foreground)",
+          "color-focus": "var(--focus)",
+          "color-focus-foreground": "var(--focus-foreground)",
+          "color-sidebar": "var(--sidebar)",
+          "color-sidebar-foreground": "var(--sidebar-foreground)",
+          "color-sidebar-primary": "var(--sidebar-primary)",
+          "color-sidebar-primary-foreground": "var(--sidebar-primary-foreground)",
+          "color-sidebar-accent": "var(--sidebar-accent)",
+          "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+          "color-sidebar-border": "var(--sidebar-border)",
+          "color-sidebar-ring": "var(--sidebar-ring)",
+          "radius-sm": "calc(var(--radius) - 4px)",
+          "radius-md": "calc(var(--radius) - 2px)",
+          "radius-lg": "var(--radius)",
+          "radius-xl": "calc(var(--radius) + 4px)",
+          "radius-2xl": "calc(var(--radius) * 1.8)",
+          "radius-3xl": "calc(var(--radius) * 2.2)",
+          "radius-4xl": "calc(var(--radius) * 2.6)"
+        },
+        "light": {
+          "background": "#fff",
+          "foreground": "#0a0a0a",
+          "card": "#fff",
+          "card-foreground": "#0a0a0a",
+          "popover": "#fff",
+          "popover-foreground": "#0a0a0a",
+          "primary": "#171717",
+          "primary-foreground": "#fafafa",
+          "secondary": "#f5f5f5",
+          "secondary-foreground": "#171717",
+          "muted": "#f5f5f5",
+          "muted-foreground": "#737373",
+          "accent": "#f5f5f5",
+          "accent-foreground": "#171717",
+          "destructive": "#e40014",
+          "destructive-foreground": "var(--color-red-800)",
+          "border": "#e5e5e5",
+          "input": "#e5e5e5",
+          "ring": "#a1a1a1",
+          "chart-1": "#d4d4d4",
+          "chart-2": "#737373",
+          "chart-3": "#525252",
+          "chart-4": "#404040",
+          "chart-5": "#262626",
+          "radius": "0.625rem",
+          "sidebar": "#fafafa",
+          "sidebar-foreground": "#0a0a0a",
+          "sidebar-primary": "#171717",
+          "sidebar-primary-foreground": "#fafafa",
+          "sidebar-accent": "#f5f5f5",
+          "sidebar-accent-foreground": "#171717",
+          "sidebar-border": "#e5e5e5",
+          "sidebar-ring": "#a1a1a1",
+          "success": "var(--color-emerald-500)",
+          "success-foreground": "var(--color-emerald-900)",
+          "info": "var(--color-violet-500)",
+          "info-foreground": "var(--color-violet-900)",
+          "warning": "var(--color-yellow-500)",
+          "warning-foreground": "var(--color-yellow-900)",
+          "invert": "var(--color-zinc-900)",
+          "invert-foreground": "var(--color-zinc-50)",
+          "focus": "var(--color-blue-600)",
+          "focus-foreground": "var(--color-blue-900)"
+        },
+        "dark": {
+          "background": "#0a0a0a",
+          "foreground": "#fafafa",
+          "card": "#171717",
+          "card-foreground": "#fafafa",
+          "popover": "#171717",
+          "popover-foreground": "#fafafa",
+          "primary": "#e5e5e5",
+          "primary-foreground": "#171717",
+          "secondary": "#262626",
+          "secondary-foreground": "#fafafa",
+          "muted": "#262626",
+          "muted-foreground": "#a1a1a1",
+          "accent": "#262626",
+          "accent-foreground": "#fafafa",
+          "destructive": "#ff6568",
+          "destructive-foreground": "var(--color-red-600)",
+          "border": "#ffffff1a",
+          "input": "#ffffff26",
+          "ring": "#737373",
+          "sidebar": "#171717",
+          "sidebar-foreground": "#fafafa",
+          "sidebar-primary": "#1447e6",
+          "sidebar-primary-foreground": "#fafafa",
+          "sidebar-accent": "#262626",
+          "sidebar-accent-foreground": "#fafafa",
+          "sidebar-border": "#ffffff1a",
+          "sidebar-ring": "#737373",
+          "success-foreground": "var(--color-emerald-600)",
+          "info-foreground": "var(--color-violet-600)",
+          "warning-foreground": "var(--color-yellow-600)",
+          "invert": "var(--color-zinc-700)",
+          "focus-foreground": "var(--color-blue-600)"
+        }
+      },
+      "css": {
+        "@layer base": {
+          "*": {
+            "@apply border-border outline-ring/50": {}
+          },
+          "body": {
+            "@apply bg-background font-sans text-foreground antialiased": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "moonlight",
+      "type": "registry:item",
+      "title": "Moonlight (everything)",
+      "description": "Moonlight theme + every Moonlight UI component and the shell pieces (use the individual items to install less). Does not touch app/layout.tsx or app/page.tsx.",
+      "registryDependencies": [
+        "http://localhost:4111/r/moonlight-theme.json",
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/breadcrumb.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/card.json",
+        "http://localhost:4111/r/chart.json",
+        "http://localhost:4111/r/checkbox.json",
+        "http://localhost:4111/r/dropdown-menu.json",
+        "http://localhost:4111/r/field.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/hover-card.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/input.json",
+        "http://localhost:4111/r/item.json",
+        "http://localhost:4111/r/kbd.json",
+        "http://localhost:4111/r/label.json",
+        "http://localhost:4111/r/popover.json",
+        "http://localhost:4111/r/progress.json",
+        "http://localhost:4111/r/scroll-area.json",
+        "http://localhost:4111/r/select.json",
+        "http://localhost:4111/r/separator.json",
+        "http://localhost:4111/r/sheet.json",
+        "http://localhost:4111/r/sidebar.json",
+        "http://localhost:4111/r/skeleton.json",
+        "http://localhost:4111/r/spinner.json",
+        "http://localhost:4111/r/switch.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/tabs.json",
+        "http://localhost:4111/r/textarea.json",
+        "http://localhost:4111/r/toggle-group.json",
+        "http://localhost:4111/r/toggle.json",
+        "http://localhost:4111/r/tooltip.json",
+        "http://localhost:4111/r/tree.json",
+        "http://localhost:4111/r/data-grid.json",
+        "http://localhost:4111/r/utils.json",
+        "http://localhost:4111/r/use-mobile.json",
+        "http://localhost:4111/r/moonlight-theme-toggle.json",
+        "http://localhost:4111/r/moonlight-page-header.json",
+        "http://localhost:4111/r/moonlight-page-body.json",
+        "http://localhost:4111/r/moonlight-range-toggle.json",
+        "http://localhost:4111/r/moonlight-run-strip.json",
+        "http://localhost:4111/r/moonlight-app-sidebar.json"
+      ]
+    },
+    {
+      "name": "moonlight-starter",
+      "type": "registry:item",
+      "title": "Moonlight starter (new projects)",
+      "description": "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
+      "registryDependencies": [
+        "http://localhost:4111/r/moonlight.json",
+        "http://localhost:4111/r/moonlight-layout.json",
+        "http://localhost:4111/r/moonlight-home.json"
+      ]
+    }
+  ]
+}

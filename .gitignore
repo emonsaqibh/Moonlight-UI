@@ -1,0 +1,20 @@
+node_modules
+.next
+next-env.d.ts
+*.tsbuildinfo
+
+# OS / tooling
+.DS_Store
+.claude/
+
+# Generated registry output (rebuild with `npm run registry:build`; the base URL is baked in per environment)
+public/r
+
+# Local-only working material: earlier prototype and the captured third-party Strata replica + its tooling/assets
+_prototype-v1/
+strata-ui/
+app/exact/
+components/strata/
+public/sheets/
+public/patches/
+public/charts/
