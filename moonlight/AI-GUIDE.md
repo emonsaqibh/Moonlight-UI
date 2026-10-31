@@ -9,8 +9,17 @@ Registry: `{{REGISTRY_URL}}` · catalog of every component: `{{REGISTRY_URL}}/ll
 
 ## Rules (read before writing any UI)
 
-1. **Never hand-roll a primitive that exists in the catalog**, and never run `npx shadcn add button` (the stock one) — add the
-   Moonlight item by URL instead. Mixing stock and Moonlight components breaks the look.
+1. **When asked for a shadcn component, check the Moonlight catalog first** (`{{REGISTRY_URL}}/llms.txt`), and never hand-roll a
+   primitive that exists there:
+   - **In the catalog** (button, badge, card, frame, table, tabs, sidebar, select, sheet, …): install Moonlight's version —
+     `npx shadcn@latest add @moonlight/<name>`. **Never** run plain `npx shadcn add <name>` for these: that installs the vanilla
+     look this library exists to replace.
+   - **Not in the catalog** (dialog, alert, accordion, command, calendar, collapsible, pagination, radio-group, slider, …): plain
+     `npx shadcn@latest add <name>` is fine. The project is `base-nova` (Base UI), and the Moonlight tokens restyle it.
+   - **If the CLI asks to overwrite an existing file** (typically `button.tsx`, `input.tsx`: stock items depend on them),
+     **answer NO** and never pass `--overwrite` for stock items. Those files are Moonlight's.
+   - Check `components.json` has `"style": "base-nova"`. If it says `new-york` (Radix) or has no `@moonlight` entry under
+     `registries`, the project wasn't set up with Moonlight: follow Setup below first.
 2. **Only use semantic tokens** — `bg-background`, `bg-card`, `bg-muted`, `text-foreground`, `text-muted-foreground`, `border`,
    `ring`, and the status colors `success | info | warning | destructive | invert | focus`. No raw hex, no `bg-gray-*`.
 3. **Status = Badge light variants** — `<Badge variant="success-light">`; also `*-outline`, solid, and `primary-light`.
@@ -35,7 +44,8 @@ Registry: `{{REGISTRY_URL}}` · catalog of every component: `{{REGISTRY_URL}}/ll
 npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
 ```
 
-**Existing shadcn project** (Next.js + Tailwind v4, `components.json` present):
+**Existing shadcn project** (Next.js + Tailwind v4, `components.json` present). First make sure `components.json` has
+`"style": "base-nova"` and register the namespace: `"registries": { "@moonlight": "{{REGISTRY_URL}}/{name}.json" }`. Then:
 
 ```bash
 # 1. Theme tokens (palette, radius, status colors, light + dark). --overwrite is REQUIRED: without it shadcn keeps the
@@ -110,6 +120,17 @@ export default function Page() {
     </>
   )
 }
+```
+
+## Telling an existing project's AI about Moonlight
+
+Paste into the project's `AGENTS.md` / `CLAUDE.md` (the starter installs this guide as `AGENTS.md` for new projects):
+
+```md
+## UI
+Use the Moonlight design system for all UI. Read {{REGISTRY_URL}}/llms.txt before any UI work.
+Install Moonlight components with `npx shadcn@latest add @moonlight/<name>`, never the stock `shadcn add <name>` for a
+component Moonlight has. Decline any prompt to overwrite files in components/ui.
 ```
 
 ## Updating

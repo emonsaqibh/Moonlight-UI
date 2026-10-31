@@ -886,6 +886,21 @@
       ]
     },
     {
+      "name": "moonlight-agents",
+      "type": "registry:file",
+      "title": "Agents",
+      "description": "Moonlight Agents",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/starter/agents.generated.md",
+          "type": "registry:file",
+          "target": "AGENTS.md"
+        }
+      ]
+    },
+    {
       "name": "moonlight-theme",
       "type": "registry:style",
       "title": "Moonlight theme",
@@ -1100,13 +1115,26 @@
     },
     {
       "name": "moonlight-starter",
-      "type": "registry:item",
+      "type": "registry:base",
+      "extends": "none",
+      "config": {
+        "style": "base-nova",
+        "iconLibrary": "lucide",
+        "tailwind": {
+          "baseColor": "neutral",
+          "cssVariables": true
+        },
+        "registries": {
+          "@moonlight": "http://localhost:4111/r/{name}.json"
+        }
+      },
       "title": "Moonlight starter (new projects)",
       "description": "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
       "registryDependencies": [
         "http://localhost:4111/r/moonlight.json",
         "http://localhost:4111/r/moonlight-layout.json",
-        "http://localhost:4111/r/moonlight-home.json"
+        "http://localhost:4111/r/moonlight-home.json",
+        "http://localhost:4111/r/moonlight-agents.json"
       ]
     }
   ]

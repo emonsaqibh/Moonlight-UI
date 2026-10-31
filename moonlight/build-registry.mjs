@@ -49,10 +49,17 @@ const targets = {
   "registry/starter/app-sidebar.tsx": "components/app/app-sidebar.tsx",
   "registry/starter/layout.tsx": "app/layout.tsx",
   "registry/starter/page.tsx": "app/page.tsx",
+  "registry/starter/agents.generated.md": "AGENTS.md",
 }
 items.push({ name: "moonlight-app-sidebar", type: "registry:component", files: ["registry/starter/app-sidebar.tsx"], category: "shell" })
 items.push({ name: "moonlight-layout", type: "registry:page", files: ["registry/starter/layout.tsx"], category: "starter" })
 items.push({ name: "moonlight-home", type: "registry:page", files: ["registry/starter/page.tsx"], category: "starter" })
+// AGENTS.md for the new project (read by Claude via CLAUDE.md's @AGENTS.md, and by Codex/Cursor/Copilot/Windsurf…). Generated from the guide below.
+items.push({ name: "moonlight-agents", type: "registry:file", files: ["registry/starter/agents.generated.md"], category: "starter" })
+
+// the AI guide with the registry URL filled in; also written out as the new project's AGENTS.md (read by the scan + build below)
+const guideSrc = path.join(ROOT, "moonlight/AI-GUIDE.md")
+fs.writeFileSync(path.join(ROOT, "registry/starter/agents.generated.md"), fs.readFileSync(guideSrc, "utf8").replaceAll("{{REGISTRY_URL}}", BASE))
 
 // import path -> registry item name
 const LOCAL = {
@@ -75,6 +82,7 @@ const SKIP = new Set(["react", "react-dom", "next"])
 for (const it of items) {
   const deps = new Set(), regDeps = new Set()
   for (const f of it.files) {
+    if (!/\.(tsx?|jsx?)$/.test(f)) continue // markdown etc. has no imports (the guide's code samples would match)
     for (const m of read(f).matchAll(/from\s+"([^"]+)"/g)) {
       const spec = m[1]
       if (spec.startsWith(".")) continue
@@ -148,10 +156,19 @@ registryItems.push({
 })
 registryItems.push({
   name: "moonlight-starter",
-  type: "registry:item",
+  // registry:base: `shadcn init <url>` merges `config` into the new project's components.json, so the project is Base UI
+  // (base-nova) from the start and `shadcn add @moonlight/<name>` works. Stock additions then also come out as base-nova.
+  type: "registry:base",
+  extends: "none",
+  config: {
+    style: "base-nova",
+    iconLibrary: "lucide",
+    tailwind: { baseColor: "neutral", cssVariables: true },
+    registries: { "@moonlight": `${BASE}/{name}.json` },
+  },
   title: "Moonlight starter (new projects)",
   description: "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
-  registryDependencies: [url("moonlight"), url("moonlight-layout"), url("moonlight-home")],
+  registryDependencies: [url("moonlight"), url("moonlight-layout"), url("moonlight-home"), url("moonlight-agents")],
 })
 
 const registry = {
@@ -211,7 +228,7 @@ const skillDir = path.join(ROOT, "moonlight/skill/moonlight")
 fs.mkdirSync(skillDir, { recursive: true })
 fs.writeFileSync(path.join(skillDir, "SKILL.md"), `---
 name: moonlight
-description: Use whenever you create or change any user interface — pages, dashboards, forms, tables, charts, layouts, components — in a React/Next.js/Tailwind project. Moonlight is our default design system (a restyled shadcn/ui on Base UI) installed from a shadcn registry; use it instead of stock shadcn or hand-rolled primitives.
+description: Use whenever you build or change UI in a React/Next.js/Tailwind project, and ALWAYS when shadcn/ui is involved: adding or installing a shadcn component (npx shadcn add, components.json), creating pages, dashboards, forms, tables, charts or layouts, or setting up a new project. Moonlight is our design system (a restyled shadcn/ui on Base UI, installed from a shadcn registry); it replaces vanilla shadcn, which must not be used for components Moonlight provides.
 ---
 
 ${guide}
