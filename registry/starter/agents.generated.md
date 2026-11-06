@@ -1,7 +1,7 @@
 # Moonlight UI — how to build UI in any project
 
 Moonlight is our design system: shadcn/ui on **Base UI** (style `base-nova`) + Tailwind v4, with a custom neutral look
-(visual style derived from the Strata observability app) plus ReUI extras (Frame, IconTile, DataGrid, Tree) and finished
+(visual style derived from the Strata observability app) plus extras (Frame, IconTile, DataGrid, Tree) and finished
 dashboard blocks (charts, stat cards, tables, boards).
 Everything is installed **with the shadcn CLI** from the Moonlight registry as source files in the project.
 

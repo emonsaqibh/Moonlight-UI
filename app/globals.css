@@ -12,8 +12,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Strata design tokens. Values are copied from the live Strata app (strata-observability.reui.io),
- * so the stock shadcn components pick up the same neutral palette, radius and status colors.
+ * Moonlight design tokens: the neutral palette, radius and status colors the stock shadcn components pick up.
  */
 :root {
   --background: #fff;

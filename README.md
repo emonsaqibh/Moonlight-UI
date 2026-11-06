@@ -255,9 +255,6 @@ something that is not in `components/ui`, that component belongs in the library.
 [TanStack Table](https://tanstack.com/table) and [Virtual](https://tanstack.com/virtual) · [Recharts](https://recharts.org) ·
 [dnd kit](https://dndkit.com) · [Lucide](https://lucide.dev) · [Sonner](https://sonner.emilkowal.ski)
 
-Parts of the visual language (Frame, IconTile, badge variants, data grid) derive from [ReUI](https://reui.io) and the Strata demo.
-
 ## License
 
-Private and proprietary. All rights reserved. Third-party components retain their original licenses; confirm the ReUI terms
-before making this repository or its registry public.
+Private and proprietary. All rights reserved. Third-party components retain their original licenses.

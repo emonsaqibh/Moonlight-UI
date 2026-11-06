@@ -129,8 +129,7 @@ export interface DataGridColumnMeta<TData> {
 }
 
 /**
- * The batteries-included feature bundle every ReUI data-grid example builds
- * on. v9 requires each table to declare its features up front, and the grid's
+ * The batteries-included feature bundle every data grid builds on. v9 requires each table to declare its features up front, and the grid's
  * render path needs the ones registered here: `columnVisibilityFeature` alone
  * gates `row.getVisibleCells()`, so even a grid that never hides a column
  * needs it to render at all.
