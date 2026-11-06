@@ -45,14 +45,15 @@ const APP = {
 for (const [name, file] of Object.entries(APP)) items.push({ name, type: "registry:component", files: [`components/app/${file}`], category: "shell" })
 
 // templates for a NEW project: a generic sidebar (the demo one in components/app has the demo's navigation), the root
-// layout (Inter + theme init script + tooltip provider) and a sample home page. Installed to `targets[file]`.
+// layout (Geist + theme init script + tooltip provider) and a sample home page. Installed to `targets[file]`.
 const targets = {
   "registry/starter/app-sidebar.tsx": "components/app/app-sidebar.tsx",
   "registry/starter/layout.tsx": "app/layout.tsx",
   "registry/starter/page.tsx": "app/page.tsx",
   "registry/starter/agents.generated.md": "AGENTS.md",
 }
-items.push({ name: "moonlight-app-sidebar", type: "registry:component", files: ["registry/starter/app-sidebar.tsx"], category: "shell" })
+// Next.js-only (next/link, usePathname), so it stays out of the stack-neutral `moonlight` bundle; other stacks port it to their router
+items.push({ name: "moonlight-app-sidebar", type: "registry:component", files: ["registry/starter/app-sidebar.tsx"], category: "starter" })
 items.push({ name: "moonlight-layout", type: "registry:page", files: ["registry/starter/layout.tsx"], category: "starter" })
 items.push({ name: "moonlight-home", type: "registry:page", files: ["registry/starter/page.tsx"], category: "starter" })
 // AGENTS.md for the new project (read by Claude via CLAUDE.md's @AGENTS.md, and by Codex/Cursor/Copilot/Windsurf…). Generated from the guide below.
@@ -214,14 +215,15 @@ const registryItems = items.map((it) => ({
 }))
 registryItems.push(themeItem)
 
-// meta items. `moonlight` = theme + all components (safe for an existing project: touches no layout/page).
+// meta items. `moonlight` = theme + all components (safe for an existing project of any stack: touches no layout/page, imports no
+// framework code).
 // `moonlight-starter` = moonlight + root layout + home page, for `shadcn init` on a brand-new project.
 const all = items.filter((i) => ["ui", "shell", "core"].includes(i.category)).map((i) => url(i.name))
 registryItems.push({
   name: "moonlight",
   type: "registry:item",
   title: "Moonlight (everything)",
-  description: "Moonlight theme + every Moonlight UI component and the shell pieces (use the individual items to install less). Does not touch app/layout.tsx or app/page.tsx.",
+  description: "Moonlight theme + every Moonlight UI component and the framework-neutral shell pieces (use the individual items to install less). Works with any React stack; does not touch app/layout.tsx or app/page.tsx.",
   registryDependencies: [url("moonlight-theme"), ...all],
 })
 registryItems.push({
@@ -244,7 +246,7 @@ registryItems.push({
     registries: { "@moonlight": `${BASE}/{name}.json` },
   },
   title: "Moonlight starter (new projects)",
-  description: "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
+  description: "Everything in `moonlight` plus app/layout.tsx (Geist, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
   registryDependencies: [url("moonlight"), url("moonlight-layout"), url("moonlight-home"), url("moonlight-agents")],
 })
 

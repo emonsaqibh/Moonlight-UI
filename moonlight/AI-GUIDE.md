@@ -5,6 +5,10 @@ plus extras (Frame, IconTile, DataGrid, Tree) and finished
 dashboard blocks (charts, stat cards, tables, boards).
 Everything is installed **with the shadcn CLI** from the Moonlight registry as source files in the project.
 
+**Moonlight follows the project's stack; it never picks one.** Whatever the user built or asked for (Next.js, Vite, TanStack
+Start, React Router, Astro, Laravel…), shadcn is set up the way shadcn does it for that stack, and Moonlight only changes how
+shadcn looks. Don't create, convert or restructure the app into another framework.
+
 Registry: `{{REGISTRY_URL}}` · catalog of every item: `{{REGISTRY_URL}}/llms.txt`
 
 ## The one rule
@@ -23,17 +27,22 @@ curl -sf {{REGISTRY_URL}}/moonlight-source.txt
 
 ## Step 1 — make sure the project has Moonlight
 
-Run these checks from the project root and take the first branch that matches.
+Run these checks from the project root and take the first branch that matches. Paths below say `components/ui`; read it as
+wherever `components.json`'s `aliases.ui` points (`src/components/ui` in Vite, TanStack Start and React Router projects).
 
-**A. No project yet** — one command creates a Next.js app with shadcn, the theme, every component, the root layout (Inter + theme
-script), a sample page and an `AGENTS.md` with these rules:
+**A. No project yet** — create it with the stack the user asked for, through shadcn's own init (Base UI, Moonlight's preset),
+then continue with C:
 
 ```bash
-npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
+npx shadcn@latest init -t <next|vite|start|react-router|astro|laravel> -b base -p nova -n my-app --no-monorepo -y
 ```
 
-**B. Next.js project without `components.json`** (shadcn not set up yet): check Tailwind (C.1), run
-`npx shadcn@latest init -d -b base` (Base UI, neutral), then continue with C.
+If the user named no stack, ask which one; don't choose for them. For Next.js only, there is a one-command shortcut that also
+adds the root layout, a sample page with the sidebar shell and an `AGENTS.md`:
+`npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json`.
+
+**B. Existing project without `components.json`** (any stack; shadcn not set up yet): check Tailwind (C.1), run
+`npx shadcn@latest init -b base -p nova --no-monorepo -y` (shadcn detects the framework), then continue with C.
 
 **C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. Installing
 Moonlight replaces the stock files of the same name (`button.tsx`, `badge.tsx`…) and fixes the app code that uses them; that is
@@ -62,7 +71,7 @@ shadcn shapes. When the task is a page or a component, install the Moonlight com
 npx shadcn@latest add {{REGISTRY_URL}}/moonlight-theme.json --overwrite --yes
 npx shadcn@latest registry add "@moonlight={{REGISTRY_URL}}/{name}.json"
 npx shadcn@latest add {{REGISTRY_URL}}/moonlight.json --overwrite --yes   # see below for Radix projects
-npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes   # only if app/layout.tsx is still the default
+npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes   # Next.js only, and only if app/layout.tsx is still the default
 ```
 
    - **Radix project**: instead of the whole `moonlight.json` bundle, install the Moonlight components and blocks the task uses
@@ -72,10 +81,12 @@ npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes  
      stops at "button.tsx already exists. Overwrite? (y/N)", which a non-interactive shell answers No, and it **silently installs
      almost nothing** (exit code 0). The theme also needs it, or the project's stock colors win. With the flag, a
      "Skipped N files (files might be identical…)" line is normal: those files already match.
-   - `moonlight-layout` replaces `app/layout.tsx` with Inter (`--font-inter`), the theme init script and `TooltipProvider`. Use it
-     when the layout is still the `shadcn init` / `create-next-app` default (Geist fonts, `ThemeProvider`), then delete
-     `components/theme-provider.tsx` and the `next-themes` package if nothing else imports them. If the layout has real app code, wire it by hand instead —
-     see **Root layout** below. Without Inter the app renders in the system font and won't match.
+   - **Next.js**: `moonlight-layout` replaces `app/layout.tsx` with Geist and Geist Mono (`--font-geist-sans`, `--font-geist-mono`), the theme init script and
+     `TooltipProvider`. Use it when the layout is still the `shadcn init` / `create-next-app` default (Geist fonts,
+     `ThemeProvider`), then delete `components/theme-provider.tsx` and the `next-themes` package if nothing else imports them. If
+     the layout has real app code, wire it by hand instead — see **Root setup** below.
+   - **Any other stack**: skip `moonlight-layout` (it is a Next.js file) and do **Root setup** below for your stack.
+   - Without Geist the app renders in the system font and won't match.
 5. **Fix call sites**: run `npx tsc --noEmit`. Errors in app code that uses a component Moonlight just replaced are Radix props
    (Base UI projects usually have none). Convert `asChild` to `render`:
    `<TooltipTrigger asChild><Button variant="outline">Open</Button></TooltipTrigger>` becomes
@@ -84,8 +95,8 @@ npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes  
    components Moonlight didn't replace keep their `asChild`. For any other error, read the component's new source in
    `components/ui`.
 6. **Verify**: the `installed` check from step 2 passes, `npx tsc --noEmit` and `npm run build` pass, and after the full bundle
-   `ls components/ui | wc -l` shows 35+. Remove any leftover `body { font-family }` / `prefers-color-scheme` rules from
-   `globals.css`.
+   `ls components/ui | wc -l` shows 35+. Remove any leftover `body { font-family }` / `prefers-color-scheme` rules and any
+   other font import (e.g. Inter) from the CSS; Geist stays.
 
 ### Converting a Radix project (only when the user asks)
 
@@ -103,7 +114,6 @@ For "convert/migrate the project to Base UI". Ask first if `components/ui` has u
 3. Install Moonlight (C.4, full bundle), then fix every `tsc` error as in C.5.
 4. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still does,
    keep the package and say so). `npx tsc --noEmit` and `npm run build` must pass. Tell the user the project was converted.
-
 
 ## Adding components
 
@@ -180,30 +190,35 @@ const config = {
 5. **Tabs**: `<TabsList variant="line">` is the full-width underlined strip (Moonlight's page tabs). Default is the pill.
 6. **Moonlight components are Base UI**: composition uses the `render` prop, not `asChild` (stock Radix components left in a
    Radix project keep `asChild`) —
-   `<SidebarMenuButton render={<Link href="/x" />}>`, `<TooltipTrigger render={<Button />}>`.
+   `<SidebarMenuButton render={<Link href="/x" />}>`, `<TooltipTrigger render={<Button />}>`. `Link` is the project's own
+   router link (`next/link`, or `<Link to="/x" />` from React Router / TanStack Router); a plain `<a href>` without a router.
 7. **Tables**: `Table` for lists (see the `jobs-table` block), `DataGrid` (TanStack) when you need sorting/filtering/pagination.
 8. **Density**: text is 13–14px, controls are `h-8`, radius `0.625rem`. Keep pages compact; don't scale things up.
 9. **Dark mode** is the `.dark` class on `<html>` (the theme toggle + init script handle it). Never hard-code light colors.
    Don't add `next-themes`; Moonlight's `moonlight-theme-toggle` owns the theme.
 10. Read the installed source in `components/ui/*` for props/variants — JSDoc at the top of each file documents the intent.
 
-## Root layout (existing projects with a custom layout)
+## Root setup (font, theme script, tooltip provider)
 
-What `moonlight-layout` installs — merge it into the project's own `app/layout.tsx`: Inter as `--font-inter`, the theme init
-script (no light flash in dark mode) and `TooltipProvider`. Remove other font variables on `<html>` and any `ThemeProvider`.
+Every stack needs the same three things at its root: the Geist fonts (sans and mono), the theme init script in `<head>` (no light flash in dark
+mode) and `TooltipProvider` around the app. Remove any other font (Inter, a system stack) and any `ThemeProvider` /
+`theme-provider.tsx` / `next-themes`; Moonlight's theme toggle owns dark mode.
+
+**Next.js** — what `moonlight-layout` installs; merge it into a custom `app/layout.tsx`:
 
 ```tsx
 // app/layout.tsx
-import { Inter } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { themeInitScript } from "@/components/app/theme"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <head><script dangerouslySetInnerHTML={{ __html: themeInitScript }} /></head>
       <body><TooltipProvider>{children}</TooltipProvider></body>
     </html>
@@ -211,12 +226,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+**Any other stack** (Vite, TanStack Start, React Router, Astro, Laravel): `npm i @fontsource-variable/geist @fontsource-variable/geist-mono`
+and import both once in the app entry (e.g. `src/main.tsx`); the theme's font stacks pick up "Geist Variable" and "Geist Mono
+Variable" when `--font-geist-sans` / `--font-geist-mono` aren't set. Put the theme init script inline in the HTML `<head>` (`index.html`, the root route's head, the
+Astro layout or the Blade layout): copy the string value of `themeInitScript` from `components/app/theme.tsx` into
+`<script>…</script>`. Wrap the app's root component in `<TooltipProvider>`. For Vite:
+
+```tsx
+// src/main.tsx
+import "@fontsource-variable/geist"
+import "@fontsource-variable/geist-mono"
+import "./index.css"
+import { StrictMode } from "react"
+import { createRoot } from "react-dom/client"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import App from "./App"
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode><TooltipProvider><App /></TooltipProvider></StrictMode>,
+)
+```
+
 ## App shell (sidebar + header + body)
 
-`moonlight-app-sidebar` is a **template**: edit the `nav` array, the `EDIT:` workspace name and the footer links in
+`moonlight-app-sidebar` is a **template** written for Next.js (`next/link`, `usePathname`). On another stack, install it and
+swap those two for the project's router (`Link` + `useLocation().pathname` in React Router, `Link` + `useRouterState` in TanStack
+Router). Edit the `nav` array, the `EDIT:` workspace name and the footer links in
 `components/app/app-sidebar.tsx` to the project's own routes, and drop icon imports you no longer use. `moonlight-page-header` (breadcrumbs + sidebar trigger + theme
 toggle) and `moonlight-page-body` complete the shell. In an app that already has pages, put the shell layout on the route
-group of the pages that should get it; don't move existing pages into it unless the user asks.
+group of the pages that should get it; don't move existing pages into it unless the user asks. The example below uses Next.js
+route files; on other stacks put the same JSX in the router's layout route.
 
 ```tsx
 // app/(app)/layout.tsx

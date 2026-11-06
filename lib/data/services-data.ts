@@ -26,3 +26,8 @@ export const slos: Slo[] = [
 ];
 
 export const sloState = (b: number) => (b < 0 ? "Exhausted" : b < 25 ? "At Risk" : "Healthy");
+
+export const owners: Record<string, string> = {
+  KT: "Kenji Tan", PP: "Priya Patel", OH: "Omar Haddad", MS: "Mira Stone", LG: "Leo Grant", SR: "Sofia Romero",
+  EW: "Emma Wilson", SC: "Sarah Chen", MR: "Michael Rodriguez",
+};

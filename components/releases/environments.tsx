@@ -1,16 +1,27 @@
-import { ArrowRightIcon, GitCommitHorizontalIcon, MoreHorizontalIcon } from "lucide-react"
+"use client"
 
+import * as React from "react"
+import { ArrowRightIcon, CopyIcon, GitCommitHorizontalIcon, ListIcon, MoreHorizontalIcon, SnowflakeIcon } from "lucide-react"
+
+import { DeploySheet } from "@/components/releases/deploy-history"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Frame, FrameDescription, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { environments } from "@/lib/data/releases-data"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { environments, releases } from "@/lib/data/releases-data"
 import { cn } from "@/lib/utils"
 
 const initials = (n: string) => n.split(" ").map((p) => p[0]).join("")
 
+/** Environment cards; a card opens its latest deploy in a Sheet, the menu can freeze deploys to it. */
 export function Environments() {
+  const [openId, setOpenId] = React.useState<string | null>(null)
+  const [open, setOpen] = React.useState(false)
+  const [frozen, setFrozen] = React.useState<string[]>([])
+  const show = (id: string) => { setOpenId(id); setOpen(true) }
   return (
     <Frame>
       <FramePanel className="p-0">
@@ -29,12 +40,41 @@ export function Environments() {
         </FrameHeader>
         <div className="grid items-stretch gap-3 px-4 pb-4 @3xl:grid-cols-3">
           {environments.map((e, i) => (
-            <div key={e.name} className="relative flex flex-col gap-3 rounded-lg border bg-card p-3">
-              {i > 0 && <ArrowRightIcon className="absolute -left-[17px] top-1/2 hidden size-3.5 -translate-y-1/2 text-muted-foreground @3xl:block" />}
+            <div
+              key={e.name}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open ${e.id}, ${e.service}`}
+              onClick={() => show(e.id)}
+              onKeyDown={(k) => (k.key === "Enter" || k.key === " ") && (k.preventDefault(), show(e.id))}
+              className="relative flex cursor-pointer flex-col gap-3 rounded-lg border bg-card p-3 outline-none transition-colors hover:bg-muted/30 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            >
+              {i > 0 && (
+                <Tooltip>
+                  <TooltipTrigger render={<span className="absolute -left-[17px] top-1/2 hidden -translate-y-1/2 text-muted-foreground @3xl:block" />}><ArrowRightIcon className="size-3.5" /></TooltipTrigger>
+                  <TooltipContent>Promotes from {environments[i - 1].name} to {e.name}</TooltipContent>
+                </Tooltip>
+              )}
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">{e.name}</span>
                 <Badge variant={e.tone}>{e.health}</Badge>
-                <Button variant="ghost" size="icon-xs" className="ml-auto" aria-label="More"><MoreHorizontalIcon /></Button>
+                {frozen.includes(e.name) && <Badge variant="info-light"><SnowflakeIcon />Frozen</Badge>}
+                <span className="ml-auto" onClick={(ev) => ev.stopPropagation()} onKeyDown={(ev) => ev.stopPropagation()}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger render={<Button variant="ghost" size="icon-xs" aria-label={`${e.name} actions`} />}><MoreHorizontalIcon /></DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                      <DropdownMenuGroup>
+                        <DropdownMenuLabel>{e.name}</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => show(e.id)}><ListIcon /> Open latest</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigator.clipboard?.writeText(e.version)}><CopyIcon /> Copy version</DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => setFrozen((f) => (f.includes(e.name) ? f.filter((x) => x !== e.name) : [...f, e.name]))}>
+                        <SnowflakeIcon /> {frozen.includes(e.name) ? "Unfreeze deploys" : "Freeze deploys"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </span>
               </div>
               <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
                 {e.regions.map((r) => <span key={r} className="font-mono">{r}</span>)}
@@ -69,6 +109,7 @@ export function Environments() {
           ))}
         </div>
       </FramePanel>
+      <DeploySheet release={releases.find((r) => r.id === openId)} open={open} onOpenChange={setOpen} />
     </Frame>
   )
 }

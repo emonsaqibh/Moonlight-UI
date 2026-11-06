@@ -10,8 +10,9 @@ export type Theme = "light" | "dark" | "system"
 const KEY = "theme"
 const EVENT = "themechange"
 
-/** Runs before first paint (see layout.tsx) so there is no light flash in dark mode. */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem("${KEY}")||"system";var d=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`
+/** Runs before first paint (in the root layout's / index.html's <head>) so there is no light flash in dark mode. Plain literal,
+ * so it can be pasted into an HTML file as-is; "theme" is KEY. */
+export const themeInitScript = `(function(){try{var t=localStorage.getItem("theme")||"system";var d=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`
 
 function read(): Theme {
   try {

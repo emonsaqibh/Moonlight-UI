@@ -1,6 +1,7 @@
 export type JobStatus = "Failed" | "Timed Out" | "Succeeded";
 
 export type Job = {
+  id: string;
   name: string;
   command: string;
   schedule: string;
@@ -13,22 +14,26 @@ export type Job = {
   region: string;
   owner: string;
   runs: JobStatus[];
+  environment: string;
+  team: string;
+  error?: { exit: number; message: string };
 };
 
 const ok = (n: number): JobStatus[] => Array(n).fill("Succeeded");
 const withTail = (n: number, tail: JobStatus[]): JobStatus[] => [...ok(n - tail.length), ...tail];
 
 export const jobs: Job[] = [
-  { name: "Drain webhook retry queue", command: "retries:drain --max=5000", schedule: "Every 5 minutes", cron: "*/5 * * * *", enabled: true, status: "Failed", ago: "5m ago", duration: "52s", target: "webhooks-dispatcher", region: "prod-eu-central-1", owner: "Omar Haddad", runs: withTail(20, ["Failed", "Succeeded", "Failed", "Failed"]) },
-  { name: "Import bank settlement files", command: "settlements:import --banks=all", schedule: "Hourly at :30", cron: "30 * * * *", enabled: true, status: "Failed", ago: "30m ago", duration: "4m 12s", target: "billing-worker", region: "prod-us-east-1", owner: "Leo Grant", runs: withTail(20, ["Failed", "Timed Out", "Failed"]) },
-  { name: "Rebuild merchant search index", command: "reindex merchants --shards=12", schedule: "Daily at 03:30", cron: "30 3 * * *", enabled: true, status: "Timed Out", ago: "10h 30m ago", duration: "1h 00m", target: "search-indexer", region: "prod-eu-central-1", owner: "Kenji Tan", runs: withTail(20, ["Timed Out"]) },
-  { name: "Send failed charge alerts", command: "alerts:failed-charges --batch=500", schedule: "Every 5 minutes", cron: "*/5 * * * *", enabled: true, status: "Succeeded", ago: "5m ago", duration: "12s", target: "notifications", region: "prod-us-east-1", owner: "Michael Rodriguez", runs: ok(20) },
-  { name: "Sync FX reference rates", command: "fx:sync --source=central-banks", schedule: "Every 10 minutes", cron: "*/10 * * * *", enabled: true, status: "Succeeded", ago: "10m ago", duration: "11s", target: "payments", region: "prod-us-east-1", owner: "Mira Stone", runs: ok(20) },
-  { name: "Expire stale payout holds", command: "holds:expire --older-than=72h", schedule: "Every 15 minutes", cron: "*/15 * * * *", enabled: true, status: "Succeeded", ago: "15m ago", duration: "20s", target: "payouts-scheduler", region: "prod-us-east-1", owner: "Priya Patel", runs: ok(20) },
-  { name: "Warm merchant search cache", command: "cache:warm merchants", schedule: "Every 20 minutes", cron: "*/20 * * * *", enabled: true, status: "Succeeded", ago: "20m ago", duration: "38s", target: "search-indexer", region: "prod-eu-central-1", owner: "Kenji Tan", runs: ok(20) },
-  { name: "Purge expired idempotency keys", command: "idempotency:purge --ttl=24h", schedule: "Hourly at :25", cron: "25 * * * *", enabled: true, status: "Succeeded", ago: "35m ago", duration: "1m 55s", target: "payments", region: "prod-us-east-1", owner: "Shadcn", runs: ok(20) },
-  { name: "Retry failed payouts", command: "payouts:retry --max-attempts=3", schedule: "Every 30 minutes", cron: "*/30 * * * *", enabled: true, status: "Succeeded", ago: "30m ago", duration: "1m 57s", target: "payouts-scheduler", region: "prod-eu-central-1", owner: "Priya Patel", runs: ok(20) },
-  { name: "Refresh fraud model features", command: "features:refresh --model=fs-v7", schedule: "Hourly at :00", cron: "0 * * * *", enabled: true, status: "Succeeded", ago: "1h ago", duration: "5m 48s", target: "fraud-scorer", region: "prod-us-east-1", owner: "Sarah Chen", runs: ok(20) },
+  { id: "JOB-233", name: "Drain webhook retry queue", command: "retries:drain --max=5000", schedule: "Every 5 minutes", cron: "*/5 * * * *", enabled: true, status: "Failed", ago: "5m ago", duration: "52s", target: "webhooks-dispatcher", region: "prod-eu-central-1", owner: "Omar Haddad", runs: withTail(20, ["Failed", "Succeeded", "Failed", "Failed"]), environment: "Production", team: "Platform", error: { exit: 1, message: "Partner endpoint returned 503 for 212 deliveries. 2 failed runs in a row since 13:50 UTC." } },
+  { id: "JOB-219", name: "Import bank settlement files", command: "settlements:import --banks=all", schedule: "Hourly at :30", cron: "30 * * * *", enabled: true, status: "Failed", ago: "30m ago", duration: "4m 12s", target: "billing-worker", region: "prod-us-east-1", owner: "Leo Grant", runs: withTail(20, ["Failed", "Timed Out", "Failed"]), environment: "Production", team: "Billing", error: { exit: 137, message: "Worker ran out of memory parsing the ING settlement file. Killed after 4m 12s." } },
+  { id: "JOB-240", name: "Rebuild merchant search index", command: "reindex merchants --shards=12", schedule: "Daily at 03:30", cron: "30 3 * * *", enabled: true, status: "Timed Out", ago: "10h 30m ago", duration: "1h 00m", target: "search-indexer", region: "prod-eu-central-1", owner: "Kenji Tan", runs: withTail(20, ["Timed Out"]), environment: "Production", team: "Search", error: { exit: 124, message: "Reindex hit the 1h timeout on shard 9 of 12. Partial index kept." } },
+  { id: "JOB-301", name: "Send failed charge alerts", command: "alerts:failed-charges --batch=500", schedule: "Every 5 minutes", cron: "*/5 * * * *", enabled: true, status: "Succeeded", ago: "5m ago", duration: "12s", target: "notifications", region: "prod-us-east-1", owner: "Michael Rodriguez", runs: ok(20), environment: "Production", team: "Payments" },
+  { id: "JOB-263", name: "Sync FX reference rates", command: "fx:sync --source=central-banks", schedule: "Every 10 minutes", cron: "*/10 * * * *", enabled: true, status: "Succeeded", ago: "10m ago", duration: "11s", target: "payments", region: "prod-us-east-1", owner: "Mira Stone", runs: ok(20), environment: "Production", team: "Payments" },
+  { id: "JOB-226", name: "Expire stale payout holds", command: "holds:expire --older-than=72h", schedule: "Every 15 minutes", cron: "*/15 * * * *", enabled: true, status: "Succeeded", ago: "15m ago", duration: "20s", target: "payouts-scheduler", region: "prod-us-east-1", owner: "Priya Patel", runs: ok(20), environment: "Production", team: "Payouts" },
+  { id: "JOB-284", name: "Warm merchant search cache", command: "cache:warm merchants", schedule: "Every 20 minutes", cron: "*/20 * * * *", enabled: true, status: "Succeeded", ago: "20m ago", duration: "38s", target: "search-indexer", region: "prod-eu-central-1", owner: "Kenji Tan", runs: ok(20), environment: "Production", team: "Search" },
+  { id: "JOB-288", name: "Purge expired idempotency keys", command: "idempotency:purge --ttl=24h", schedule: "Hourly at :25", cron: "25 * * * *", enabled: true, status: "Succeeded", ago: "35m ago", duration: "1m 55s", target: "payments", region: "prod-us-east-1", owner: "Shadcn", runs: ok(20), environment: "Production", team: "Payments" },
+  { id: "JOB-281", name: "Retry failed payouts", command: "payouts:retry --max-attempts=3", schedule: "Every 30 minutes", cron: "*/30 * * * *", enabled: true, status: "Succeeded", ago: "30m ago", duration: "1m 57s", target: "payouts-scheduler", region: "prod-eu-central-1", owner: "Priya Patel", runs: ok(20), environment: "Production", team: "Payouts" },
+  { id: "JOB-237", name: "Refresh fraud model features", command: "features:refresh --model=fs-v7", schedule: "Hourly at :00", cron: "0 * * * *", enabled: true, status: "Succeeded", ago: "1h ago", duration: "5m 48s", target: "fraud-scorer", region: "prod-us-east-1", owner: "Sarah Chen", runs: ok(20), environment: "Production", team: "Risk" },
+  { id: "JOB-207", name: "Load test fraud scorer", command: "loadtest fraud-scorer --rps=400", schedule: "Weekly on Monday", cron: "0 2 * * 1", enabled: false, status: "Succeeded", ago: "7d ago", duration: "18m 40s", target: "fraud-scorer", region: "staging-us-east-1", owner: "Sarah Chen", runs: ok(20), environment: "Staging", team: "Risk" },
 ];
 
 export const upNext = [
@@ -51,3 +56,9 @@ export const runTimeByHour = Array.from({ length: 24 }, (_, i) => {
     failed: i % 6 === 2 ? 14 : i % 4 === 1 ? 3 : 1,
   };
 });
+
+// success rate per start hour, last 23h (UTC). SLO is 99.5%.
+export const successRateByHour = [100, 100, 100, 100, 100, 98.9, 100, 100, 100, 100, 97.4, 100, 100, 97.3, 100, 100, 100, 100, 97.3, 100, 100, 95.2, 93.2].map((rate, i) => ({
+  hour: `${String((i + 15) % 24).padStart(2, "0")}:00`,
+  rate,
+}));

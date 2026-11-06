@@ -927,10 +927,12 @@
       "title": "Stat Cards",
       "description": "KPI stat card row with deltas and run strips.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "recharts"
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
@@ -963,6 +965,7 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json"
@@ -1032,9 +1035,22 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/label.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1054,10 +1070,13 @@
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json"
       ],
       "files": [
         {
@@ -1073,15 +1092,25 @@
       "title": "Check History",
       "description": "Uptime check history: per-region status bars.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "recharts"
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/hover-card.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1106,7 +1135,10 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1122,17 +1154,30 @@
       "title": "Deploy History",
       "description": "Deploy history table with environment and status badges.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "recharts"
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/hover-card.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1156,8 +1201,11 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-history.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1177,13 +1225,23 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-deploy.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/progress.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1202,9 +1260,19 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-calendar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1221,19 +1289,27 @@
       "title": "Services View",
       "description": "Services list with filters, health badges and sparklines.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "recharts"
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-services.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1460,7 +1536,8 @@
       ],
       "cssVars": {
         "theme": {
-          "font-sans": "var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif",
+          "font-sans": "var(--font-geist-sans, \"Geist Variable\"), ui-sans-serif, system-ui, sans-serif",
+          "font-mono": "var(--font-geist-mono, \"Geist Mono Variable\"), ui-monospace, SFMono-Regular, Menlo, monospace",
           "font-heading": "var(--font-sans)",
           "color-background": "var(--background)",
           "color-foreground": "var(--foreground)",
@@ -1620,7 +1697,7 @@
       "name": "moonlight",
       "type": "registry:item",
       "title": "Moonlight (everything)",
-      "description": "Moonlight theme + every Moonlight UI component and the shell pieces (use the individual items to install less). Does not touch app/layout.tsx or app/page.tsx.",
+      "description": "Moonlight theme + every Moonlight UI component and the framework-neutral shell pieces (use the individual items to install less). Works with any React stack; does not touch app/layout.tsx or app/page.tsx.",
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
@@ -1664,8 +1741,7 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-range-toggle.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-app-sidebar.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json"
       ]
     },
     {
@@ -1709,7 +1785,7 @@
         }
       },
       "title": "Moonlight starter (new projects)",
-      "description": "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
+      "description": "Everything in `moonlight` plus app/layout.tsx (Geist, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-layout.json",

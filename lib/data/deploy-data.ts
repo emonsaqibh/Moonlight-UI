@@ -18,3 +18,15 @@ export const deploys: Deploy[] = [
   d("DEP-4135", "14:40", "search-indexer", "v2.3.1", "v2.2.9", "Production", "ap-southeast-1", "scheduled", "Scheduled"),
   d("DEP-4136", "14:40", "webhooks-dispatcher", "v1.27.0", "v1.26.2", "Production", "eu-central-1", "scheduled", "Scheduled"),
 ];
+
+export type Merge = { pr: string; title: string; service: string; author: string; time: string; state: "merged" | "queued" | "checks" | "blocked" };
+
+export const merges: Merge[] = [
+  { pr: "#2841", title: "Cache open invoice balances per tenant", service: "billing-worker", author: "Mira Stone", time: "13:31", state: "merged" },
+  { pr: "#2836", title: "Retry Stripe webhooks on 409", service: "billing-worker", author: "Leo Grant", time: "13:22", state: "merged" },
+  { pr: "#2852", title: "Sign deliveries with the rotated whsec key", service: "webhooks-dispatcher", author: "Priya Patel", time: "13:48", state: "checks" },
+  { pr: "#2849", title: "Split reindex into 400 doc batches", service: "search-indexer", author: "Kenji Tan", time: "13:50", state: "checks" },
+  { pr: "#2855", title: "Short-circuit login when MFA is pending", service: "auth-service", author: "Sarah Chen", time: "13:54", state: "queued" },
+  { pr: "#2857", title: "Group push sends by tenant", service: "notifications", author: "Priya Patel", time: "13:56", state: "queued" },
+  { pr: "#2846", title: "Drop the deprecated v1 export endpoint", service: "analytics-pipeline", author: "Emma Wilson", time: "12:40", state: "blocked" },
+];

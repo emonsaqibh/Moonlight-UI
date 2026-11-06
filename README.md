@@ -41,10 +41,20 @@ drifting a little further from the last one. Moonlight is that finishing work, d
 > `<REGISTRY_URL>` is `https://emonsaqibh.github.io/Moonlight-UI/r`, published from `main` by GitHub Pages (or your own host).
 > See [Publishing the registry](#publishing-the-registry).
 
+Moonlight follows your stack; it doesn't pick one. It works wherever shadcn does (Next.js, Vite, TanStack Start, React Router,
+Astro, Laravel) and only changes how shadcn looks.
+
 ### New project
 
-One command creates a Next.js app with the theme, every component, a root layout (Inter and the theme script), a sample page and an
-`AGENTS.md` with the Moonlight rules for AI tools. It also sets `components.json` to `base-nova` (Base UI) and registers the `@moonlight` namespace.
+Create the project with shadcn's own init for the stack you want (Base UI, nova preset), then follow
+[Existing shadcn project](#existing-shadcn-project):
+
+```bash
+npx shadcn@latest init -t vite -b base -p nova -n my-app --no-monorepo -y   # or -t next | start | react-router | astro | laravel
+```
+
+For Next.js there is also a one-command starter that adds a root layout (Geist and the theme script), a sample page with the sidebar
+shell and an `AGENTS.md` with the Moonlight rules for AI tools:
 
 ```bash
 npx shadcn@latest init -d -n my-app <REGISTRY_URL>/moonlight-starter.json
@@ -52,7 +62,7 @@ npx shadcn@latest init -d -n my-app <REGISTRY_URL>/moonlight-starter.json
 
 ### Existing shadcn project
 
-Requires Next.js with Tailwind v4 and a `components.json` with `"style": "base-nova"`. Moonlight is built on Base UI. An agent using
+Requires Tailwind v4 and a `components.json` with `"style": "base-nova"`. Moonlight is built on Base UI. An agent using
 the skill converts a Radix project (`new-york`, `radix-*`) first: it switches the style, reinstalls the existing components as Base UI
 versions and rewrites `asChild` to `render`. It also upgrades a Tailwind v3 project with `npx @tailwindcss/upgrade`.
 
@@ -66,8 +76,9 @@ npx shadcn@latest add <REGISTRY_URL>/moonlight-theme.json --overwrite --yes
 # 3. Every component and the shell pieces.
 npx shadcn@latest add <REGISTRY_URL>/moonlight.json --overwrite --yes
 
-# 4. Root layout (Inter, theme init script, TooltipProvider). Only while app/layout.tsx is still the default;
-#    otherwise merge it by hand (see moonlight/AI-GUIDE.md).
+# 4. Next.js only: root layout (Geist, theme init script, TooltipProvider), while app/layout.tsx is still the default.
+#    Otherwise, and on every other stack, do the root setup by hand (see "Root setup" in moonlight/AI-GUIDE.md):
+#    Geist via @fontsource-variable/geist (+ geist-mono), the theme init script in <head>, TooltipProvider around the app.
 npx shadcn@latest add <REGISTRY_URL>/moonlight-layout.json --overwrite --yes
 ```
 
@@ -98,7 +109,8 @@ The `yes n |` answers No when a stock item asks to overwrite Moonlight's `button
 | **Content** | `avatar` · `item` · `icon-tile` |
 
 **App shell** templates, installed as editable source: `moonlight-app-sidebar`, `moonlight-page-header`,
-`moonlight-page-body`, `moonlight-theme-toggle`, `moonlight-range-toggle`, `moonlight-run-strip`.
+`moonlight-page-body`, `moonlight-theme-toggle`, `moonlight-range-toggle`, `moonlight-run-strip`. The sidebar is written for Next.js
+(`next/link`, `usePathname`), so it isn't in the `moonlight` bundle; on other stacks install it and swap those for your router's.
 
 **Blocks** are the finished dashboard sections from the demo, installed with their demo data (`lib/data/*-data.ts`) so they render
 exactly as shown; swap the data for your own: `run-time-chart`, `event-volume`, `checkout-flow`, `check-history`, `stat-cards`,
@@ -136,7 +148,7 @@ export function Deploys() {
 
 |  |  |
 | --- | --- |
-| **Typeface** | Inter |
+| **Typeface** | Geist (sans) and Geist Mono |
 | **Density** | 13 to 14px text, `h-8` controls, compact rows |
 | **Radius** | `0.625rem` |
 | **Palette** | Neutral, with semantic `success`, `info`, `warning`, `destructive`, `focus` and `invert` status colors |

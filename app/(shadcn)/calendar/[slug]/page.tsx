@@ -1,8 +1,8 @@
-import { PinIcon, PlusIcon } from "lucide-react"
+import { PinIcon } from "lucide-react"
 import { notFound } from "next/navigation"
 
 import { PageHeader } from "@/components/app/page-header"
-import { WeekView } from "@/components/calendar/week-view"
+import { CalendarProvider, NewEventButton, WeekView } from "@/components/calendar/week-view"
 import { Button } from "@/components/ui/button"
 import { calEvents } from "@/lib/data/calendar-data"
 
@@ -23,12 +23,12 @@ export default async function CalendarViewPage({ params }: { params: Promise<{ s
   if (!view) notFound()
   const events = calEvents.filter((e) => (view.titles as readonly string[]).includes(e.title))
   return (
-    <>
+    <CalendarProvider events={events}>
       <PageHeader crumbs={["Ship", "Calendar", view.name]}>
         <Button variant="muted"><PinIcon /> Pin</Button>
-        <Button><PlusIcon /> New event</Button>
+        <NewEventButton />
       </PageHeader>
-      <WeekView events={events} title={view.name} categories={1} owners={2} />
-    </>
+      <WeekView title={view.name} />
+    </CalendarProvider>
   )
 }

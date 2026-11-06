@@ -1,9 +1,10 @@
 "use client"
 
+import * as React from "react"
 import { TrendingUpIcon } from "lucide-react"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
-import { type ChartConfig, ChartContainer } from "@/components/ui/chart"
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Frame, FrameDescription, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame"
 import { volume as defaultVolume } from "@/lib/data/logs-data"
 
@@ -25,6 +26,9 @@ type EventVolumeProps = {
 
 export function EventVolume({ totals = defaultTotals, data = defaultVolume, note = "+15% vs prior 7d · 6.5% warn" }: EventVolumeProps) {
   const total = totals.info + totals.warn + totals.error
+  const [hidden, setHidden] = React.useState<(keyof Totals)[]>([])
+  const toggle = (k: keyof Totals) => setHidden((h) => (h.includes(k) ? h.filter((x) => x !== k) : [...h, k]))
+  const shown = (["info", "warn", "error"] as const).filter((k) => !hidden.includes(k))
   return (
     <Frame>
       <FramePanel className="p-0">
@@ -33,12 +37,12 @@ export function EventVolume({ totals = defaultTotals, data = defaultVolume, note
             <FrameTitle>Event Volume</FrameTitle>
             <FrameDescription>6-hour buckets, UTC</FrameDescription>
           </div>
-          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground" role="group" aria-label="Levels in the chart">
             {(Object.keys(totals) as (keyof Totals)[]).map((k) => (
-              <span key={k} className="flex items-center gap-1.5">
+              <button key={k} type="button" aria-pressed={!hidden.includes(k)} onClick={() => toggle(k)} className="flex items-center gap-1.5 rounded-md px-1.5 py-0.5 transition-opacity hover:bg-muted aria-[pressed=false]:opacity-50">
                 <span className="size-2 rounded-full" style={{ background: config[k].color }} />
                 {config[k].label} <b className="font-medium text-foreground">{totals[k]}</b>
-              </span>
+              </button>
             ))}
           </div>
         </FrameHeader>
@@ -51,9 +55,10 @@ export function EventVolume({ totals = defaultTotals, data = defaultVolume, note
           <BarChart data={data} margin={{ left: 8, right: 8 }}>
             <XAxis dataKey="bucket" hide />
             <YAxis hide domain={[0, "dataMax + 2"]} />
-            <Bar dataKey="info" stackId="a" fill="var(--color-info)" radius={[0, 0, 2, 2]} isAnimationActive={false} />
-            <Bar dataKey="warn" stackId="a" fill="var(--color-warn)" />
-            <Bar dataKey="error" stackId="a" fill="var(--color-error)" radius={[2, 2, 0, 0]} />
+            <ChartTooltip cursor={{ radius: 2 }} content={<ChartTooltipContent labelFormatter={(_, p) => p[0]?.payload.label} />} />
+            {shown.map((k, i) => (
+              <Bar key={k} dataKey={k} stackId="a" fill={`var(--color-${k})`} isAnimationActive={false} radius={i === shown.length - 1 ? [2, 2, 0, 0] : i === 0 ? [0, 0, 2, 2] : 0} />
+            ))}
           </BarChart>
         </ChartContainer>
       </FramePanel>

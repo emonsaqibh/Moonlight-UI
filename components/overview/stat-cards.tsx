@@ -1,11 +1,15 @@
+"use client"
+
+import { Area, AreaChart, Dot, ReferenceLine, YAxis } from "recharts"
 import { CalendarClockIcon, CircleXIcon, LayersIcon, TimerIcon, TrendingUpIcon } from "lucide-react"
 
 import { RunStrip } from "@/components/app/run-strip"
 import { Badge } from "@/components/ui/badge"
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Frame, FrameFooter, FramePanel, FrameTitle } from "@/components/ui/frame"
 import { IconTile } from "@/components/ui/icon-tile"
 import { Progress } from "@/components/ui/progress"
-import { jobs } from "@/lib/data/jobs-data"
+import { jobs, successRateByHour } from "@/lib/data/jobs-data"
 import { cn } from "@/lib/utils"
 
 function Stat({ title, icon, children, footer }: { title: string; icon: React.ReactNode; children: React.ReactNode; footer: React.ReactNode }) {
@@ -41,7 +45,20 @@ function Value({ children, unit }: { children: React.ReactNode; unit?: string })
   )
 }
 
-export function StatCards() {
+const SLO = 99.5
+const rateConfig = { rate: { label: "Success", color: "var(--success)" } } satisfies ChartConfig
+
+/** A job name that opens the job when `onOpenJob` is given. */
+function JobLink({ name, onOpenJob }: { name: string; onOpenJob?: (name: string) => void }) {
+  if (!onOpenJob) return <span className="truncate font-medium text-foreground">{name}</span>
+  return (
+    <button type="button" onClick={() => onOpenJob(name)} className="cursor-pointer truncate text-left font-medium text-foreground underline-offset-2 transition-colors hover:text-primary hover:underline">
+      {name}
+    </button>
+  )
+}
+
+export function StatCards({ onOpenJob }: { onOpenJob?: (name: string) => void }) {
   const strip = jobs.flatMap((j) => j.runs).slice(0, 36)
   return (
     <div className="grid grid-cols-1 gap-3 @lg:grid-cols-2 @4xl:grid-cols-4">
@@ -59,7 +76,7 @@ export function StatCards() {
         <Value unit="of 32">27</Value>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span>Paused</span>
-          <span className="truncate font-medium text-foreground">Load test fraud scorer</span>
+          <JobLink name="Load test fraud scorer" onOpenJob={onOpenJob} />
           <span className="ml-auto shrink-0">7d ago</span>
         </div>
         <RunStrip runs={strip} className="gap-[3px]" tall />
@@ -71,7 +88,7 @@ export function StatCards() {
         footer={
           <>
             <span>17 of 23 hours in SLO</span>
-            <Legend tone="bg-destructive">6 below</Legend>
+            <Legend tone="bg-warning">6 below</Legend>
           </>
         }
       >
@@ -79,10 +96,32 @@ export function StatCards() {
           <span className="text-2xl font-semibold tabular-nums">99.1%</span>
           <Badge variant="warning-light">Below SLO</Badge>
         </div>
-        <svg viewBox="0 0 160 40" className="h-10 w-full" preserveAspectRatio="none">
-          <line x1="0" y1="28" x2="160" y2="28" stroke="var(--border)" strokeDasharray="3 3" />
-          <polyline fill="none" stroke="var(--success)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" points="0,8 20,10 35,9 50,9 62,18 72,10 90,9 108,9 118,14 130,9 142,22 156,34" />
-        </svg>
+        <ChartContainer config={rateConfig} className="aspect-auto h-10 w-full" role="img" aria-label="Success rate by hour: 17 of 23 hours in SLO, lowest 93.2% at 13:00 UTC">
+          <AreaChart data={successRateByHour} margin={{ top: 3, right: 3, bottom: 3, left: 3 }}>
+            <defs>
+              <linearGradient id="success-rate-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--color-rate)" stopOpacity={0.25} />
+                <stop offset="100%" stopColor="var(--color-rate)" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <YAxis hide domain={[92, 100]} />
+            <ReferenceLine y={SLO} stroke="var(--border)" strokeDasharray="3 3" />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideIndicator labelKey="hour" labelFormatter={(_, p) => `${p?.[0]?.payload.hour} UTC`} formatter={(v) => <span className="ml-auto font-mono font-medium tabular-nums">{Number(v).toFixed(1)}%</span>} />}
+            />
+            <Area
+              dataKey="rate"
+              type="monotone"
+              stroke="var(--color-rate)"
+              strokeWidth={1.5}
+              fill="url(#success-rate-fill)"
+              isAnimationActive={false}
+              dot={(p) => (p.payload.rate < SLO ? <Dot key={p.index} cx={p.cx} cy={p.cy} r={2} fill="var(--warning)" stroke="none" /> : <g key={p.index} />)}
+              activeDot={{ r: 3, fill: "var(--color-rate)", stroke: "var(--background)", strokeWidth: 1.5 }}
+            />
+          </AreaChart>
+        </ChartContainer>
       </Stat>
 
       <Stat
@@ -98,7 +137,7 @@ export function StatCards() {
         <Value unit="across 5 jobs">9</Value>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span>Worst</span>
-          <span className="truncate font-medium text-foreground">Import bank settlement files</span>
+          <JobLink name="Import bank settlement files" onOpenJob={onOpenJob} />
           <span className="ml-auto shrink-0">4 of 9</span>
         </div>
         <div className="flex h-1.5 gap-0.5 overflow-hidden rounded-full">
@@ -123,7 +162,7 @@ export function StatCards() {
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <TimerIcon className="size-3.5" />
-          <span className="truncate font-medium text-foreground">Drain webhook retry queue</span>
+          <JobLink name="Drain webhook retry queue" onOpenJob={onOpenJob} />
           <Badge variant="destructive-light" className="ml-auto">Failing</Badge>
         </div>
         <Progress value={52} />
