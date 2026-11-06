@@ -10,7 +10,7 @@ next-env.d.ts
 # Generated registry output (rebuild with `npm run registry:build`; the base URL is baked in per environment)
 public/r
 
-# Local-only working material: earlier prototype and the captured third-party Strata replica + its tooling/assets
+# Local-only working material, not part of Moonlight
 _prototype-v1/
 strata-ui/
 app/exact/
@@ -18,3 +18,5 @@ components/strata/
 public/sheets/
 public/patches/
 public/charts/
+app/scroll-fade.css
+public/services/strata-alerts.svg

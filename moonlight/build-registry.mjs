@@ -44,7 +44,7 @@ const APP = {
 }
 for (const [name, file] of Object.entries(APP)) items.push({ name, type: "registry:component", files: [`components/app/${file}`], category: "shell" })
 
-// templates for a NEW project: a generic sidebar (the demo one in components/app has the Strata replica's navigation), the root
+// templates for a NEW project: a generic sidebar (the demo one in components/app has the demo's navigation), the root
 // layout (Inter + theme init script + tooltip provider) and a sample home page. Installed to `targets[file]`.
 const targets = {
   "registry/starter/app-sidebar.tsx": "components/app/app-sidebar.tsx",

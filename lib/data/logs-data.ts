@@ -5,7 +5,7 @@ export const events: LogEvent[] = [
   { time: "Oct 22, 13:58:40", owner: "Priya Patel", event: "statuspage.update.published", level: "Info", resource: "status.acme.com", source: "Console", ip: "10.4.9.18" },
   { time: "Oct 22, 13:51:20", owner: "synthetics", event: "monitor.check.failed", level: "Error", resource: "api.acme.com/checkout", source: "Synthetics", ip: "10.8.1.5" },
   { time: "Oct 22, 13:49:03", owner: "Leo Grant", event: "incident.acknowledged", level: "Info", resource: "checkout-api", ref: "INC-2209", source: "Console", ip: "10.4.9.18" },
-  { time: "Oct 22, 13:46:12", owner: "strata-alerts", event: "alert.fired", level: "Error", resource: "error_rate > 5%", ref: "ALR-142", source: "OTLP", ip: "10.4.0.27" },
+  { time: "Oct 22, 13:46:12", owner: "acme-alerts", event: "alert.fired", level: "Error", resource: "error_rate > 5%", ref: "ALR-142", source: "OTLP", ip: "10.4.0.27" },
   { time: "Oct 22, 13:46:05", owner: "Mira Stone", event: "http.request.failed", level: "Error", resource: "POST /v1/checkout", source: "OTLP", ip: "10.4.2.17" },
   { time: "Oct 22, 13:45:31", owner: "Mira Stone", event: "http.request.failed", level: "Error", resource: "POST /v1/checkout", source: "OTLP", ip: "10.4.2.31" },
   { time: "Oct 22, 13:45:10", owner: "Leo Grant", event: "stripe.charge.retry", level: "Warn", resource: "stripe.charge", source: "OTLP", ip: "203.0.113.57" },

@@ -28,7 +28,7 @@ const tabsListVariants = cva(
     variants: {
       variant: {
         default: "bg-muted",
-        // Strata: full-width underlined strip, aligned with the frame panel's header padding.
+        // Full-width underlined strip, aligned with the frame panel's header padding.
         line: "h-10! w-full justify-start gap-3 overflow-x-auto border-b bg-transparent px-4 py-0! no-scrollbar sm:gap-5",
       },
     },

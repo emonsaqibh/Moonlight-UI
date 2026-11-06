@@ -31,7 +31,7 @@ export const groups: { name: string; summary: string; sources: Source[] }[] = [
   {
     name: "Warehouses",
     summary: "3 of 5 datasets linked",
-    sources: [s("telemetry-warehouse", "BigQuery", "acme-strata-telemetry", "Degraded", "strata.service_rollups_daily", 2, [3, 5], "2h 59m ago", "Every 6h", "Emma Wilson")],
+    sources: [s("telemetry-warehouse", "BigQuery", "acme-telemetry", "Degraded", "acme.service_rollups_daily", 2, [3, 5], "2h 59m ago", "Every 6h", "Emma Wilson")],
   },
   {
     name: "Apps",

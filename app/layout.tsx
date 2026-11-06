@@ -8,8 +8,8 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
-  title: "Strata",
-  description: "shadcn/ui, designed to look like Strata",
+  title: "Moonlight",
+  description: "The Moonlight UI demo app",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

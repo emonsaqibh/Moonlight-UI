@@ -1,13 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./scroll-fade.css";
-
-/* markup captured from Strata and injected at runtime (sheets, chart hover, page patches) uses classes no source file spells out */
-@source "../public/sheets";
-@source "../public/charts";
-@source "../public/patches";
-@source "../strata-ui/extracted/runtime-classes.txt"; /* decoded class tokens: node strata-ui/scripts/gen-runtime-classes.mjs */
 
 @custom-variant dark (&:is(.dark *));
 
