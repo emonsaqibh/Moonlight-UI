@@ -1330,10 +1330,15 @@
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/progress.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1350,16 +1355,29 @@
       "title": "All Sources",
       "description": "Sources table with sync status.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "recharts"
       ],
       "registryDependencies": [
         "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/hover-card.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1384,10 +1402,12 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
@@ -1395,6 +1415,223 @@
           "path": "components/sources/overview.tsx",
           "type": "registry:component",
           "target": "components/sources/overview.tsx"
+        }
+      ]
+    },
+    {
+      "name": "overview-view",
+      "type": "registry:block",
+      "title": "Overview View",
+      "description": "Overview screen: New Job form sheet, job detail sheet (overview, runs, settings), stat cards, jobs table, run time, up next.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/jobs-table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/run-time-chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/spinner.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/stat-cards.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/up-next.json"
+      ],
+      "files": [
+        {
+          "path": "components/overview/overview-view.tsx",
+          "type": "registry:component",
+          "target": "components/overview/overview-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "logs-view",
+      "type": "registry:block",
+      "title": "Logs View",
+      "description": "Logs screen: Pin, Export menu (filtered/all as CSV or JSON), event volume, warnings panel, events table with detail sheets.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/event-volume.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/events-table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-range-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/warnings-panel.json"
+      ],
+      "files": [
+        {
+          "path": "components/logs/logs-view.tsx",
+          "type": "registry:component",
+          "target": "components/logs/logs-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "monitors-view",
+      "type": "registry:block",
+      "title": "Monitors View",
+      "description": "Monitors screen: Pin, New Monitor form sheet, checkout-flow chart and check history with monitor detail sheets.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/check-history.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkout-flow.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json"
+      ],
+      "files": [
+        {
+          "path": "components/monitors/monitors-view.tsx",
+          "type": "registry:component",
+          "target": "components/monitors/monitors-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "releases-page",
+      "type": "registry:block",
+      "title": "Releases Page",
+      "description": "Releases screen: Pin, New Deploy form sheet, environments and deploy history with deploy detail sheets.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-history.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/environments.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json"
+      ],
+      "files": [
+        {
+          "path": "components/releases/releases-page.tsx",
+          "type": "registry:component",
+          "target": "components/releases/releases-page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "deploy-board-page",
+      "type": "registry:block",
+      "title": "Deploy Board Page",
+      "description": "Deploy board screen: Pin, New deploy form sheet, board with deploy detail sheets and approvals.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-deploy.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-board.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json"
+      ],
+      "files": [
+        {
+          "path": "components/deploy/deploy-board-page.tsx",
+          "type": "registry:component",
+          "target": "components/deploy/deploy-board-page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "services-page",
+      "type": "registry:block",
+      "title": "Services Page",
+      "description": "Services screen: Pin, New SLO form sheet, SLO table with detail sheets and the budget index chart.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-services.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/services-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json"
+      ],
+      "files": [
+        {
+          "path": "components/services/services-page.tsx",
+          "type": "registry:component",
+          "target": "components/services/services-page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sources-page",
+      "type": "registry:block",
+      "title": "Sources Page",
+      "description": "Sources screen: environment picker, New Source form sheet, overview and sources table with detail sheets.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/all-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json"
+      ],
+      "files": [
+        {
+          "path": "components/sources/sources-page.tsx",
+          "type": "registry:component",
+          "target": "components/sources/sources-page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-page",
+      "type": "registry:block",
+      "title": "Settings Page",
+      "description": "Settings screen: line tabs, billing (plans, usage, invoices) and the header's Manage Billing action.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/settings-view.json"
+      ],
+      "files": [
+        {
+          "path": "components/settings/settings-page.tsx",
+          "type": "registry:component",
+          "target": "components/settings/settings-page.tsx"
         }
       ]
     },
@@ -1766,7 +2003,15 @@
         "https://emonsaqibh.github.io/Moonlight-UI/r/services-view.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/settings-view.json",
         "https://emonsaqibh.github.io/Moonlight-UI/r/all-sources.json",
-        "https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/overview-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/logs-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/monitors-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/releases-page.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-board-page.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/services-page.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sources-page.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/settings-page.json"
       ]
     },
     {

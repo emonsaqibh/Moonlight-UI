@@ -1,28 +1,52 @@
 "use client"
 
-import { ArrowRightIcon, ArrowUpRightIcon, EyeIcon, MoreHorizontalIcon, PauseIcon, TrendingDownIcon, TrendingUpIcon, WrenchIcon } from "lucide-react"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import * as React from "react"
+import { ArrowRightIcon, ArrowUpRightIcon, CopyIcon, EyeIcon, KeyRoundIcon, MoreHorizontalIcon, PauseIcon, PlayIcon, RefreshCwIcon, TrendingDownIcon, TrendingUpIcon, WrenchIcon } from "lucide-react"
+import { Area, AreaChart, Bar, BarChart, XAxis, YAxis } from "recharts"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { type ChartConfig, ChartContainer } from "@/components/ui/chart"
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Frame, FrameDescription, FrameFooter, FrameHeader, FramePanel, FrameTitle } from "@/components/ui/frame"
 import { IconTile } from "@/components/ui/icon-tile"
 import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { attention, failedSyncs, rowsSynced, syncActivity } from "@/lib/data/sources-data"
 import { cn } from "@/lib/utils"
 
-function Spark({ data, color, area }: { data: number[]; color: string; area?: boolean }) {
-  const max = Math.max(...data)
-  const min = Math.min(...data)
-  const pts = data.map((v, i) => [(i / (data.length - 1)) * 120, 34 - ((v - min) / (max - min || 1)) * 28] as const)
-  const line = pts.map(([x, y]) => `${x},${y}`).join(" ")
+const days = (n: number) => Array.from({ length: n }, (_, i) => `Oct ${22 - n + 1 + i}`)
+const sparkConfig = { rows: { label: "Rows synced", color: "var(--success)" }, failed: { label: "Failed syncs", color: "var(--destructive)" } } satisfies ChartConfig
+
+/** 14-day area sparkline with a hover tooltip. */
+function Spark({ data }: { data: number[] }) {
+  const d = data.map((v, i) => ({ day: days(data.length)[i], rows: v }))
   return (
-    <svg viewBox="0 0 120 40" className="h-10 w-full" preserveAspectRatio="none">
-      {area && <polygon points={`0,40 ${line} 120,40`} fill={color} fillOpacity={0.12} />}
-      <polyline points={line} fill="none" stroke={color} strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-    </svg>
+    <ChartContainer config={sparkConfig} className="aspect-auto h-10 w-full">
+      <AreaChart data={d} margin={{ top: 2, bottom: 2, left: 0, right: 0 }}>
+        <XAxis dataKey="day" hide />
+        <YAxis hide domain={["dataMin - 0.5", "dataMax"]} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" formatter={(v) => <span className="flex w-full justify-between gap-3"><span className="text-muted-foreground">Rows synced</span><span className="font-medium tabular-nums">{v}M</span></span>} />} />
+        <Area dataKey="rows" stroke="var(--color-rows)" fill="var(--color-rows)" fillOpacity={0.12} strokeWidth={1.5} isAnimationActive={false} />
+      </AreaChart>
+    </ChartContainer>
+  )
+}
+
+/** Daily failed-sync bars with a hover tooltip. */
+function FailBars({ data }: { data: number[] }) {
+  const d = data.map((v, i) => ({ day: days(data.length)[i], failed: v, floor: v ? 0 : 0.4 }))
+  return (
+    <ChartContainer config={sparkConfig} className="aspect-auto h-10 w-full">
+      <BarChart data={d} margin={{ top: 2, bottom: 0, left: 0, right: 0 }} barCategoryGap={1.5}>
+        <XAxis dataKey="day" hide />
+        <YAxis hide domain={[0, 5]} />
+        <ChartTooltip cursor={{ fill: "var(--muted)" }} content={<ChartTooltipContent hideIndicator formatter={(v, n) => n === "failed" && <span className="flex w-full justify-between gap-3"><span className="text-muted-foreground">Failed syncs</span><span className="font-medium tabular-nums">{v}</span></span>} />} />
+        <Bar dataKey="floor" stackId="a" fill="var(--color-failed)" fillOpacity={0.25} isAnimationActive={false} />
+        <Bar dataKey="failed" stackId="a" fill="var(--color-failed)" fillOpacity={0.8} radius={[1, 1, 0, 0]} isAnimationActive={false} />
+      </BarChart>
+    </ChartContainer>
   )
 }
 
@@ -65,7 +89,11 @@ const config = {
 
 const attentionIcon = { Failing: WrenchIcon, Degraded: EyeIcon, "Token Expiring": WrenchIcon, "Schema Drift": EyeIcon, Paused: PauseIcon } as const
 
+const attentionAction = { Failing: "Rotate credential", Degraded: "View runs", "Token Expiring": "Renew token", "Schema Drift": "Review drift", Paused: "Resume syncs" } as const
+
 export function SourcesOverview() {
+  const [metric, setMetric] = React.useState("Runs")
+  const activity = metric === "Runs" ? syncActivity : syncActivity.map((d) => ({ ...d, succeeded: d.succeeded * 1.2, slow: d.slow * 0.9, failed: d.failed * 0.3 }))
   return (
     <>
       <div className="grid grid-cols-1 gap-3 @lg:grid-cols-2 @4xl:grid-cols-4">
@@ -92,12 +120,10 @@ export function SourcesOverview() {
           </div>
         </Metric>
         <Metric title="Rows Synced" window="14 days" value="9M" delta="12.1%" up note="8.1M yesterday" link="View telemetry-warehouse">
-          <Spark data={rowsSynced} color="var(--success)" area />
+          <Spark data={rowsSynced} />
         </Metric>
         <Metric title="Failed Syncs" window="14 days" value="5" delta="150%" up={false} note="2 yesterday, 17 in 14 days" link="View search-db">
-          <div className="flex h-10 items-end gap-[3px]">
-            {failedSyncs.map((v, i) => <span key={i} className="flex-1 rounded-[1px] bg-destructive/80" style={{ height: `${Math.max(v, 0.4) * 18}%`, opacity: v ? 1 : 0.25 }} />)}
-          </div>
+          <FailBars data={failedSyncs.slice(-14)} />
         </Metric>
       </div>
 
@@ -107,7 +133,7 @@ export function SourcesOverview() {
             <FrameHeader className="flex-row items-start justify-between">
               <div>
                 <FrameTitle>Sync Activity</FrameTitle>
-                <FrameDescription>741 runs in 24 hours, 99.3% landed</FrameDescription>
+                <FrameDescription>{metric === "Runs" ? "741 runs in 24 hours, 99.3% landed" : "1.1M rows (K) in 24 hours"}</FrameDescription>
               </div>
               <div className="flex items-center gap-3">
                 <div className="hidden items-center gap-3 text-xs text-muted-foreground @xl:flex">
@@ -115,16 +141,17 @@ export function SourcesOverview() {
                     <span key={k} className="flex items-center gap-1.5"><span className="size-2 rounded-[2px]" style={{ background: config[k].color }} />{config[k].label}</span>
                   ))}
                 </div>
-                <ToggleGroup defaultValue={["Runs"]} variant="outline" size="sm" onValueChange={() => {}}>
+                <ToggleGroup value={[metric]} variant="outline" size="sm" onValueChange={(v) => v.length && setMetric(v[0])} aria-label="Activity shown">
                   <ToggleGroupItem value="Runs">Runs</ToggleGroupItem>
                   <ToggleGroupItem value="Rows">Rows</ToggleGroupItem>
                 </ToggleGroup>
               </div>
             </FrameHeader>
             <ChartContainer config={config} className="h-52 w-full px-2 pb-3">
-              <BarChart data={syncActivity} margin={{ left: 8, right: 8 }}>
+              <BarChart data={activity} margin={{ left: 8, right: 8 }}>
                 <XAxis dataKey="hour" tickLine={false} axisLine={false} interval={5} />
-                <YAxis hide domain={[0, 60]} />
+                <YAxis hide domain={[0, 70]} />
+                <ChartTooltip content={<ChartTooltipContent formatter={(v, n) => <span className="flex w-full items-center gap-2"><span className="size-2 rounded-[2px]" style={{ background: config[n as keyof typeof config]?.color }} /><span className="text-muted-foreground">{config[n as keyof typeof config]?.label}</span><span className="ml-auto font-medium tabular-nums">{metric === "Runs" ? v : `${Number(v).toFixed(1)}K`}</span></span>} />} />
                 <Bar dataKey="succeeded" stackId="a" fill="var(--color-succeeded)" fillOpacity={0.6} isAnimationActive={false} />
                 <Bar dataKey="slow" stackId="a" fill="var(--color-slow)" isAnimationActive={false} />
                 <Bar dataKey="failed" stackId="a" fill="var(--color-failed)" radius={[2, 2, 0, 0]} isAnimationActive={false} />
@@ -140,7 +167,19 @@ export function SourcesOverview() {
                 <FrameTitle>Needs Attention</FrameTitle>
                 <FrameDescription>5 items, worst first</FrameDescription>
               </div>
-              <Button variant="ghost" size="icon-sm" aria-label="More"><MoreHorizontalIcon /></Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Attention actions" />}><MoreHorizontalIcon /></DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>Fix in bulk</DropdownMenuLabel>
+                    <DropdownMenuItem><PlayIcon /> Resume Paused</DropdownMenuItem>
+                    <DropdownMenuItem><KeyRoundIcon /> Renew Expiring Tokens</DropdownMenuItem>
+                    <DropdownMenuItem><RefreshCwIcon /> Sync Degraded Now</DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigator.clipboard?.writeText(attention.map((a) => `${a.name}: ${a.tag}`).join("\n"))}><CopyIcon /> Copy Summary</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </FrameHeader>
             <div className="flex flex-col px-2 pb-2">
               {attention.map((a) => {
@@ -149,7 +188,12 @@ export function SourcesOverview() {
                   <Item key={a.name} size="sm">
                     <ItemMedia><IconTile size="xs" variant="outline"><ArrowUpRightIcon /></IconTile></ItemMedia>
                     <ItemContent><ItemTitle>{a.name}<Badge variant={a.tone}>{a.tag}</Badge></ItemTitle></ItemContent>
-                    <ItemActions><Button variant="ghost" size="icon-sm" aria-label={`Open ${a.name}`}><Icon /></Button></ItemActions>
+                    <ItemActions>
+                      <Tooltip>
+                        <TooltipTrigger render={<Button variant="ghost" size="icon-sm" aria-label={`${attentionAction[a.tag]}, ${a.name}`} />}><Icon /></TooltipTrigger>
+                        <TooltipContent>{attentionAction[a.tag]}</TooltipContent>
+                      </Tooltip>
+                    </ItemActions>
                   </Item>
                 )
               })}

@@ -494,16 +494,48 @@ Re-run `npx shadcn@latest add @moonlight/<name> --overwrite --yes` to pull a new
   - Services list with filters, health badges and sparklines.
 - **settings-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/settings-view.json --overwrite --yes`
   - exports: SettingsView
-  - also installs: badge, frame, moonlight-theme-toggle, select, switch, utils
+  - also installs: badge, button, frame, moonlight-theme-toggle, progress, select, switch, table, toggle-group, tooltip, utils
   - Settings page: line tabs, Field groups, switches, selects.
 - **all-sources** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/all-sources.json --overwrite --yes`
-  - exports: AllSources
-  - also installs: avatar, badge, button, data-sources, frame, input-group, table, utils
+  - exports: AllSources, NewSourceSheet, SourceSheet
+  - also installs: avatar, badge, button, chart, checkbox, data-sources, dropdown-menu, field, frame, hover-card, input, input-group, popover, select, sheet, switch, table, tabs, tooltip, utils
   - Sources table with sync status.
 - **sources-overview** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json --overwrite --yes`
   - exports: SourcesOverview
-  - also installs: badge, button, chart, data-sources, frame, icon-tile, item, toggle-group, utils
+  - also installs: badge, button, chart, data-sources, dropdown-menu, frame, icon-tile, item, toggle-group, tooltip, utils
   - Sources overview: sparkline stat tiles, bar chart, attention list.
+- **overview-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/overview-view.json --overwrite --yes`
+  - exports: JobSheet, NewJobSheet, OverviewView
+  - also installs: avatar, badge, button, data-jobs, field, input, input-group, jobs-table, moonlight-page-body, moonlight-page-header, moonlight-run-strip, run-time-chart, select, separator, sheet, spinner, stat-cards, switch, table, tabs, toggle-group, up-next
+  - Overview screen: New Job form sheet, job detail sheet (overview, runs, settings), stat cards, jobs table, run time, up next.
+- **logs-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/logs-view.json --overwrite --yes`
+  - exports: LogsView
+  - also installs: button, data-logs, dropdown-menu, event-volume, events-table, moonlight-page-body, moonlight-page-header, moonlight-range-toggle, warnings-panel
+  - Logs screen: Pin, Export menu (filtered/all as CSV or JSON), event volume, warnings panel, events table with detail sheets.
+- **monitors-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/monitors-view.json --overwrite --yes`
+  - exports: MonitorsView
+  - also installs: button, check-history, checkbox, checkout-flow, data-monitors, field, input, moonlight-page-body, moonlight-page-header, select, sheet, toggle-group
+  - Monitors screen: Pin, New Monitor form sheet, checkout-flow chart and check history with monitor detail sheets.
+- **releases-page** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/releases-page.json --overwrite --yes`
+  - exports: ReleasesPage
+  - also installs: button, data-releases, deploy-history, environments, moonlight-page-body, moonlight-page-header, toggle
+  - Releases screen: Pin, New Deploy form sheet, environments and deploy history with deploy detail sheets.
+- **deploy-board-page** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/deploy-board-page.json --overwrite --yes`
+  - exports: DeployBoardPage
+  - also installs: button, data-deploy, deploy-board, moonlight-page-body, moonlight-page-header, toggle
+  - Deploy board screen: Pin, New deploy form sheet, board with deploy detail sheets and approvals.
+- **services-page** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/services-page.json --overwrite --yes`
+  - exports: ServicesPage
+  - also installs: button, data-services, moonlight-page-body, moonlight-page-header, services-view, toggle
+  - Services screen: Pin, New SLO form sheet, SLO table with detail sheets and the budget index chart.
+- **sources-page** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/sources-page.json --overwrite --yes`
+  - exports: SourcesPage
+  - also installs: all-sources, button, data-sources, moonlight-page-body, moonlight-page-header, select, sources-overview
+  - Sources screen: environment picker, New Source form sheet, overview and sources table with detail sheets.
+- **settings-page** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/settings-page.json --overwrite --yes`
+  - exports: SettingsPage
+  - also installs: button, moonlight-page-body, moonlight-page-header, settings-view
+  - Settings screen: line tabs, billing (plans, usage, invoices) and the header's Manage Billing action.
 
 ## Demo data used by the blocks
 

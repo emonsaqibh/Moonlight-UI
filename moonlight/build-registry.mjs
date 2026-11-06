@@ -79,6 +79,15 @@ const BLOCKS = {
   "settings-view": ["components/settings/settings-view.tsx", "Settings page: line tabs, Field groups, switches, selects."],
   "all-sources": ["components/sources/all-sources.tsx", "Sources table with sync status."],
   "sources-overview": ["components/sources/overview.tsx", "Sources overview: sparkline stat tiles, bar chart, attention list."],
+  // whole screens: page header actions (New …, Pin, Export) wired to the blocks above through shared state
+  "overview-view": ["components/overview/overview-view.tsx", "Overview screen: New Job form sheet, job detail sheet (overview, runs, settings), stat cards, jobs table, run time, up next."],
+  "logs-view": ["components/logs/logs-view.tsx", "Logs screen: Pin, Export menu (filtered/all as CSV or JSON), event volume, warnings panel, events table with detail sheets."],
+  "monitors-view": ["components/monitors/monitors-view.tsx", "Monitors screen: Pin, New Monitor form sheet, checkout-flow chart and check history with monitor detail sheets."],
+  "releases-page": ["components/releases/releases-page.tsx", "Releases screen: Pin, New Deploy form sheet, environments and deploy history with deploy detail sheets."],
+  "deploy-board-page": ["components/deploy/deploy-board-page.tsx", "Deploy board screen: Pin, New deploy form sheet, board with deploy detail sheets and approvals."],
+  "services-page": ["components/services/services-page.tsx", "Services screen: Pin, New SLO form sheet, SLO table with detail sheets and the budget index chart."],
+  "sources-page": ["components/sources/sources-page.tsx", "Sources screen: environment picker, New Source form sheet, overview and sources table with detail sheets."],
+  "settings-page": ["components/settings/settings-page.tsx", "Settings screen: line tabs, billing (plans, usage, invoices) and the header's Manage Billing action."],
 }
 const targets_ = {} // file -> install path for blocks and their data (same path as here, so imports resolve unchanged)
 for (const [name, [file, description]] of Object.entries(BLOCKS)) {

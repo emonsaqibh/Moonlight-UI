@@ -66,6 +66,7 @@ function SortHead({ k, sort, onSort, children }: { k: SortKey; sort: [SortKey, 1
 type SloPanelProps = {
   rows: Slo[]
   total: number
+  summary: string
   counts: { all: number; exhausted: number; atrisk: number; healthy: number }
   q: string
   onQuery: (q: string) => void
@@ -77,14 +78,14 @@ type SloPanelProps = {
   onOpen: (s: Slo) => void
 }
 
-function SloPanel({ rows, total, counts, q, onQuery, tab, onTab, sort, onSort, selected, onOpen }: SloPanelProps) {
+function SloPanel({ rows, total, summary, counts, q, onQuery, tab, onTab, sort, onSort, selected, onOpen }: SloPanelProps) {
   const [win, setWin] = React.useState(["own"])
   return (
     <Frame className="min-w-0">
       <FramePanel className="p-0">
         <FrameHeader>
           <FrameTitle>Service reliability</FrameTitle>
-          <FrameDescription>{total} SLOs · {counts.exhausted} exhausted · {rows.filter((s) => s.alert === "Paging").length} paging</FrameDescription>
+          <FrameDescription>{summary}</FrameDescription>
         </FrameHeader>
         <Tabs value={tab} onValueChange={(v) => onTab(String(v))}>
           <TabsList variant="line">
@@ -508,7 +509,8 @@ export function ServicesView({ initialQuery = "", slos: controlled, onSlosChange
   return (
     <div className="grid gap-4 @4xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <SloPanel
-        rows={rows} total={list.length} counts={counts} q={q} onQuery={setQ} tab={tab} onTab={setTab}
+        rows={rows} total={list.length} counts={counts}
+        summary={`${list.length} SLOs · ${list.filter((s) => s.budget < 0).length} exhausted · ${list.filter((s) => s.alert === "Paging").length} paging`} q={q} onQuery={setQ} tab={tab} onTab={setTab}
         sort={sort} onSort={(k) => setSort(([sk, d]) => [k, sk === k ? (d === 1 ? -1 : 1) : 1])}
         selected={selected} onOpen={openSlo}
       />
