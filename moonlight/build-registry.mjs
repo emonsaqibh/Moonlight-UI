@@ -8,6 +8,7 @@
 // Usage:  node moonlight/build-registry.mjs
 //         REGISTRY_URL=https://ui.example.com/r node moonlight/build-registry.mjs   (what consumers will fetch from)
 import fs from "node:fs"
+import os from "node:os"
 import path from "node:path"
 import { execSync } from "node:child_process"
 
@@ -57,9 +58,50 @@ items.push({ name: "moonlight-home", type: "registry:page", files: ["registry/st
 // AGENTS.md for the new project (read by Claude via CLAUDE.md's @AGENTS.md, and by Codex/Cursor/Copilot/Windsurf…). Generated from the guide below.
 items.push({ name: "moonlight-agents", type: "registry:file", files: ["registry/starter/agents.generated.md"], category: "starter" })
 
+// blocks: the finished dashboard sections (charts, stat cards, tables, boards) exactly as the demo renders them, with their demo
+// data. They are the reference for "what Moonlight looks like": install one, then swap the data for the project's own.
+const BLOCKS = {
+  "run-time-chart": ["components/overview/run-time-chart.tsx", "Stacked bar chart in a Frame: legend totals row, ChartContainer, footer stats."],
+  "stat-cards": ["components/overview/stat-cards.tsx", "KPI stat card row with deltas and run strips."],
+  "jobs-table": ["components/overview/jobs-table.tsx", "Jobs table with status badges, run strips and row actions."],
+  "up-next": ["components/overview/up-next.tsx", "Upcoming-items list panel (Item + IconTile)."],
+  "event-volume": ["components/logs/event-volume.tsx", "Stacked bar chart of event volume by level, with Y axis."],
+  "events-table": ["components/logs/events-table.tsx", "Log events table with level badges."],
+  "warnings-panel": ["components/logs/warnings-panel.tsx", "Grouped warnings list panel."],
+  "check-history": ["components/monitors/check-history.tsx", "Uptime check history: per-region status bars."],
+  "checkout-flow": ["components/monitors/checkout-flow.tsx", "Synthetic-check step timings as a horizontal bar chart."],
+  "deploy-history": ["components/releases/deploy-history.tsx", "Deploy history table with environment and status badges."],
+  environments: ["components/releases/environments.tsx", "Environment cards with current version and health."],
+  "deploy-board": ["components/deploy/deploy-board.tsx", "Kanban-style deploy board (columns of cards)."],
+  "week-view": ["components/calendar/week-view.tsx", "Calendar week view with on-call/event blocks."],
+  "services-view": ["components/services/services-view.tsx", "Services list with filters, health badges and sparklines."],
+  "settings-view": ["components/settings/settings-view.tsx", "Settings page: line tabs, Field groups, switches, selects."],
+  "all-sources": ["components/sources/all-sources.tsx", "Sources table with sync status."],
+  "sources-overview": ["components/sources/overview.tsx", "Sources overview: sparkline stat tiles, bar chart, attention list."],
+}
+const targets_ = {} // file -> install path for blocks and their data (same path as here, so imports resolve unchanged)
+for (const [name, [file, description]] of Object.entries(BLOCKS)) {
+  items.push({ name, type: "registry:block", files: [file], category: "blocks", description })
+  targets_[file] = file
+}
+for (const f of fs.readdirSync(path.join(ROOT, "lib/data")).filter((f) => f.endsWith(".ts"))) {
+  const file = `lib/data/${f}`
+  items.push({ name: `data-${f.replace(/-data\.ts$/, "")}`, type: "registry:lib", files: [file], category: "data" })
+  targets_[file] = file
+}
+Object.assign(targets, targets_)
+
 // the AI guide with the registry URL filled in; also written out as the new project's AGENTS.md (read by the scan + build below)
+const LOCAL_REGISTRY = /\/\/(localhost|127\.0\.0\.1)[:/]/.test(BASE)
+const fill = (src) =>
+  src.replaceAll("{{REGISTRY_URL}}", BASE).replaceAll("{{SOURCE}}", LOCAL_REGISTRY ? ROOT : "moonlight").replaceAll(
+    "{{REGISTRY_DOWN}}",
+    LOCAL_REGISTRY
+      ? `it is served from this machine. Start it in the background with \`npm --prefix "${ROOT}" run registry:serve\`, wait a second and re-check. "Address already in use" means another (stale) copy of Moonlight holds port ${new URL(BASE).port}: stop and tell the user to stop that process. If the re-check still fails, stop and tell the user.`
+      : "stop and tell the user the Moonlight registry is unreachable.",
+  )
 const guideSrc = path.join(ROOT, "moonlight/AI-GUIDE.md")
-fs.writeFileSync(path.join(ROOT, "registry/starter/agents.generated.md"), fs.readFileSync(guideSrc, "utf8").replaceAll("{{REGISTRY_URL}}", BASE))
+fs.writeFileSync(path.join(ROOT, "registry/starter/agents.generated.md"), fill(fs.readFileSync(guideSrc, "utf8")))
 
 // import path -> registry item name
 const LOCAL = {
@@ -68,8 +110,11 @@ const LOCAL = {
   "@/hooks/use-mobile": "use-mobile",
   ...Object.fromEntries(Object.entries(APP).map(([n, f]) => [`@/components/app/${f.replace(/\.tsx$/, "")}`, n])),
 }
+for (const [name, [file]] of Object.entries(BLOCKS)) LOCAL[`@/${file.replace(/\.tsx$/, "")}`] = name
 const localName = (spec) => {
   if (LOCAL[spec]) return LOCAL[spec]
+  const d = spec.match(/^@\/lib\/data\/([\w-]+)-data$/)
+  if (d) return `data-${d[1]}`
   const m = spec.match(/^@\/components\/ui\/(data-grid)(\/.*)?$/) || spec.match(/^@\/components\/ui\/([^/]+)$/)
   return m ? m[1] : null
 }
@@ -110,7 +155,9 @@ const block = (head) => {
 const vars = (body) => Object.fromEntries([...body.matchAll(/--([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]))
 const theme = vars(block("@theme inline"))
 const light = vars(block(":root"))
-const dark = vars(block(".dark {"))
+// Here .dark inherits what it doesn't redefine (chart-1..5, success, …) from :root. A consumer's globals.css has its own .dark values
+// for those (stock shadcn ships dark chart colors), so spell every inherited token out or the stock dark values survive the install.
+const dark = { ...Object.fromEntries(Object.entries(light).filter(([k]) => k !== "radius")), ...vars(block(".dark {")) }
 
 const themeItem = {
   name: "moonlight-theme",
@@ -122,7 +169,7 @@ const themeItem = {
   registryDependencies: [url("utils")],
   cssVars: { theme, light, dark },
   css: {
-    "@layer base": { "*": { "@apply border-border outline-ring/50": {} }, body: { "@apply bg-background font-sans text-foreground antialiased": {} } },
+    "@layer base": { "*": { "@apply border-border outline-ring/50": {} }, body: { "@apply bg-background font-sans text-foreground antialiased": {} }, html: { "@apply font-sans": {} } },
   },
 }
 
@@ -133,12 +180,12 @@ const registryItems = items.map((it) => ({
   name: it.name,
   type: it.type,
   title: title(it.name),
-  description: DESC[it.name] ?? `Moonlight ${title(it.name)}`,
+  description: DESC[it.name] ?? it.description ?? `Moonlight ${title(it.name)}`,
   dependencies: it.dependencies,
   registryDependencies: it.registryDependencies.map(url),
   files: it.files.map((f) => ({
     path: f,
-    type: it.type,
+    type: it.type === "registry:block" ? "registry:component" : it.type,
     ...(targets[f] ? { target: targets[f] } : it.target ? { target: `components/ui/data-grid/${path.basename(f)}` } : {}),
   })),
 }))
@@ -153,6 +200,13 @@ registryItems.push({
   title: "Moonlight (everything)",
   description: "Moonlight theme + every Moonlight UI component and the shell pieces (use the individual items to install less). Does not touch app/layout.tsx or app/page.tsx.",
   registryDependencies: [url("moonlight-theme"), ...all],
+})
+registryItems.push({
+  name: "moonlight-blocks",
+  type: "registry:item",
+  title: "Moonlight blocks (all)",
+  description: "Every finished Moonlight dashboard section (charts, stat cards, tables, boards) with its demo data.",
+  registryDependencies: items.filter((i) => i.category === "blocks").map((i) => url(i.name)),
 })
 registryItems.push({
   name: "moonlight-starter",
@@ -184,7 +238,7 @@ console.log(`registry.json: ${registryItems.length} items, base ${BASE}`)
 execSync("npx shadcn build", { cwd: ROOT, stdio: "inherit" })
 
 // ---- AI catalog (public/r/llms.txt) -----------------------------------------------------------------------------
-const guide = fs.existsSync(path.join(ROOT, "moonlight/AI-GUIDE.md")) ? read("moonlight/AI-GUIDE.md").replaceAll("{{REGISTRY_URL}}", BASE) : ""
+const guide = fill(read("moonlight/AI-GUIDE.md"))
 const exportsOf = (files) => {
   const out = new Set()
   for (const f of files) for (const m of read(f).matchAll(/^export\s+(?:default\s+)?(?:async\s+)?(?:function|const|class)\s+([A-Z]\w+)/gm)) out.add(m[1])
@@ -207,33 +261,43 @@ const variantsOf = (files) => {
   return out
 }
 const lines = []
-for (const cat of [["ui", "UI components (registry:ui)"], ["shell", "App shell pieces (templates)"], ["core", "Core"], ["starter", "Starter files (new projects only; replace app/layout.tsx and app/page.tsx)"]]) {
+for (const cat of [["ui", "UI components (registry:ui)"], ["shell", "App shell pieces (templates)"], ["blocks", "Blocks: finished dashboard sections and charts (registry:block, installed with their demo data)"], ["data", "Demo data used by the blocks"], ["core", "Core"], ["starter", "Starter files (new projects only; replace app/layout.tsx and app/page.tsx)"]]) {
   lines.push(`## ${cat[1]}`, "")
   for (const it of items.filter((i) => i.category === cat[0])) {
     const ex = exportsOf(it.files)
     const vs = variantsOf(it.files)
-    lines.push(`- **${it.name}** — \`npx shadcn add ${url(it.name)}\``)
+    lines.push(`- **${it.name}** — \`npx shadcn@latest add ${url(it.name)} --overwrite --yes\``)
     if (ex.length) lines.push(`  - exports: ${ex.join(", ")}`)
     for (const v of vs) lines.push(`  - ${v}`)
     if (it.registryDependencies.length) lines.push(`  - also installs: ${it.registryDependencies.join(", ")}`)
-    if (DESC[it.name]) lines.push(`  - ${DESC[it.name]}`)
+    if (DESC[it.name] ?? it.description) lines.push(`  - ${DESC[it.name] ?? it.description}`)
   }
   lines.push("")
 }
+// marker the guide's Step 0 checks, so a stale server on the same port (an old clone) is caught instead of silently installed from
+fs.writeFileSync(path.join(ROOT, "public/r/moonlight-source.txt"), `${LOCAL_REGISTRY ? ROOT : "moonlight"}\n`)
 fs.writeFileSync(path.join(ROOT, "public/r/llms.txt"), `${guide}\n# Component catalog\n\n${lines.join("\n")}`)
 console.log("public/r/llms.txt written")
 
-// ---- Claude Code skill: moonlight/skill/moonlight/SKILL.md (copy into ~/.claude/skills/ once; every project then knows Moonlight)
+// ---- Claude Code skill: moonlight/skill/moonlight/SKILL.md, also installed to ~/.claude/skills/moonlight so every project gets the
+// current rules (a stale copy there is what the AI actually reads). MOONLIGHT_SKILL_INSTALL=0 skips the copy.
 const skillDir = path.join(ROOT, "moonlight/skill/moonlight")
 fs.mkdirSync(skillDir, { recursive: true })
-fs.writeFileSync(path.join(skillDir, "SKILL.md"), `---
+const skill = `---
 name: moonlight
-description: Use whenever you build or change UI in a React/Next.js/Tailwind project, and ALWAYS when shadcn/ui is involved: adding or installing a shadcn component (npx shadcn add, components.json), creating pages, dashboards, forms, tables, charts or layouts, or setting up a new project. Moonlight is our design system (a restyled shadcn/ui on Base UI, installed from a shadcn registry); it replaces vanilla shadcn, which must not be used for components Moonlight provides.
+description: Use whenever the user mentions Moonlight or Moonlight UI, and whenever you build or change UI in a React/Next.js/Tailwind project — ALWAYS when shadcn/ui is involved (npx shadcn add, components.json), and for pages, dashboards, forms, tables, charts, layouts or a new project. Moonlight is our design system: shadcn/ui on Base UI restyled, installed with the shadcn CLI from the Moonlight registry. Install it with the CLI; never recreate its components or look by hand.
 ---
 
 ${guide}
 
 # Component catalog
 
-${lines.join("\n")}`)
+${lines.join("\n")}`
+fs.writeFileSync(path.join(skillDir, "SKILL.md"), skill)
 console.log("skill written: moonlight/skill/moonlight/SKILL.md")
+if (process.env.MOONLIGHT_SKILL_INSTALL !== "0") {
+  const home = path.join(os.homedir(), ".claude/skills/moonlight")
+  fs.mkdirSync(home, { recursive: true })
+  fs.writeFileSync(path.join(home, "SKILL.md"), skill)
+  console.log(`skill installed: ${home}/SKILL.md`)
+}

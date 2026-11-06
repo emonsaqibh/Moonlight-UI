@@ -901,6 +901,548 @@
       ]
     },
     {
+      "name": "run-time-chart",
+      "type": "registry:block",
+      "title": "Run Time Chart",
+      "description": "Stacked bar chart in a Frame: legend totals row, ChartContainer, footer stats.",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/chart.json",
+        "http://localhost:4111/r/data-jobs.json",
+        "http://localhost:4111/r/frame.json"
+      ],
+      "files": [
+        {
+          "path": "components/overview/run-time-chart.tsx",
+          "type": "registry:component",
+          "target": "components/overview/run-time-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "stat-cards",
+      "type": "registry:block",
+      "title": "Stat Cards",
+      "description": "KPI stat card row with deltas and run strips.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/data-jobs.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/moonlight-run-strip.json",
+        "http://localhost:4111/r/progress.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/overview/stat-cards.tsx",
+          "type": "registry:component",
+          "target": "components/overview/stat-cards.tsx"
+        }
+      ]
+    },
+    {
+      "name": "jobs-table",
+      "type": "registry:block",
+      "title": "Jobs Table",
+      "description": "Jobs table with status badges, run strips and row actions.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/checkbox.json",
+        "http://localhost:4111/r/data-jobs.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/moonlight-run-strip.json",
+        "http://localhost:4111/r/switch.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/tabs.json"
+      ],
+      "files": [
+        {
+          "path": "components/overview/jobs-table.tsx",
+          "type": "registry:component",
+          "target": "components/overview/jobs-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "up-next",
+      "type": "registry:block",
+      "title": "Up Next",
+      "description": "Upcoming-items list panel (Item + IconTile).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/data-jobs.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/item.json"
+      ],
+      "files": [
+        {
+          "path": "components/overview/up-next.tsx",
+          "type": "registry:component",
+          "target": "components/overview/up-next.tsx"
+        }
+      ]
+    },
+    {
+      "name": "event-volume",
+      "type": "registry:block",
+      "title": "Event Volume",
+      "description": "Stacked bar chart of event volume by level, with Y axis.",
+      "dependencies": [
+        "lucide-react",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/chart.json",
+        "http://localhost:4111/r/data-logs.json",
+        "http://localhost:4111/r/frame.json"
+      ],
+      "files": [
+        {
+          "path": "components/logs/event-volume.tsx",
+          "type": "registry:component",
+          "target": "components/logs/event-volume.tsx"
+        }
+      ]
+    },
+    {
+      "name": "events-table",
+      "type": "registry:block",
+      "title": "Events Table",
+      "description": "Log events table with level badges.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-logs.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/table.json"
+      ],
+      "files": [
+        {
+          "path": "components/logs/events-table.tsx",
+          "type": "registry:component",
+          "target": "components/logs/events-table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "warnings-panel",
+      "type": "registry:block",
+      "title": "Warnings Panel",
+      "description": "Grouped warnings list panel.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-logs.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/item.json"
+      ],
+      "files": [
+        {
+          "path": "components/logs/warnings-panel.tsx",
+          "type": "registry:component",
+          "target": "components/logs/warnings-panel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "check-history",
+      "type": "registry:block",
+      "title": "Check History",
+      "description": "Uptime check history: per-region status bars.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-monitors.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/item.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/monitors/check-history.tsx",
+          "type": "registry:component",
+          "target": "components/monitors/check-history.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkout-flow",
+      "type": "registry:block",
+      "title": "Checkout Flow",
+      "description": "Synthetic-check step timings as a horizontal bar chart.",
+      "dependencies": [
+        "lucide-react",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/chart.json",
+        "http://localhost:4111/r/data-monitors.json",
+        "http://localhost:4111/r/frame.json"
+      ],
+      "files": [
+        {
+          "path": "components/monitors/checkout-flow.tsx",
+          "type": "registry:component",
+          "target": "components/monitors/checkout-flow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "deploy-history",
+      "type": "registry:block",
+      "title": "Deploy History",
+      "description": "Deploy history table with environment and status badges.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-releases.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/tabs.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/releases/deploy-history.tsx",
+          "type": "registry:component",
+          "target": "components/releases/deploy-history.tsx"
+        }
+      ]
+    },
+    {
+      "name": "environments",
+      "type": "registry:block",
+      "title": "Environments",
+      "description": "Environment cards with current version and health.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-releases.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/select.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/releases/environments.tsx",
+          "type": "registry:component",
+          "target": "components/releases/environments.tsx"
+        }
+      ]
+    },
+    {
+      "name": "deploy-board",
+      "type": "registry:block",
+      "title": "Deploy Board",
+      "description": "Kanban-style deploy board (columns of cards).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-deploy.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/tabs.json"
+      ],
+      "files": [
+        {
+          "path": "components/deploy/deploy-board.tsx",
+          "type": "registry:component",
+          "target": "components/deploy/deploy-board.tsx"
+        }
+      ]
+    },
+    {
+      "name": "week-view",
+      "type": "registry:block",
+      "title": "Week View",
+      "description": "Calendar week view with on-call/event blocks.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-calendar.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/calendar/week-view.tsx",
+          "type": "registry:component",
+          "target": "components/calendar/week-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "services-view",
+      "type": "registry:block",
+      "title": "Services View",
+      "description": "Services list with filters, health badges and sparklines.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-services.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/select.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/tabs.json",
+        "http://localhost:4111/r/toggle-group.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/services/services-view.tsx",
+          "type": "registry:component",
+          "target": "components/services/services-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-view",
+      "type": "registry:block",
+      "title": "Settings View",
+      "description": "Settings page: line tabs, Field groups, switches, selects.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/moonlight-theme-toggle.json",
+        "http://localhost:4111/r/select.json",
+        "http://localhost:4111/r/switch.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/settings/settings-view.tsx",
+          "type": "registry:component",
+          "target": "components/settings/settings-view.tsx"
+        }
+      ]
+    },
+    {
+      "name": "all-sources",
+      "type": "registry:block",
+      "title": "All Sources",
+      "description": "Sources table with sync status.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/avatar.json",
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/data-sources.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/input-group.json",
+        "http://localhost:4111/r/table.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/sources/all-sources.tsx",
+          "type": "registry:component",
+          "target": "components/sources/all-sources.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sources-overview",
+      "type": "registry:block",
+      "title": "Sources Overview",
+      "description": "Sources overview: sparkline stat tiles, bar chart, attention list.",
+      "dependencies": [
+        "lucide-react",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "http://localhost:4111/r/badge.json",
+        "http://localhost:4111/r/button.json",
+        "http://localhost:4111/r/chart.json",
+        "http://localhost:4111/r/data-sources.json",
+        "http://localhost:4111/r/frame.json",
+        "http://localhost:4111/r/icon-tile.json",
+        "http://localhost:4111/r/item.json",
+        "http://localhost:4111/r/toggle-group.json",
+        "http://localhost:4111/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/sources/overview.tsx",
+          "type": "registry:component",
+          "target": "components/sources/overview.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-calendar",
+      "type": "registry:lib",
+      "title": "Data Calendar",
+      "description": "Moonlight Data Calendar",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/calendar-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/calendar-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-deploy",
+      "type": "registry:lib",
+      "title": "Data Deploy",
+      "description": "Moonlight Data Deploy",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/deploy-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/deploy-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-jobs",
+      "type": "registry:lib",
+      "title": "Data Jobs",
+      "description": "Moonlight Data Jobs",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/jobs-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/jobs-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-logs",
+      "type": "registry:lib",
+      "title": "Data Logs",
+      "description": "Moonlight Data Logs",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/logs-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/logs-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-monitors",
+      "type": "registry:lib",
+      "title": "Data Monitors",
+      "description": "Moonlight Data Monitors",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/monitors-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/monitors-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-releases",
+      "type": "registry:lib",
+      "title": "Data Releases",
+      "description": "Moonlight Data Releases",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/releases-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/releases-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-services",
+      "type": "registry:lib",
+      "title": "Data Services",
+      "description": "Moonlight Data Services",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/services-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/services-data.ts"
+        }
+      ]
+    },
+    {
+      "name": "data-sources",
+      "type": "registry:lib",
+      "title": "Data Sources",
+      "description": "Moonlight Data Sources",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "lib/data/sources-data.ts",
+          "type": "registry:lib",
+          "target": "lib/data/sources-data.ts"
+        }
+      ]
+    },
+    {
       "name": "moonlight-theme",
       "type": "registry:style",
       "title": "Moonlight theme",
@@ -918,7 +1460,7 @@
       ],
       "cssVars": {
         "theme": {
-          "font-sans": "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
+          "font-sans": "var(--font-inter, ui-sans-serif), ui-sans-serif, system-ui, sans-serif",
           "font-heading": "var(--font-sans)",
           "color-background": "var(--background)",
           "color-foreground": "var(--foreground)",
@@ -1035,6 +1577,11 @@
           "border": "#ffffff1a",
           "input": "#ffffff26",
           "ring": "#737373",
+          "chart-1": "#d4d4d4",
+          "chart-2": "#737373",
+          "chart-3": "#525252",
+          "chart-4": "#404040",
+          "chart-5": "#262626",
           "sidebar": "#171717",
           "sidebar-foreground": "#fafafa",
           "sidebar-primary": "#1447e6",
@@ -1043,10 +1590,15 @@
           "sidebar-accent-foreground": "#fafafa",
           "sidebar-border": "#ffffff1a",
           "sidebar-ring": "#737373",
+          "success": "var(--color-emerald-500)",
           "success-foreground": "var(--color-emerald-600)",
+          "info": "var(--color-violet-500)",
           "info-foreground": "var(--color-violet-600)",
+          "warning": "var(--color-yellow-500)",
           "warning-foreground": "var(--color-yellow-600)",
           "invert": "var(--color-zinc-700)",
+          "invert-foreground": "var(--color-zinc-50)",
+          "focus": "var(--color-blue-600)",
           "focus-foreground": "var(--color-blue-600)"
         }
       },
@@ -1057,6 +1609,9 @@
           },
           "body": {
             "@apply bg-background font-sans text-foreground antialiased": {}
+          },
+          "html": {
+            "@apply font-sans": {}
           }
         }
       }
@@ -1111,6 +1666,31 @@
         "http://localhost:4111/r/moonlight-range-toggle.json",
         "http://localhost:4111/r/moonlight-run-strip.json",
         "http://localhost:4111/r/moonlight-app-sidebar.json"
+      ]
+    },
+    {
+      "name": "moonlight-blocks",
+      "type": "registry:item",
+      "title": "Moonlight blocks (all)",
+      "description": "Every finished Moonlight dashboard section (charts, stat cards, tables, boards) with its demo data.",
+      "registryDependencies": [
+        "http://localhost:4111/r/run-time-chart.json",
+        "http://localhost:4111/r/stat-cards.json",
+        "http://localhost:4111/r/jobs-table.json",
+        "http://localhost:4111/r/up-next.json",
+        "http://localhost:4111/r/event-volume.json",
+        "http://localhost:4111/r/events-table.json",
+        "http://localhost:4111/r/warnings-panel.json",
+        "http://localhost:4111/r/check-history.json",
+        "http://localhost:4111/r/checkout-flow.json",
+        "http://localhost:4111/r/deploy-history.json",
+        "http://localhost:4111/r/environments.json",
+        "http://localhost:4111/r/deploy-board.json",
+        "http://localhost:4111/r/week-view.json",
+        "http://localhost:4111/r/services-view.json",
+        "http://localhost:4111/r/settings-view.json",
+        "http://localhost:4111/r/all-sources.json",
+        "http://localhost:4111/r/sources-overview.json"
       ]
     },
     {

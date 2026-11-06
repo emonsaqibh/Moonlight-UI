@@ -43,7 +43,8 @@ drifting a little further from the last one. Moonlight is that finishing work, d
 
 ### New project
 
-One command creates a Next.js app with the theme, every component, a root layout (Inter and the theme script) and a sample page.
+One command creates a Next.js app with the theme, every component, a root layout (Inter and the theme script), a sample page and an
+`AGENTS.md` with the Moonlight rules for AI tools. It also sets `components.json` to `base-nova` (Base UI) and registers the `@moonlight` namespace.
 
 ```bash
 npx shadcn@latest init -d -n my-app <REGISTRY_URL>/moonlight-starter.json
@@ -51,35 +52,35 @@ npx shadcn@latest init -d -n my-app <REGISTRY_URL>/moonlight-starter.json
 
 ### Existing shadcn project
 
-Requires Next.js with Tailwind v4 and a `components.json`.
+Requires Next.js with Tailwind v4 and a `components.json` with `"style": "base-nova"` (Moonlight is built on Base UI; a Radix style such as
+`new-york` will mix libraries when you add stock components).
 
 ```bash
-# 1. Theme tokens: palette, radius, status colors, light and dark.
-#    --overwrite is required, otherwise your existing token values win and Moonlight never applies.
+# 1. Register the @moonlight namespace in components.json.
+npx shadcn@latest registry add "@moonlight=<REGISTRY_URL>/{name}.json"
+
+# 2. Theme tokens: palette, radius, status colors, light and dark.
 npx shadcn@latest add <REGISTRY_URL>/moonlight-theme.json --overwrite --yes
 
-# 2. Components: everything...
-npx shadcn@latest add <REGISTRY_URL>/moonlight.json --yes
+# 3. Every component and the shell pieces.
+npx shadcn@latest add <REGISTRY_URL>/moonlight.json --overwrite --yes
 
-#    ...or just what you need. Dependencies come along automatically.
-npx shadcn@latest add <REGISTRY_URL>/button.json <REGISTRY_URL>/badge.json --yes
+# 4. Root layout (Inter, theme init script, TooltipProvider). Only while app/layout.tsx is still the default;
+#    otherwise merge it by hand (see moonlight/AI-GUIDE.md).
+npx shadcn@latest add <REGISTRY_URL>/moonlight-layout.json --overwrite --yes
 ```
 
-### Shorter commands with a namespace
+`--overwrite` is required on every Moonlight item. `shadcn init` already wrote a stock `button.tsx`, and without the flag the CLI
+stops at its overwrite prompt; in a non-interactive shell (every coding agent) that answers No and the install quietly does almost nothing.
 
-Register the registry once in the consuming project's `components.json`:
-
-```json
-{
-  "registries": {
-    "@moonlight": "<REGISTRY_URL>/{name}.json"
-  }
-}
-```
+Afterwards:
 
 ```bash
-npx shadcn@latest add @moonlight/button @moonlight/frame @moonlight/data-grid
+npx shadcn@latest add @moonlight/frame @moonlight/data-grid --overwrite --yes   # Moonlight items
+yes n | npx shadcn@latest add dialog --yes                                         # stock items Moonlight lacks
 ```
+
+The `yes n |` answers No when a stock item asks to overwrite Moonlight's `button`/`input`; without it the CLI aborts and writes nothing.
 
 ## Components
 
@@ -98,8 +99,13 @@ npx shadcn@latest add @moonlight/button @moonlight/frame @moonlight/data-grid
 **App shell** templates, installed as editable source: `moonlight-app-sidebar`, `moonlight-page-header`,
 `moonlight-page-body`, `moonlight-theme-toggle`, `moonlight-range-toggle`, `moonlight-run-strip`.
 
+**Blocks** are the finished dashboard sections from the demo, installed with their demo data (`lib/data/*-data.ts`) so they render
+exactly as shown; swap the data for your own: `run-time-chart`, `event-volume`, `checkout-flow`, `check-history`, `stat-cards`,
+`jobs-table`, `up-next`, `events-table`, `warnings-panel`, `deploy-history`, `environments`, `deploy-board`, `week-view`,
+`services-view`, `settings-view`, `all-sources`, `sources-overview`.
+
 **Meta items**: `moonlight-theme` (tokens only), `moonlight` (theme and all components; never touches your layout or pages),
-`moonlight-starter` (everything plus `app/layout.tsx` and `app/page.tsx`, for new projects only).
+`moonlight-blocks` (every block), `moonlight-starter` (everything plus `app/layout.tsx` and `app/page.tsx`, for new projects only).
 
 ### A taste of the API
 
@@ -162,11 +168,19 @@ Moonlight is designed to be built against by coding agents. The build step gener
 | `public/r/llms.txt` | Usage rules plus a catalog of every component with its exports and variants |
 | `moonlight/skill/moonlight/SKILL.md` | A Claude Code skill that tells the agent to use Moonlight instead of stock shadcn |
 
-Install the skill once and it applies to every project:
+`npm run registry:build` also installs the skill to `~/.claude/skills/moonlight`, so every project on this machine gets the current
+rules (set `MOONLIGHT_SKILL_INSTALL=0` to skip). Before installing anything the agent checks `<REGISTRY_URL>/moonlight-source.txt`,
+which catches a registry that is down or a stale copy of Moonlight served on the same port.
 
-```bash
-mkdir -p ~/.claude/skills && cp -R moonlight/skill/moonlight ~/.claude/skills/
-```
+New projects need nothing extra: `moonlight-starter` installs the same rules as `AGENTS.md` (Claude reads it through `CLAUDE.md`; Codex, Cursor,
+Copilot and Windsurf read `AGENTS.md` directly). For an existing project, paste the "UI" snippet from the guide into its `AGENTS.md` or `CLAUDE.md`.
+
+What the rules enforce:
+
+- **Install, never imitate.** Moonlight comes from the CLI; if a command fails the agent fixes the cause or stops, it never hand-rolls a look-alike.
+- A component Moonlight has comes from `npx shadcn add @moonlight/<name> --overwrite`, never the plain `shadcn add <name>`, which installs the vanilla look.
+- A component Moonlight lacks (dialog, accordion, command, ...) uses `yes n | npx shadcn add <name>`: Base UI, restyled by the tokens, Moonlight's `button`/`input` kept.
+- Charts and dashboard sections start from a block, so they match the demo one-to-one.
 
 The hand-written source of the rules is [`moonlight/AI-GUIDE.md`](moonlight/AI-GUIDE.md).
 
