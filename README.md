@@ -3,7 +3,7 @@
 # Moonlight UI
 
 **A dense, quiet, dashboard-grade design system for React.**<br />
-shadcn/ui on Base UI and Tailwind v4, distributed as a private shadcn registry.
+shadcn/ui on Base UI and Tailwind v4, distributed as a shadcn registry.
 
 ![shadcn registry](https://img.shields.io/badge/shadcn-registry-000000?style=flat-square&logo=shadcnui&logoColor=white)
 ![Base UI](https://img.shields.io/badge/Base_UI-1.x-5b5bd6?style=flat-square)
@@ -38,7 +38,7 @@ drifting a little further from the last one. Moonlight is that finishing work, d
 
 ## Quick start
 
-> Replace `<REGISTRY_URL>` with the base URL where `public/r` is hosted, for example `https://ui.yourdomain.com/r`.
+> `<REGISTRY_URL>` is `https://emonsaqibh.github.io/Moonlight-UI/r`, published from `main` by GitHub Pages (or your own host).
 > See [Publishing the registry](#publishing-the-registry).
 
 ### New project
@@ -171,7 +171,8 @@ Moonlight is designed to be built against by coding agents. The build step gener
 
 `npm run registry:build` also installs the skill to `~/.claude/skills/moonlight`, so every project on this machine gets the current
 rules (set `MOONLIGHT_SKILL_INSTALL=0` to skip). Before installing anything the agent checks `<REGISTRY_URL>/moonlight-source.txt`,
-and fixes what it finds: it starts the local registry if it is down, and replaces a stale copy of Moonlight served on the same port.
+and stops if the registry is unreachable. With a local build (`registry:build:local`) it also starts the local registry if it is
+down, and replaces a stale copy of Moonlight served on the same port.
 
 New projects need nothing extra: `moonlight-starter` installs the same rules as `AGENTS.md` (Claude reads it through `CLAUDE.md`; Codex, Cursor,
 Copilot and Windsurf read `AGENTS.md` directly). For an existing project, paste the "UI" snippet from the guide into its `AGENTS.md` or `CLAUDE.md`.
@@ -188,17 +189,23 @@ The hand-written source of the rules is [`moonlight/AI-GUIDE.md`](moonlight/AI-G
 ## Publishing the registry
 
 `public/r/*.json` is generated from the component source, so it cannot drift from what the demo app renders.
-The registry's base URL is baked into the output because items reference each other by URL, so build with the URL you will serve from:
+The registry's base URL is baked into the output because items reference each other by URL.
+
+Every push to `main` publishes it to GitHub Pages at `https://emonsaqibh.github.io/Moonlight-UI/r`
+([`.github/workflows/registry-pages.yml`](.github/workflows/registry-pages.yml)); `npm run registry:build` defaults to that URL, so
+the skill it installs and the committed `SKILL.md` point there. To host it elsewhere, build with your URL and deploy `public/r`
+as static files:
 
 ```bash
 REGISTRY_URL=https://ui.yourdomain.com/r npm run registry:build
 ```
 
-Then deploy `public/` as static files (Vercel, Cloudflare Pages, GitHub Pages). To use the registry locally:
+To try changes before pushing, build and serve it locally (this also points your installed skill at localhost until the next
+`registry:build`):
 
 ```bash
-npm run registry:build   # defaults to http://localhost:4111/r
-npm run registry:serve   # serves public/ on :4111
+npm run registry:build:local   # http://localhost:4111/r
+npm run registry:serve         # serves public/ on :4111
 ```
 
 To keep the registry private, put it behind Vercel password protection or Cloudflare Access, or use shadcn's

@@ -35,50 +35,39 @@ npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
 **B. Next.js project without `components.json`** (shadcn not set up yet): check Tailwind (C.1), run
 `npx shadcn@latest init -d -b base` (Base UI, neutral), then continue with C.
 
-**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. The steps
-replace stock components with Moonlight's and convert the app code that uses them; that is the job, not damage to avoid.
+**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. Installing
+Moonlight replaces the stock files of the same name (`button.tsx`, `badge.tsx`…) and fixes the app code that uses them; that is
+the job, not damage to avoid. If `git status` shows uncommitted changes under `components/ui`, ask the user before any
+`--overwrite`; otherwise go ahead without asking.
 
-*Theme only*: if the user explicitly asks for just Moonlight's colors/tokens and to keep their current components (e.g. "only
-theme it", "don't touch my components"), do step 1, then run only
-`npx shadcn@latest add {{REGISTRY_URL}}/moonlight-theme.json --overwrite --yes` and stop. Tell them their components keep
-stock shadcn shapes, and that Moonlight components and blocks need the full install. Never pick this route yourself to avoid
-the conversion.
+*Theme only*: if the user asks for just Moonlight's colors/tokens and to keep their current components (e.g. "only theme it",
+"don't touch my components"), do step 1, then run only
+`npx shadcn@latest add {{REGISTRY_URL}}/moonlight-theme.json --overwrite --yes` and stop. Tell them their components keep stock
+shadcn shapes. When the task is a page or a component, install the Moonlight components it uses (step 4) instead.
 
 1. **Tailwind v4.** `package.json` must have `"tailwindcss": "^4…"`. On v3 (a `tailwind.config.*` file, `@tailwind base;` in the
    CSS), upgrade first with `npx @tailwindcss/upgrade` (it wants a clean git tree, so commit first), then make sure
    `npm run build` passes. Moonlight's theme and components use v4 syntax and break on v3.
-2. **Already set up?** `grep -q '"@moonlight"' components.json && grep -q 'muted:' components/ui/button.tsx && echo installed`.
-   If it prints `installed`, skip to **Adding components**.
-3. **Base UI, not Radix.** If `"style"` starts with `base-` (e.g. `base-nova`), go on to step 4. If it is `new-york`, `default` or
-   `radix-*`, the project's components are Radix. Convert them now; Moonlight is Base UI and the two don't compose. If
-   `git status` shows uncommitted changes under `components/ui`, ask the user first; otherwise convert without asking:
-   a. Set `"style": "base-nova"` in `components.json`.
-   b. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes
-      the whole `add` fail (while still exiting 0):
-      ```sh
-      curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 > /tmp/shadcn-names.txt
-      ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | grep -Fx -f /tmp/shadcn-names.txt | xargs -r npx shadcn@latest add --overwrite --yes
-      ```
-      Files that are not stock shadcn (the user's own components, subfolders) are left alone. Step d's `tsc` run catches any
-      of them that break against the new primitives; fix those in place, don't delete them.
-   c. Do step 4 (install Moonlight), then come back here for d and e.
-   d. Run `npx tsc --noEmit`. It lists every Radix prop left in app code. Convert `asChild` to `render`:
-      `<DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger>` becomes
-      `<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>`. When a `Button` renders a link,
-      write `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. For any other error, read the
-      component's new source in `components/ui`.
-   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still
-      does, keep the package and say so). `npx tsc --noEmit` and
-      `npm run build` must pass. Tell the user the project was converted from Radix to Base UI.
-4. **Install Moonlight**: all four commands, in order:
+2. **Already set up?** `grep -q '"@moonlight"' components.json && echo installed`. If it prints `installed`, skip to
+   **Adding components**.
+3. **Base UI or Radix?** If `"style"` starts with `base-` (e.g. `base-nova`), it is a Base UI project. If it is `new-york`,
+   `default` or `radix-*`, it is a **Radix project: keep it Radix.** Don't change `style`, don't reinstall or convert the stock
+   components. Moonlight's components are Base UI and run side by side with Radix ones (`@base-ui/react` next to `radix-ui`; a
+   Radix `<DialogTrigger asChild>` can wrap a Moonlight `Button`). Only the components Moonlight replaces change, and step 5
+   fixes the app code that uses them. Convert the whole project only when the user asks for it (**Converting a Radix project**
+   below).
+4. **Install Moonlight**, in order:
 
 ```bash
-npx shadcn@latest registry add "@moonlight={{REGISTRY_URL}}/{name}.json"
 npx shadcn@latest add {{REGISTRY_URL}}/moonlight-theme.json --overwrite --yes
-npx shadcn@latest add {{REGISTRY_URL}}/moonlight.json --overwrite --yes
+npx shadcn@latest registry add "@moonlight={{REGISTRY_URL}}/{name}.json"
+npx shadcn@latest add {{REGISTRY_URL}}/moonlight.json --overwrite --yes   # see below for Radix projects
 npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes   # only if app/layout.tsx is still the default
 ```
 
+   - **Radix project**: instead of the whole `moonlight.json` bundle, install the Moonlight components and blocks the task uses
+     (`npx shadcn@latest add @moonlight/frame @moonlight/run-time-chart --overwrite --yes`; their dependencies come along). Use
+     the bundle only when the user wants the whole app restyled.
    - `--overwrite` is **required** on Moonlight items. `shadcn init` already wrote a stock `button.tsx`; without the flag the CLI
      stops at "button.tsx already exists. Overwrite? (y/N)", which a non-interactive shell answers No, and it **silently installs
      almost nothing** (exit code 0). The theme also needs it, or the project's stock colors win. With the flag, a
@@ -87,8 +76,34 @@ npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes  
      when the layout is still the `shadcn init` / `create-next-app` default (Geist fonts, `ThemeProvider`), then delete
      `components/theme-provider.tsx` and the `next-themes` package if nothing else imports them. If the layout has real app code, wire it by hand instead —
      see **Root layout** below. Without Inter the app renders in the system font and won't match.
-5. **Verify**: `ls components/ui | wc -l` shows 35+, and the `installed` check from step 2 passes. Remove any leftover
-   `body { font-family }` / `prefers-color-scheme` rules from `globals.css`.
+5. **Fix call sites**: run `npx tsc --noEmit`. Errors in app code that uses a component Moonlight just replaced are Radix props
+   (Base UI projects usually have none). Convert `asChild` to `render`:
+   `<TooltipTrigger asChild><Button variant="outline">Open</Button></TooltipTrigger>` becomes
+   `<TooltipTrigger render={<Button variant="outline" />}>Open</TooltipTrigger>`. When a `Button` renders a link, write
+   `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. Fix only those errors, in place; stock Radix
+   components Moonlight didn't replace keep their `asChild`. For any other error, read the component's new source in
+   `components/ui`.
+6. **Verify**: the `installed` check from step 2 passes, `npx tsc --noEmit` and `npm run build` pass, and after the full bundle
+   `ls components/ui | wc -l` shows 35+. Remove any leftover `body { font-family }` / `prefers-color-scheme` rules from
+   `globals.css`.
+
+### Converting a Radix project (only when the user asks)
+
+For "convert/migrate the project to Base UI". Ask first if `components/ui` has uncommitted changes.
+
+1. Set `"style": "base-nova"` in `components.json`.
+2. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes the
+   whole `add` fail (while still exiting 0):
+   ```sh
+   curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 > /tmp/shadcn-names.txt
+   ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | grep -Fx -f /tmp/shadcn-names.txt | xargs -r npx shadcn@latest add --overwrite --yes
+   ```
+   Files that are not stock shadcn (the user's own components, subfolders) are left alone; fix them in place if `tsc` flags
+   them, don't delete them.
+3. Install Moonlight (C.4, full bundle), then fix every `tsc` error as in C.5.
+4. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still does,
+   keep the package and say so). `npx tsc --noEmit` and `npm run build` must pass. Tell the user the project was converted.
+
 
 ## Adding components
 
@@ -96,9 +111,10 @@ Look the name up in the catalog at the end of this guide (or `{{REGISTRY_URL}}/l
 
 - **In the catalog** (component or block) — install Moonlight's version, always with `--overwrite`, which replaces a stock copy:
   `npx shadcn@latest add @moonlight/<name> --overwrite --yes`. Several at once: `add @moonlight/badge @moonlight/tabs …`.
-  Never plain `npx shadcn add <name>` for these: that installs the vanilla look.
+  Never plain `npx shadcn add <name>` for these: that installs the vanilla look. Then run `npx tsc --noEmit` and fix call sites
+  of anything it replaced (Step 1 C.5).
 - **Not in the catalog** (dialog, alert, alert-dialog, accordion, command, calendar, collapsible, pagination, radio-group,
-  slider, sonner, …) — install the stock Base UI version, answering **No** to every overwrite prompt:
+  slider, sonner, …) — install the stock version (Base UI, or Radix in a Radix project), answering **No** to every overwrite prompt:
   `yes n | npx shadcn@latest add <name> --yes`. The `yes n |` matters: stock items depend on `button`, `input`, … and without it the
   CLI silently aborts and writes nothing. Never `--overwrite` a stock item (it would replace Moonlight's button with the vanilla
   one). Stock items pick up the Moonlight tokens automatically; keep them at Moonlight density (rule 8).
@@ -162,7 +178,8 @@ const config = {
 4. **Buttons**: `default` for the one primary action, `muted` for toolbar buttons (Filter, Display, Export), `outline`,
    `ghost`, `secondary`, `destructive`, `link`. Sizes `xs sm default lg icon icon-xs icon-sm icon-lg`.
 5. **Tabs**: `<TabsList variant="line">` is the full-width underlined strip (Moonlight's page tabs). Default is the pill.
-6. **Base UI, not Radix**: composition uses the `render` prop, not `asChild` —
+6. **Moonlight components are Base UI**: composition uses the `render` prop, not `asChild` (stock Radix components left in a
+   Radix project keep `asChild`) —
    `<SidebarMenuButton render={<Link href="/x" />}>`, `<TooltipTrigger render={<Button />}>`.
 7. **Tables**: `Table` for lists (see the `jobs-table` block), `DataGrid` (TanStack) when you need sorting/filtering/pagination.
 8. **Density**: text is 13–14px, controls are `h-8`, radius `0.625rem`. Keep pages compact; don't scale things up.

@@ -10,7 +10,7 @@ plus extras (Frame, IconTile, DataGrid, Tree) and finished
 dashboard blocks (charts, stat cards, tables, boards).
 Everything is installed **with the shadcn CLI** from the Moonlight registry as source files in the project.
 
-Registry: `http://localhost:4111/r` · catalog of every item: `http://localhost:4111/r/llms.txt`
+Registry: `https://emonsaqibh.github.io/Moonlight-UI/r` · catalog of every item: `https://emonsaqibh.github.io/Moonlight-UI/r/llms.txt`
 
 ## The one rule
 
@@ -21,19 +21,10 @@ from memory, do not "make it look like Moonlight" with hand-written Tailwind. Ev
 ## Step 0 — check the registry is reachable (every session, before anything else)
 
 ```bash
-curl -sf http://localhost:4111/r/moonlight-source.txt
+curl -sf https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-source.txt
 ```
 
-It must print the absolute path of a Moonlight checkout (a folder containing `moonlight/build-registry.mjs`). This registry is served from this machine, so fix anything else yourself:
-
-- **Nothing printed** (connection refused): start it in the background with `npm --prefix "<checkout>" run registry:serve`,
-  wait a second and re-check. Find the checkout yourself with
-  `find ~ -maxdepth 6 -path '*/moonlight/build-registry.mjs' -not -path '*/node_modules/*' 2>/dev/null || true` (the checkout is two
-  levels up from the match; if there are several, take the most recently modified). Ask the user only if nothing is found.
-- **The printed path doesn't exist or has no `moonlight/build-registry.mjs`**, or "Address
-  already in use" while a path prints: a stale copy of Moonlight holds port 4111. Stop it with
-  `lsof -ti tcp:4111 -sTCP:LISTEN | xargs kill`, start the right one as above and re-check. Never install from the stale copy.
-- **Still failing**, or port 4111 is held by something that is not Moonlight (no path prints): stop and tell the user.
+It must print `moonlight`. If it doesn't, stop and tell the user the Moonlight registry at https://emonsaqibh.github.io/Moonlight-UI/r is unreachable.
 
 ## Step 1 — make sure the project has Moonlight
 
@@ -43,56 +34,45 @@ Run these checks from the project root and take the first branch that matches.
 script), a sample page and an `AGENTS.md` with these rules:
 
 ```bash
-npx shadcn@latest init -d -n my-app http://localhost:4111/r/moonlight-starter.json
+npx shadcn@latest init -d -n my-app https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-starter.json
 ```
 
 **B. Next.js project without `components.json`** (shadcn not set up yet): check Tailwind (C.1), run
 `npx shadcn@latest init -d -b base` (Base UI, neutral), then continue with C.
 
-**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. The steps
-replace stock components with Moonlight's and convert the app code that uses them; that is the job, not damage to avoid.
+**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. Installing
+Moonlight replaces the stock files of the same name (`button.tsx`, `badge.tsx`…) and fixes the app code that uses them; that is
+the job, not damage to avoid. If `git status` shows uncommitted changes under `components/ui`, ask the user before any
+`--overwrite`; otherwise go ahead without asking.
 
-*Theme only*: if the user explicitly asks for just Moonlight's colors/tokens and to keep their current components (e.g. "only
-theme it", "don't touch my components"), do step 1, then run only
-`npx shadcn@latest add http://localhost:4111/r/moonlight-theme.json --overwrite --yes` and stop. Tell them their components keep
-stock shadcn shapes, and that Moonlight components and blocks need the full install. Never pick this route yourself to avoid
-the conversion.
+*Theme only*: if the user asks for just Moonlight's colors/tokens and to keep their current components (e.g. "only theme it",
+"don't touch my components"), do step 1, then run only
+`npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme.json --overwrite --yes` and stop. Tell them their components keep stock
+shadcn shapes. When the task is a page or a component, install the Moonlight components it uses (step 4) instead.
 
 1. **Tailwind v4.** `package.json` must have `"tailwindcss": "^4…"`. On v3 (a `tailwind.config.*` file, `@tailwind base;` in the
    CSS), upgrade first with `npx @tailwindcss/upgrade` (it wants a clean git tree, so commit first), then make sure
    `npm run build` passes. Moonlight's theme and components use v4 syntax and break on v3.
-2. **Already set up?** `grep -q '"@moonlight"' components.json && grep -q 'muted:' components/ui/button.tsx && echo installed`.
-   If it prints `installed`, skip to **Adding components**.
-3. **Base UI, not Radix.** If `"style"` starts with `base-` (e.g. `base-nova`), go on to step 4. If it is `new-york`, `default` or
-   `radix-*`, the project's components are Radix. Convert them now; Moonlight is Base UI and the two don't compose. If
-   `git status` shows uncommitted changes under `components/ui`, ask the user first; otherwise convert without asking:
-   a. Set `"style": "base-nova"` in `components.json`.
-   b. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes
-      the whole `add` fail (while still exiting 0):
-      ```sh
-      curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 > /tmp/shadcn-names.txt
-      ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | grep -Fx -f /tmp/shadcn-names.txt | xargs -r npx shadcn@latest add --overwrite --yes
-      ```
-      Files that are not stock shadcn (the user's own components, subfolders) are left alone. Step d's `tsc` run catches any
-      of them that break against the new primitives; fix those in place, don't delete them.
-   c. Do step 4 (install Moonlight), then come back here for d and e.
-   d. Run `npx tsc --noEmit`. It lists every Radix prop left in app code. Convert `asChild` to `render`:
-      `<DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger>` becomes
-      `<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>`. When a `Button` renders a link,
-      write `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. For any other error, read the
-      component's new source in `components/ui`.
-   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still
-      does, keep the package and say so). `npx tsc --noEmit` and
-      `npm run build` must pass. Tell the user the project was converted from Radix to Base UI.
-4. **Install Moonlight**: all four commands, in order:
+2. **Already set up?** `grep -q '"@moonlight"' components.json && echo installed`. If it prints `installed`, skip to
+   **Adding components**.
+3. **Base UI or Radix?** If `"style"` starts with `base-` (e.g. `base-nova`), it is a Base UI project. If it is `new-york`,
+   `default` or `radix-*`, it is a **Radix project: keep it Radix.** Don't change `style`, don't reinstall or convert the stock
+   components. Moonlight's components are Base UI and run side by side with Radix ones (`@base-ui/react` next to `radix-ui`; a
+   Radix `<DialogTrigger asChild>` can wrap a Moonlight `Button`). Only the components Moonlight replaces change, and step 5
+   fixes the app code that uses them. Convert the whole project only when the user asks for it (**Converting a Radix project**
+   below).
+4. **Install Moonlight**, in order:
 
 ```bash
-npx shadcn@latest registry add "@moonlight=http://localhost:4111/r/{name}.json"
-npx shadcn@latest add http://localhost:4111/r/moonlight-theme.json --overwrite --yes
-npx shadcn@latest add http://localhost:4111/r/moonlight.json --overwrite --yes
-npx shadcn@latest add http://localhost:4111/r/moonlight-layout.json --overwrite --yes   # only if app/layout.tsx is still the default
+npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme.json --overwrite --yes
+npx shadcn@latest registry add "@moonlight=https://emonsaqibh.github.io/Moonlight-UI/r/{name}.json"
+npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight.json --overwrite --yes   # see below for Radix projects
+npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-layout.json --overwrite --yes   # only if app/layout.tsx is still the default
 ```
 
+   - **Radix project**: instead of the whole `moonlight.json` bundle, install the Moonlight components and blocks the task uses
+     (`npx shadcn@latest add @moonlight/frame @moonlight/run-time-chart --overwrite --yes`; their dependencies come along). Use
+     the bundle only when the user wants the whole app restyled.
    - `--overwrite` is **required** on Moonlight items. `shadcn init` already wrote a stock `button.tsx`; without the flag the CLI
      stops at "button.tsx already exists. Overwrite? (y/N)", which a non-interactive shell answers No, and it **silently installs
      almost nothing** (exit code 0). The theme also needs it, or the project's stock colors win. With the flag, a
@@ -101,18 +81,45 @@ npx shadcn@latest add http://localhost:4111/r/moonlight-layout.json --overwrite 
      when the layout is still the `shadcn init` / `create-next-app` default (Geist fonts, `ThemeProvider`), then delete
      `components/theme-provider.tsx` and the `next-themes` package if nothing else imports them. If the layout has real app code, wire it by hand instead —
      see **Root layout** below. Without Inter the app renders in the system font and won't match.
-5. **Verify**: `ls components/ui | wc -l` shows 35+, and the `installed` check from step 2 passes. Remove any leftover
-   `body { font-family }` / `prefers-color-scheme` rules from `globals.css`.
+5. **Fix call sites**: run `npx tsc --noEmit`. Errors in app code that uses a component Moonlight just replaced are Radix props
+   (Base UI projects usually have none). Convert `asChild` to `render`:
+   `<TooltipTrigger asChild><Button variant="outline">Open</Button></TooltipTrigger>` becomes
+   `<TooltipTrigger render={<Button variant="outline" />}>Open</TooltipTrigger>`. When a `Button` renders a link, write
+   `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. Fix only those errors, in place; stock Radix
+   components Moonlight didn't replace keep their `asChild`. For any other error, read the component's new source in
+   `components/ui`.
+6. **Verify**: the `installed` check from step 2 passes, `npx tsc --noEmit` and `npm run build` pass, and after the full bundle
+   `ls components/ui | wc -l` shows 35+. Remove any leftover `body { font-family }` / `prefers-color-scheme` rules from
+   `globals.css`.
+
+### Converting a Radix project (only when the user asks)
+
+For "convert/migrate the project to Base UI". Ask first if `components/ui` has uncommitted changes.
+
+1. Set `"style": "base-nova"` in `components.json`.
+2. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes the
+   whole `add` fail (while still exiting 0):
+   ```sh
+   curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 > /tmp/shadcn-names.txt
+   ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | grep -Fx -f /tmp/shadcn-names.txt | xargs -r npx shadcn@latest add --overwrite --yes
+   ```
+   Files that are not stock shadcn (the user's own components, subfolders) are left alone; fix them in place if `tsc` flags
+   them, don't delete them.
+3. Install Moonlight (C.4, full bundle), then fix every `tsc` error as in C.5.
+4. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still does,
+   keep the package and say so). `npx tsc --noEmit` and `npm run build` must pass. Tell the user the project was converted.
+
 
 ## Adding components
 
-Look the name up in the catalog at the end of this guide (or `http://localhost:4111/r/llms.txt`):
+Look the name up in the catalog at the end of this guide (or `https://emonsaqibh.github.io/Moonlight-UI/r/llms.txt`):
 
 - **In the catalog** (component or block) — install Moonlight's version, always with `--overwrite`, which replaces a stock copy:
   `npx shadcn@latest add @moonlight/<name> --overwrite --yes`. Several at once: `add @moonlight/badge @moonlight/tabs …`.
-  Never plain `npx shadcn add <name>` for these: that installs the vanilla look.
+  Never plain `npx shadcn add <name>` for these: that installs the vanilla look. Then run `npx tsc --noEmit` and fix call sites
+  of anything it replaced (Step 1 C.5).
 - **Not in the catalog** (dialog, alert, alert-dialog, accordion, command, calendar, collapsible, pagination, radio-group,
-  slider, sonner, …) — install the stock Base UI version, answering **No** to every overwrite prompt:
+  slider, sonner, …) — install the stock version (Base UI, or Radix in a Radix project), answering **No** to every overwrite prompt:
   `yes n | npx shadcn@latest add <name> --yes`. The `yes n |` matters: stock items depend on `button`, `input`, … and without it the
   CLI silently aborts and writes nothing. Never `--overwrite` a stock item (it would replace Moonlight's button with the vanilla
   one). Stock items pick up the Moonlight tokens automatically; keep them at Moonlight density (rule 8).
@@ -176,7 +183,8 @@ const config = {
 4. **Buttons**: `default` for the one primary action, `muted` for toolbar buttons (Filter, Display, Export), `outline`,
    `ghost`, `secondary`, `destructive`, `link`. Sizes `xs sm default lg icon icon-xs icon-sm icon-lg`.
 5. **Tabs**: `<TabsList variant="line">` is the full-width underlined strip (Moonlight's page tabs). Default is the pill.
-6. **Base UI, not Radix**: composition uses the `render` prop, not `asChild` —
+6. **Moonlight components are Base UI**: composition uses the `render` prop, not `asChild` (stock Radix components left in a
+   Radix project keep `asChild`) —
    `<SidebarMenuButton render={<Link href="/x" />}>`, `<TooltipTrigger render={<Button />}>`.
 7. **Tables**: `Table` for lists (see the `jobs-table` block), `DataGrid` (TanStack) when you need sorting/filtering/pagination.
 8. **Density**: text is 13–14px, controls are `h-8`, radius `0.625rem`. Keep pages compact; don't scale things up.
@@ -256,7 +264,7 @@ Paste into the project's `AGENTS.md` / `CLAUDE.md` (the starter installs this wh
 
 ```md
 ## UI
-Use the Moonlight design system for all UI. Read http://localhost:4111/r/llms.txt and follow its setup steps before any UI work.
+Use the Moonlight design system for all UI. Read https://emonsaqibh.github.io/Moonlight-UI/r/llms.txt and follow its setup steps before any UI work.
 Moonlight is installed with the shadcn CLI, never recreated by hand:
 - Moonlight items: `npx shadcn@latest add @moonlight/<name> --overwrite --yes`
 - Stock items Moonlight lacks: `yes n | npx shadcn@latest add <name> --yes` (never --overwrite)
@@ -272,218 +280,218 @@ Re-run `npx shadcn@latest add @moonlight/<name> --overwrite --yes` to pull a new
 
 ## UI components (registry:ui)
 
-- **avatar** — `npx shadcn@latest add http://localhost:4111/r/avatar.json --overwrite --yes`
+- **avatar** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json --overwrite --yes`
   - exports: Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage
-- **badge** — `npx shadcn@latest add http://localhost:4111/r/badge.json --overwrite --yes`
+- **badge** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/badge.json --overwrite --yes`
   - exports: Badge
   - variant: default | outline | secondary | info | success | warning | destructive | focus | invert | primary-light | warning-light | success-light | info-light | destructive-light | invert-light | focus-light | primary-outline | warning-outline | success-outline | info-outline | destructive-outline | invert-outline | focus-outline
   - size: xs | sm | default | lg | xl
   - radius: default | full
-- **breadcrumb** — `npx shadcn@latest add http://localhost:4111/r/breadcrumb.json --overwrite --yes`
+- **breadcrumb** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/breadcrumb.json --overwrite --yes`
   - exports: Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator
-- **button** — `npx shadcn@latest add http://localhost:4111/r/button.json --overwrite --yes`
+- **button** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/button.json --overwrite --yes`
   - exports: Button
   - variant: default | outline | secondary | ghost | muted | destructive | link
   - size: default | xs | sm | lg | icon | icon-xs | icon-sm | icon-lg
-- **card** — `npx shadcn@latest add http://localhost:4111/r/card.json --overwrite --yes`
+- **card** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/card.json --overwrite --yes`
   - exports: Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
-- **chart** — `npx shadcn@latest add http://localhost:4111/r/chart.json --overwrite --yes`
+- **chart** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/chart.json --overwrite --yes`
   - exports: ChartContainer, ChartLegend, ChartLegendContent, ChartStyle, ChartTooltip, ChartTooltipContent
-- **checkbox** — `npx shadcn@latest add http://localhost:4111/r/checkbox.json --overwrite --yes`
+- **checkbox** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json --overwrite --yes`
   - exports: Checkbox
-- **dropdown-menu** — `npx shadcn@latest add http://localhost:4111/r/dropdown-menu.json --overwrite --yes`
+- **dropdown-menu** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json --overwrite --yes`
   - exports: DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger
-- **field** — `npx shadcn@latest add http://localhost:4111/r/field.json --overwrite --yes`
+- **field** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/field.json --overwrite --yes`
   - exports: Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle
   - also installs: label, separator
-- **frame** — `npx shadcn@latest add http://localhost:4111/r/frame.json --overwrite --yes`
+- **frame** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/frame.json --overwrite --yes`
   - exports: Frame, FrameDescription, FrameFooter, FrameHeader, FramePanel, FrameTitle
   - variant: default | inverse | ghost
   - spacing: xs | sm | default | lg
-- **hover-card** — `npx shadcn@latest add http://localhost:4111/r/hover-card.json --overwrite --yes`
+- **hover-card** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/hover-card.json --overwrite --yes`
   - exports: HoverCard, HoverCardContent, HoverCardTrigger
-- **icon-tile** — `npx shadcn@latest add http://localhost:4111/r/icon-tile.json --overwrite --yes`
+- **icon-tile** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json --overwrite --yes`
   - exports: IconTile
   - variant: outline | elevated | soft | solid | frame
   - size: xs | sm | default | lg | xl
   - radius: default | full
-- **input-group** — `npx shadcn@latest add http://localhost:4111/r/input-group.json --overwrite --yes`
+- **input-group** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json --overwrite --yes`
   - exports: InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText, InputGroupTextarea
   - size: xs | sm | icon-xs | icon-sm
   - also installs: button, input, textarea
-- **input** — `npx shadcn@latest add http://localhost:4111/r/input.json --overwrite --yes`
+- **input** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/input.json --overwrite --yes`
   - exports: Input
-- **item** — `npx shadcn@latest add http://localhost:4111/r/item.json --overwrite --yes`
+- **item** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/item.json --overwrite --yes`
   - exports: Item, ItemActions, ItemContent, ItemDescription, ItemFooter, ItemGroup, ItemHeader, ItemMedia, ItemSeparator, ItemTitle
   - variant: default | outline | muted
   - size: default | sm | xs
   - variant: default | icon | image
   - also installs: separator
-- **kbd** — `npx shadcn@latest add http://localhost:4111/r/kbd.json --overwrite --yes`
+- **kbd** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/kbd.json --overwrite --yes`
   - exports: Kbd, KbdGroup
-- **label** — `npx shadcn@latest add http://localhost:4111/r/label.json --overwrite --yes`
+- **label** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/label.json --overwrite --yes`
   - exports: Label
-- **popover** — `npx shadcn@latest add http://localhost:4111/r/popover.json --overwrite --yes`
+- **popover** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/popover.json --overwrite --yes`
   - exports: Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger
-- **progress** — `npx shadcn@latest add http://localhost:4111/r/progress.json --overwrite --yes`
+- **progress** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/progress.json --overwrite --yes`
   - exports: Progress, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue
-- **scroll-area** — `npx shadcn@latest add http://localhost:4111/r/scroll-area.json --overwrite --yes`
+- **scroll-area** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/scroll-area.json --overwrite --yes`
   - exports: ScrollArea, ScrollBar
-- **select** — `npx shadcn@latest add http://localhost:4111/r/select.json --overwrite --yes`
+- **select** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/select.json --overwrite --yes`
   - exports: Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue
-- **separator** — `npx shadcn@latest add http://localhost:4111/r/separator.json --overwrite --yes`
+- **separator** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/separator.json --overwrite --yes`
   - exports: Separator
-- **sheet** — `npx shadcn@latest add http://localhost:4111/r/sheet.json --overwrite --yes`
+- **sheet** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json --overwrite --yes`
   - exports: Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger
   - also installs: button
-- **sidebar** — `npx shadcn@latest add http://localhost:4111/r/sidebar.json --overwrite --yes`
+- **sidebar** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/sidebar.json --overwrite --yes`
   - exports: Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarSeparator, SidebarTrigger
   - variant: default | outline
   - size: default | sm | lg
   - also installs: button, input, separator, sheet, skeleton, tooltip, use-mobile
-- **skeleton** — `npx shadcn@latest add http://localhost:4111/r/skeleton.json --overwrite --yes`
+- **skeleton** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/skeleton.json --overwrite --yes`
   - exports: Skeleton
-- **spinner** — `npx shadcn@latest add http://localhost:4111/r/spinner.json --overwrite --yes`
+- **spinner** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/spinner.json --overwrite --yes`
   - exports: Spinner
-- **switch** — `npx shadcn@latest add http://localhost:4111/r/switch.json --overwrite --yes`
+- **switch** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/switch.json --overwrite --yes`
   - exports: Switch
-- **table** — `npx shadcn@latest add http://localhost:4111/r/table.json --overwrite --yes`
+- **table** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/table.json --overwrite --yes`
   - exports: Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow
-- **tabs** — `npx shadcn@latest add http://localhost:4111/r/tabs.json --overwrite --yes`
+- **tabs** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json --overwrite --yes`
   - exports: Tabs, TabsContent, TabsList, TabsTrigger
   - variant: default | line
-- **textarea** — `npx shadcn@latest add http://localhost:4111/r/textarea.json --overwrite --yes`
+- **textarea** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json --overwrite --yes`
   - exports: Textarea
-- **toggle-group** — `npx shadcn@latest add http://localhost:4111/r/toggle-group.json --overwrite --yes`
+- **toggle-group** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json --overwrite --yes`
   - exports: ToggleGroup, ToggleGroupItem
   - also installs: toggle
-- **toggle** — `npx shadcn@latest add http://localhost:4111/r/toggle.json --overwrite --yes`
+- **toggle** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json --overwrite --yes`
   - exports: Toggle
   - variant: default | outline
   - size: default | sm | lg
-- **tooltip** — `npx shadcn@latest add http://localhost:4111/r/tooltip.json --overwrite --yes`
+- **tooltip** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json --overwrite --yes`
   - exports: Tooltip, TooltipContent, TooltipProvider, TooltipTrigger
-- **tree** — `npx shadcn@latest add http://localhost:4111/r/tree.json --overwrite --yes`
+- **tree** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/tree.json --overwrite --yes`
   - exports: Tree, TreeDragLine, TreeItem, TreeItemLabel
-- **data-grid** — `npx shadcn@latest add http://localhost:4111/r/data-grid.json --overwrite --yes`
+- **data-grid** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-grid.json --overwrite --yes`
   - exports: DataGrid, DataGridCellSelection, DataGridColumnFilter, DataGridColumnHeader, DataGridColumnVisibility, DataGridContainer, DataGridPagination, DataGridProvider, DataGridScrollArea, DataGridSelectionBar, DataGridTable, DataGridTableAddRow, DataGridTableBase, DataGridTableBody, DataGridTableBodyRow, DataGridTableBodyRowCell, DataGridTableBodyRowExpandded, DataGridTableBodyRowSkeleton, DataGridTableBodyRowSkeletonCell, DataGridTableDnd, DataGridTableDndRowHandle, DataGridTableDndRows, DataGridTableEmpty, DataGridTableFillBodyCell, DataGridTableFillHeadCell, DataGridTableFoot, DataGridTableFootRow, DataGridTableFootRowCell, DataGridTableHead, DataGridTableHeadRow, DataGridTableHeadRowCell, DataGridTableHeadRowCellResize, DataGridTableHeader, DataGridTableLoader, DataGridTableRenderedRow, DataGridTableRowExpand, DataGridTableRowPin, DataGridTableRowSelect, DataGridTableRowSelectAll, DataGridTableRowSpacer, DataGridTableViewport, DataGridTableVirtual
   - also installs: badge, button, checkbox, dropdown-menu, input, popover, select, separator, skeleton, spinner
 
 ## App shell pieces (templates)
 
-- **moonlight-theme-toggle** — `npx shadcn@latest add http://localhost:4111/r/moonlight-theme-toggle.json --overwrite --yes`
+- **moonlight-theme-toggle** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json --overwrite --yes`
   - exports: ThemeToggle
   - also installs: button
-- **moonlight-page-header** — `npx shadcn@latest add http://localhost:4111/r/moonlight-page-header.json --overwrite --yes`
+- **moonlight-page-header** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json --overwrite --yes`
   - exports: PageHeader
   - also installs: breadcrumb, moonlight-theme-toggle, separator, sidebar
-- **moonlight-page-body** — `npx shadcn@latest add http://localhost:4111/r/moonlight-page-body.json --overwrite --yes`
+- **moonlight-page-body** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json --overwrite --yes`
   - exports: PageBody
   - also installs: utils
-- **moonlight-range-toggle** — `npx shadcn@latest add http://localhost:4111/r/moonlight-range-toggle.json --overwrite --yes`
+- **moonlight-range-toggle** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-range-toggle.json --overwrite --yes`
   - exports: RangeToggle
   - also installs: toggle-group
-- **moonlight-run-strip** — `npx shadcn@latest add http://localhost:4111/r/moonlight-run-strip.json --overwrite --yes`
+- **moonlight-run-strip** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json --overwrite --yes`
   - exports: RunStrip
   - also installs: utils
-- **moonlight-app-sidebar** — `npx shadcn@latest add http://localhost:4111/r/moonlight-app-sidebar.json --overwrite --yes`
+- **moonlight-app-sidebar** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-app-sidebar.json --overwrite --yes`
   - exports: AppSidebar
   - also installs: avatar, icon-tile, kbd, sidebar
 
 ## Blocks: finished dashboard sections and charts (registry:block, installed with their demo data)
 
-- **run-time-chart** — `npx shadcn@latest add http://localhost:4111/r/run-time-chart.json --overwrite --yes`
+- **run-time-chart** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/run-time-chart.json --overwrite --yes`
   - exports: RunTimeChart
   - also installs: chart, data-jobs, frame
   - Stacked bar chart in a Frame: legend totals row, ChartContainer, footer stats.
-- **stat-cards** — `npx shadcn@latest add http://localhost:4111/r/stat-cards.json --overwrite --yes`
+- **stat-cards** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/stat-cards.json --overwrite --yes`
   - exports: StatCards
   - also installs: badge, data-jobs, frame, icon-tile, moonlight-run-strip, progress, utils
   - KPI stat card row with deltas and run strips.
-- **jobs-table** — `npx shadcn@latest add http://localhost:4111/r/jobs-table.json --overwrite --yes`
+- **jobs-table** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/jobs-table.json --overwrite --yes`
   - exports: JobsTable
   - also installs: avatar, badge, button, checkbox, data-jobs, frame, input-group, moonlight-run-strip, switch, table, tabs
   - Jobs table with status badges, run strips and row actions.
-- **up-next** — `npx shadcn@latest add http://localhost:4111/r/up-next.json --overwrite --yes`
+- **up-next** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/up-next.json --overwrite --yes`
   - exports: UpNext
   - also installs: badge, data-jobs, frame, icon-tile, item
   - Upcoming-items list panel (Item + IconTile).
-- **event-volume** — `npx shadcn@latest add http://localhost:4111/r/event-volume.json --overwrite --yes`
+- **event-volume** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/event-volume.json --overwrite --yes`
   - exports: EventVolume
   - also installs: chart, data-logs, frame
   - Stacked bar chart of event volume by level, with Y axis.
-- **events-table** — `npx shadcn@latest add http://localhost:4111/r/events-table.json --overwrite --yes`
+- **events-table** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/events-table.json --overwrite --yes`
   - exports: EventsTable
   - also installs: avatar, badge, button, data-logs, frame, table
   - Log events table with level badges.
-- **warnings-panel** — `npx shadcn@latest add http://localhost:4111/r/warnings-panel.json --overwrite --yes`
+- **warnings-panel** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/warnings-panel.json --overwrite --yes`
   - exports: WarningsPanel
   - also installs: avatar, button, data-logs, frame, item
   - Grouped warnings list panel.
-- **check-history** — `npx shadcn@latest add http://localhost:4111/r/check-history.json --overwrite --yes`
+- **check-history** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/check-history.json --overwrite --yes`
   - exports: CheckHistory
   - also installs: badge, button, data-monitors, frame, icon-tile, item, utils
   - Uptime check history: per-region status bars.
-- **checkout-flow** — `npx shadcn@latest add http://localhost:4111/r/checkout-flow.json --overwrite --yes`
+- **checkout-flow** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/checkout-flow.json --overwrite --yes`
   - exports: CheckoutFlow
   - also installs: badge, button, chart, data-monitors, frame
   - Synthetic-check step timings as a horizontal bar chart.
-- **deploy-history** — `npx shadcn@latest add http://localhost:4111/r/deploy-history.json --overwrite --yes`
+- **deploy-history** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/deploy-history.json --overwrite --yes`
   - exports: DeployHistory
   - also installs: avatar, badge, button, data-releases, frame, input-group, table, tabs, utils
   - Deploy history table with environment and status badges.
-- **environments** — `npx shadcn@latest add http://localhost:4111/r/environments.json --overwrite --yes`
+- **environments** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/environments.json --overwrite --yes`
   - exports: Environments
   - also installs: avatar, badge, button, data-releases, frame, select, utils
   - Environment cards with current version and health.
-- **deploy-board** — `npx shadcn@latest add http://localhost:4111/r/deploy-board.json --overwrite --yes`
+- **deploy-board** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/deploy-board.json --overwrite --yes`
   - exports: DeployBoard
   - also installs: badge, button, data-deploy, frame, input-group, table, tabs
   - Kanban-style deploy board (columns of cards).
-- **week-view** — `npx shadcn@latest add http://localhost:4111/r/week-view.json --overwrite --yes`
+- **week-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/week-view.json --overwrite --yes`
   - exports: WeekView
   - also installs: badge, button, data-calendar, utils
   - Calendar week view with on-call/event blocks.
-- **services-view** — `npx shadcn@latest add http://localhost:4111/r/services-view.json --overwrite --yes`
+- **services-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/services-view.json --overwrite --yes`
   - exports: ServicesView
   - also installs: avatar, badge, button, data-services, frame, input-group, select, table, tabs, toggle-group, utils
   - Services list with filters, health badges and sparklines.
-- **settings-view** — `npx shadcn@latest add http://localhost:4111/r/settings-view.json --overwrite --yes`
+- **settings-view** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/settings-view.json --overwrite --yes`
   - exports: SettingsView
   - also installs: badge, frame, moonlight-theme-toggle, select, switch, utils
   - Settings page: line tabs, Field groups, switches, selects.
-- **all-sources** — `npx shadcn@latest add http://localhost:4111/r/all-sources.json --overwrite --yes`
+- **all-sources** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/all-sources.json --overwrite --yes`
   - exports: AllSources
   - also installs: avatar, badge, button, data-sources, frame, input-group, table, utils
   - Sources table with sync status.
-- **sources-overview** — `npx shadcn@latest add http://localhost:4111/r/sources-overview.json --overwrite --yes`
+- **sources-overview** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json --overwrite --yes`
   - exports: SourcesOverview
   - also installs: badge, button, chart, data-sources, frame, icon-tile, item, toggle-group, utils
   - Sources overview: sparkline stat tiles, bar chart, attention list.
 
 ## Demo data used by the blocks
 
-- **data-calendar** — `npx shadcn@latest add http://localhost:4111/r/data-calendar.json --overwrite --yes`
-- **data-deploy** — `npx shadcn@latest add http://localhost:4111/r/data-deploy.json --overwrite --yes`
-- **data-jobs** — `npx shadcn@latest add http://localhost:4111/r/data-jobs.json --overwrite --yes`
-- **data-logs** — `npx shadcn@latest add http://localhost:4111/r/data-logs.json --overwrite --yes`
-- **data-monitors** — `npx shadcn@latest add http://localhost:4111/r/data-monitors.json --overwrite --yes`
-- **data-releases** — `npx shadcn@latest add http://localhost:4111/r/data-releases.json --overwrite --yes`
-- **data-services** — `npx shadcn@latest add http://localhost:4111/r/data-services.json --overwrite --yes`
-- **data-sources** — `npx shadcn@latest add http://localhost:4111/r/data-sources.json --overwrite --yes`
+- **data-calendar** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-calendar.json --overwrite --yes`
+- **data-deploy** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-deploy.json --overwrite --yes`
+- **data-jobs** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json --overwrite --yes`
+- **data-logs** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json --overwrite --yes`
+- **data-monitors** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json --overwrite --yes`
+- **data-releases** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json --overwrite --yes`
+- **data-services** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-services.json --overwrite --yes`
+- **data-sources** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json --overwrite --yes`
 
 ## Core
 
-- **utils** — `npx shadcn@latest add http://localhost:4111/r/utils.json --overwrite --yes`
-- **use-mobile** — `npx shadcn@latest add http://localhost:4111/r/use-mobile.json --overwrite --yes`
+- **utils** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/utils.json --overwrite --yes`
+- **use-mobile** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/use-mobile.json --overwrite --yes`
 
 ## Starter files (new projects only; replace app/layout.tsx and app/page.tsx)
 
-- **moonlight-layout** — `npx shadcn@latest add http://localhost:4111/r/moonlight-layout.json --overwrite --yes`
+- **moonlight-layout** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-layout.json --overwrite --yes`
   - exports: RootLayout
   - also installs: moonlight-theme-toggle, tooltip
-- **moonlight-home** — `npx shadcn@latest add http://localhost:4111/r/moonlight-home.json --overwrite --yes`
+- **moonlight-home** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-home.json --overwrite --yes`
   - exports: Page
   - also installs: badge, button, frame, icon-tile, moonlight-app-sidebar, moonlight-page-body, moonlight-page-header, sidebar, table
-- **moonlight-agents** — `npx shadcn@latest add http://localhost:4111/r/moonlight-agents.json --overwrite --yes`
+- **moonlight-agents** — `npx shadcn@latest add https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-agents.json --overwrite --yes`
   - exports: Layout, Page, RootLayout

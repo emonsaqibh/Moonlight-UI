@@ -8,6 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "registry:build": "node moonlight/build-registry.mjs",
+    "registry:build:local": "REGISTRY_URL=http://localhost:4111/r node moonlight/build-registry.mjs",
     "registry:serve": "python3 -m http.server 4111 --directory public",
     "docs:screenshots": "node moonlight/scripts/screenshots.mjs"
   },

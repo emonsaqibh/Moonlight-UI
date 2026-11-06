@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "moonlight",
-  "homepage": "http://localhost:4111",
+  "homepage": "https://emonsaqibh.github.io/Moonlight-UI",
   "items": [
     {
       "name": "avatar",
@@ -153,8 +153,8 @@
         "cn"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/label.json",
-        "http://localhost:4111/r/separator.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/label.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json"
       ],
       "files": [
         {
@@ -225,9 +225,9 @@
         "cn"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/input.json",
-        "http://localhost:4111/r/textarea.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json"
       ],
       "files": [
         {
@@ -264,7 +264,7 @@
         "cn"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/separator.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json"
       ],
       "files": [
         {
@@ -402,7 +402,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/button.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json"
       ],
       "files": [
         {
@@ -423,13 +423,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/input.json",
-        "http://localhost:4111/r/separator.json",
-        "http://localhost:4111/r/sheet.json",
-        "http://localhost:4111/r/skeleton.json",
-        "http://localhost:4111/r/tooltip.json",
-        "http://localhost:4111/r/use-mobile.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/skeleton.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/use-mobile.json"
       ],
       "files": [
         {
@@ -549,7 +549,7 @@
         "cn"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/toggle.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json"
       ],
       "files": [
         {
@@ -629,16 +629,16 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/checkbox.json",
-        "http://localhost:4111/r/dropdown-menu.json",
-        "http://localhost:4111/r/input.json",
-        "http://localhost:4111/r/popover.json",
-        "http://localhost:4111/r/select.json",
-        "http://localhost:4111/r/separator.json",
-        "http://localhost:4111/r/skeleton.json",
-        "http://localhost:4111/r/spinner.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/skeleton.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/spinner.json"
       ],
       "files": [
         {
@@ -742,7 +742,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/button.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json"
       ],
       "files": [
         {
@@ -758,10 +758,10 @@
       "description": "Moonlight Page Header",
       "dependencies": [],
       "registryDependencies": [
-        "http://localhost:4111/r/breadcrumb.json",
-        "http://localhost:4111/r/moonlight-theme-toggle.json",
-        "http://localhost:4111/r/separator.json",
-        "http://localhost:4111/r/sidebar.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/breadcrumb.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sidebar.json"
       ],
       "files": [
         {
@@ -777,7 +777,7 @@
       "description": "Moonlight Page Body",
       "dependencies": [],
       "registryDependencies": [
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -793,7 +793,7 @@
       "description": "Moonlight Range Toggle",
       "dependencies": [],
       "registryDependencies": [
-        "http://localhost:4111/r/toggle-group.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json"
       ],
       "files": [
         {
@@ -809,7 +809,7 @@
       "description": "Moonlight Run Strip",
       "dependencies": [],
       "registryDependencies": [
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -827,10 +827,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/kbd.json",
-        "http://localhost:4111/r/sidebar.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/kbd.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sidebar.json"
       ],
       "files": [
         {
@@ -847,8 +847,8 @@
       "description": "Moonlight Layout",
       "dependencies": [],
       "registryDependencies": [
-        "http://localhost:4111/r/moonlight-theme-toggle.json",
-        "http://localhost:4111/r/tooltip.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json"
       ],
       "files": [
         {
@@ -867,15 +867,15 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/moonlight-app-sidebar.json",
-        "http://localhost:4111/r/moonlight-page-body.json",
-        "http://localhost:4111/r/moonlight-page-header.json",
-        "http://localhost:4111/r/sidebar.json",
-        "http://localhost:4111/r/table.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-app-sidebar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sidebar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json"
       ],
       "files": [
         {
@@ -909,9 +909,9 @@
         "recharts"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/chart.json",
-        "http://localhost:4111/r/data-jobs.json",
-        "http://localhost:4111/r/frame.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json"
       ],
       "files": [
         {
@@ -930,13 +930,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/data-jobs.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/moonlight-run-strip.json",
-        "http://localhost:4111/r/progress.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/progress.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -955,17 +955,17 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/checkbox.json",
-        "http://localhost:4111/r/data-jobs.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/moonlight-run-strip.json",
-        "http://localhost:4111/r/switch.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/tabs.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json"
       ],
       "files": [
         {
@@ -984,11 +984,11 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/data-jobs.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/item.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-jobs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json"
       ],
       "files": [
         {
@@ -1008,9 +1008,9 @@
         "recharts"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/chart.json",
-        "http://localhost:4111/r/data-logs.json",
-        "http://localhost:4111/r/frame.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json"
       ],
       "files": [
         {
@@ -1029,12 +1029,12 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-logs.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/table.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json"
       ],
       "files": [
         {
@@ -1053,11 +1053,11 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-logs.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/item.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-logs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json"
       ],
       "files": [
         {
@@ -1076,13 +1076,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-monitors.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/item.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1102,11 +1102,11 @@
         "recharts"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/chart.json",
-        "http://localhost:4111/r/data-monitors.json",
-        "http://localhost:4111/r/frame.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-monitors.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json"
       ],
       "files": [
         {
@@ -1125,15 +1125,15 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-releases.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/tabs.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1152,13 +1152,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-releases.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/select.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-releases.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1177,13 +1177,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-deploy.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/tabs.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-deploy.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json"
       ],
       "files": [
         {
@@ -1202,10 +1202,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-calendar.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-calendar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1224,17 +1224,17 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-services.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/select.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/tabs.json",
-        "http://localhost:4111/r/toggle-group.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-services.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1253,12 +1253,12 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/moonlight-theme-toggle.json",
-        "http://localhost:4111/r/select.json",
-        "http://localhost:4111/r/switch.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1277,14 +1277,14 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/data-sources.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1304,15 +1304,15 @@
         "recharts"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/chart.json",
-        "http://localhost:4111/r/data-sources.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/item.json",
-        "http://localhost:4111/r/toggle-group.json",
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "files": [
         {
@@ -1456,7 +1456,7 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "http://localhost:4111/r/utils.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json"
       ],
       "cssVars": {
         "theme": {
@@ -1622,50 +1622,50 @@
       "title": "Moonlight (everything)",
       "description": "Moonlight theme + every Moonlight UI component and the shell pieces (use the individual items to install less). Does not touch app/layout.tsx or app/page.tsx.",
       "registryDependencies": [
-        "http://localhost:4111/r/moonlight-theme.json",
-        "http://localhost:4111/r/avatar.json",
-        "http://localhost:4111/r/badge.json",
-        "http://localhost:4111/r/breadcrumb.json",
-        "http://localhost:4111/r/button.json",
-        "http://localhost:4111/r/card.json",
-        "http://localhost:4111/r/chart.json",
-        "http://localhost:4111/r/checkbox.json",
-        "http://localhost:4111/r/dropdown-menu.json",
-        "http://localhost:4111/r/field.json",
-        "http://localhost:4111/r/frame.json",
-        "http://localhost:4111/r/hover-card.json",
-        "http://localhost:4111/r/icon-tile.json",
-        "http://localhost:4111/r/input-group.json",
-        "http://localhost:4111/r/input.json",
-        "http://localhost:4111/r/item.json",
-        "http://localhost:4111/r/kbd.json",
-        "http://localhost:4111/r/label.json",
-        "http://localhost:4111/r/popover.json",
-        "http://localhost:4111/r/progress.json",
-        "http://localhost:4111/r/scroll-area.json",
-        "http://localhost:4111/r/select.json",
-        "http://localhost:4111/r/separator.json",
-        "http://localhost:4111/r/sheet.json",
-        "http://localhost:4111/r/sidebar.json",
-        "http://localhost:4111/r/skeleton.json",
-        "http://localhost:4111/r/spinner.json",
-        "http://localhost:4111/r/switch.json",
-        "http://localhost:4111/r/table.json",
-        "http://localhost:4111/r/tabs.json",
-        "http://localhost:4111/r/textarea.json",
-        "http://localhost:4111/r/toggle-group.json",
-        "http://localhost:4111/r/toggle.json",
-        "http://localhost:4111/r/tooltip.json",
-        "http://localhost:4111/r/tree.json",
-        "http://localhost:4111/r/data-grid.json",
-        "http://localhost:4111/r/utils.json",
-        "http://localhost:4111/r/use-mobile.json",
-        "http://localhost:4111/r/moonlight-theme-toggle.json",
-        "http://localhost:4111/r/moonlight-page-header.json",
-        "http://localhost:4111/r/moonlight-page-body.json",
-        "http://localhost:4111/r/moonlight-range-toggle.json",
-        "http://localhost:4111/r/moonlight-run-strip.json",
-        "http://localhost:4111/r/moonlight-app-sidebar.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/avatar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/badge.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/breadcrumb.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/button.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/card.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkbox.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/dropdown-menu.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/field.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/frame.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/hover-card.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/icon-tile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/input.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/item.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/kbd.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/label.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/popover.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/progress.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/scroll-area.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/select.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/separator.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sheet.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sidebar.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/skeleton.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/spinner.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/switch.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tabs.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/textarea.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle-group.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tooltip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/tree.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/data-grid.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/utils.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/use-mobile.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-theme-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-header.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-page-body.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-range-toggle.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-run-strip.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-app-sidebar.json"
       ]
     },
     {
@@ -1674,23 +1674,23 @@
       "title": "Moonlight blocks (all)",
       "description": "Every finished Moonlight dashboard section (charts, stat cards, tables, boards) with its demo data.",
       "registryDependencies": [
-        "http://localhost:4111/r/run-time-chart.json",
-        "http://localhost:4111/r/stat-cards.json",
-        "http://localhost:4111/r/jobs-table.json",
-        "http://localhost:4111/r/up-next.json",
-        "http://localhost:4111/r/event-volume.json",
-        "http://localhost:4111/r/events-table.json",
-        "http://localhost:4111/r/warnings-panel.json",
-        "http://localhost:4111/r/check-history.json",
-        "http://localhost:4111/r/checkout-flow.json",
-        "http://localhost:4111/r/deploy-history.json",
-        "http://localhost:4111/r/environments.json",
-        "http://localhost:4111/r/deploy-board.json",
-        "http://localhost:4111/r/week-view.json",
-        "http://localhost:4111/r/services-view.json",
-        "http://localhost:4111/r/settings-view.json",
-        "http://localhost:4111/r/all-sources.json",
-        "http://localhost:4111/r/sources-overview.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/run-time-chart.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/stat-cards.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/jobs-table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/up-next.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/event-volume.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/events-table.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/warnings-panel.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/check-history.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/checkout-flow.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-history.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/environments.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/deploy-board.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/week-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/services-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/settings-view.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/all-sources.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/sources-overview.json"
       ]
     },
     {
@@ -1705,16 +1705,16 @@
           "cssVariables": true
         },
         "registries": {
-          "@moonlight": "http://localhost:4111/r/{name}.json"
+          "@moonlight": "https://emonsaqibh.github.io/Moonlight-UI/r/{name}.json"
         }
       },
       "title": "Moonlight starter (new projects)",
       "description": "Everything in `moonlight` plus app/layout.tsx (Inter, theme init script, tooltip provider) and a sample app/page.tsx. Use with `shadcn init` on a NEW project only: it replaces layout and home page.",
       "registryDependencies": [
-        "http://localhost:4111/r/moonlight.json",
-        "http://localhost:4111/r/moonlight-layout.json",
-        "http://localhost:4111/r/moonlight-home.json",
-        "http://localhost:4111/r/moonlight-agents.json"
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-layout.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-home.json",
+        "https://emonsaqibh.github.io/Moonlight-UI/r/moonlight-agents.json"
       ]
     }
   ]

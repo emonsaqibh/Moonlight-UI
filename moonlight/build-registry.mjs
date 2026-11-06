@@ -5,15 +5,15 @@
 //   "moonlight"               -> meta item that pulls in the theme + every component
 // Then runs `shadcn build` -> public/r/*.json and writes the AI-facing catalog public/r/llms.txt.
 //
-// Usage:  node moonlight/build-registry.mjs
-//         REGISTRY_URL=https://ui.example.com/r node moonlight/build-registry.mjs   (what consumers will fetch from)
+// Usage:  node moonlight/build-registry.mjs                                     (the published registry on GitHub Pages)
+//         REGISTRY_URL=http://localhost:4111/r node moonlight/build-registry.mjs  (local testing, served by registry:serve)
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
 import { execSync } from "node:child_process"
 
 const ROOT = path.resolve(import.meta.dirname, "..")
-const BASE = (process.env.REGISTRY_URL ?? "http://localhost:4111/r").replace(/\/$/, "")
+const BASE = (process.env.REGISTRY_URL ?? "https://emonsaqibh.github.io/Moonlight-UI/r").replace(/\/$/, "")
 const rel = (p) => path.relative(ROOT, p).split(path.sep).join("/")
 const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8")
 const url = (name) => `${BASE}/${name}.json`
@@ -105,17 +105,20 @@ const localCheck = (root) => {
   return `${expect}. This registry is served from this machine, so fix anything else yourself:
 
 - **Nothing printed** (connection refused): start it in the background with \`npm --prefix "${checkout}" run registry:serve\`,
-  wait a second and re-check.${root ? "" : ` Find the checkout yourself with
-  \`find ~ -maxdepth 6 -path '*/moonlight/build-registry.mjs' -not -path '*/node_modules/*' 2>/dev/null || true\` (the checkout is two
-  levels up from the match; if there are several, take the most recently modified). Ask the user only if nothing is found.`}
+  wait a second and re-check.${root ? "" : ` Find the checkout yourself (both commands return in about a second; never
+  scan all of \`~\`, which walks ~/Library and caches and times out):
+  \`mdfind -name build-registry.mjs 2>/dev/null | grep '/moonlight/build-registry\\.mjs$'\` (macOS), else
+  \`find ~/Documents ~/Developer ~/Projects ~/projects ~/code ~/Code ~/src ~/dev ~/repos ~/git ~/workspace ~/Desktop -maxdepth 5 \\( -name node_modules -o -name .git -o -name Library \\) -prune -o -path '*/moonlight/build-registry.mjs' -print 2>/dev/null\`.
+  The checkout is two levels up from the match; if there are several, take the most recently modified. If nothing is found,
+  ask the user where their Moonlight checkout is.`}
 - **${root ? "A different path printed" : "The printed path doesn't exist or has no `moonlight/build-registry.mjs`"}**, or "Address
   already in use" while a path prints: a stale copy of Moonlight holds port ${PORT}. Stop it with
   \`lsof -ti tcp:${PORT} -sTCP:LISTEN | xargs kill\`, start the right one as above and re-check. Never install from the stale copy.
 - **Still failing**, or port ${PORT} is held by something that is not Moonlight (no path prints): stop and tell the user.`
 }
 const fill = (src, root = null) =>
-  src.replaceAll("{{REGISTRY_URL}}", BASE).replaceAll(
-    "{{REGISTRY_CHECK}}",
+  // function replacers: the check text contains `$'` (a grep anchor), which a string replacement would expand
+  src.replaceAll("{{REGISTRY_URL}}", () => BASE).replaceAll("{{REGISTRY_CHECK}}", () =>
     LOCAL_REGISTRY
       ? localCheck(root)
       : `It must print \`${SOURCE}\`. If it doesn't, stop and tell the user the Moonlight registry at ${BASE} is unreachable.`,
