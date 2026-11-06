@@ -24,13 +24,13 @@ from memory, do not "make it look like Moonlight" with hand-written Tailwind. Ev
 curl -sf http://localhost:4111/r/moonlight-source.txt
 ```
 
-It must print `/Users/fringecore/Documents/Development-Projects/dashtemplate`. This registry is served from this machine, so fix anything else yourself:
+It must print the absolute path of a Moonlight checkout (a folder containing `moonlight/build-registry.mjs`). This registry is served from this machine, so fix anything else yourself:
 
-- **Nothing printed** (connection refused): start it in the background with `npm --prefix "/Users/fringecore/Documents/Development-Projects/dashtemplate" run registry:serve`,
-  wait a second and re-check.
-- **A different path printed**, or "Address already in use" while a path prints: a stale copy of Moonlight holds port 4111.
-  Stop it with `lsof -ti tcp:4111 -sTCP:LISTEN | xargs kill`, start the right one as above and re-check. Never install
-  from the stale copy.
+- **Nothing printed** (connection refused): start it in the background with `npm --prefix "<checkout>" run registry:serve`,
+  wait a second and re-check. If you can't find the checkout, ask the user where their Moonlight clone is.
+- **The printed path doesn't exist or has no `moonlight/build-registry.mjs`**, or "Address
+  already in use" while a path prints: a stale copy of Moonlight holds port 4111. Stop it with
+  `lsof -ti tcp:4111 -sTCP:LISTEN | xargs kill`, start the right one as above and re-check. Never install from the stale copy.
 - **Still failing**, or port 4111 is held by something that is not Moonlight (no path prints): stop and tell the user.
 
 ## Step 1 — make sure the project has Moonlight
@@ -58,15 +58,19 @@ npx shadcn@latest init -d -n my-app http://localhost:4111/r/moonlight-starter.js
    `radix-*`, the project's components are Radix. Convert them now; Moonlight is Base UI and the two don't compose. If
    `git status` shows uncommitted changes under `components/ui`, ask the user first; otherwise convert without asking:
    a. Set `"style": "base-nova"` in `components.json`.
-   b. Reinstall every existing component as its Base UI version:
-      `ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | xargs npx shadcn@latest add --overwrite --yes`
+   b. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes
+      the whole `add` fail (while still exiting 0):
+      `comm -12 <(ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | sort) <(curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 | sort) | xargs npx shadcn@latest add --overwrite --yes`
+      Files that are not stock shadcn (the user's own components, subfolders) are left alone. Step d's `tsc` run catches any
+      of them that break against the new primitives; fix those in place, don't delete them.
    c. Do step 4 (install Moonlight), then come back here for d and e.
    d. Run `npx tsc --noEmit`. It lists every Radix prop left in app code. Convert `asChild` to `render`:
       `<DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger>` becomes
       `<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>`. When a `Button` renders a link,
       write `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. For any other error, read the
       component's new source in `components/ui`.
-   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them. `npx tsc --noEmit` and
+   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still
+      does, keep the package and say so). `npx tsc --noEmit` and
       `npm run build` must pass. Tell the user the project was converted from Radix to Base UI.
 4. **Install Moonlight**: all four commands, in order:
 

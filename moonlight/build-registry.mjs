@@ -91,22 +91,31 @@ for (const f of fs.readdirSync(path.join(ROOT, "lib/data")).filter((f) => f.ends
 }
 Object.assign(targets, targets_)
 
-// the AI guide with the registry URL filled in; also written out as the new project's AGENTS.md (read by the scan + build below)
+// the AI guide with the registry URL filled in; also written out as the new project's AGENTS.md (read by the scan + build below).
+// A local registry's Step 0 names this checkout's path, but only in copies that stay on this machine (public/r, ~/.claude/skills):
+// committed copies (SKILL.md in the repo, agents.generated.md, which also lands in consumer projects) get machine-neutral wording.
 const LOCAL_REGISTRY = /\/\/(localhost|127\.0\.0\.1)[:/]/.test(BASE)
 const PORT = new URL(BASE).port || "80"
 const SOURCE = LOCAL_REGISTRY ? ROOT : "moonlight"
-const fill = (src) =>
+const localCheck = (root) => {
+  const expect = root
+    ? `It must print \`${root}\``
+    : "It must print the absolute path of a Moonlight checkout (a folder containing `moonlight/build-registry.mjs`)"
+  const checkout = root ?? "<checkout>"
+  return `${expect}. This registry is served from this machine, so fix anything else yourself:
+
+- **Nothing printed** (connection refused): start it in the background with \`npm --prefix "${checkout}" run registry:serve\`,
+  wait a second and re-check.${root ? "" : " If you can't find the checkout, ask the user where their Moonlight clone is."}
+- **${root ? "A different path printed" : "The printed path doesn't exist or has no `moonlight/build-registry.mjs`"}**, or "Address
+  already in use" while a path prints: a stale copy of Moonlight holds port ${PORT}. Stop it with
+  \`lsof -ti tcp:${PORT} -sTCP:LISTEN | xargs kill\`, start the right one as above and re-check. Never install from the stale copy.
+- **Still failing**, or port ${PORT} is held by something that is not Moonlight (no path prints): stop and tell the user.`
+}
+const fill = (src, root = null) =>
   src.replaceAll("{{REGISTRY_URL}}", BASE).replaceAll(
     "{{REGISTRY_CHECK}}",
     LOCAL_REGISTRY
-      ? `It must print \`${SOURCE}\`. This registry is served from this machine, so fix anything else yourself:
-
-- **Nothing printed** (connection refused): start it in the background with \`npm --prefix "${SOURCE}" run registry:serve\`,
-  wait a second and re-check.
-- **A different path printed**, or "Address already in use" while a path prints: a stale copy of Moonlight holds port ${PORT}.
-  Stop it with \`lsof -ti tcp:${PORT} -sTCP:LISTEN | xargs kill\`, start the right one as above and re-check. Never install
-  from the stale copy.
-- **Still failing**, or port ${PORT} is held by something that is not Moonlight (no path prints): stop and tell the user.`
+      ? localCheck(root)
       : `It must print \`${SOURCE}\`. If it doesn't, stop and tell the user the Moonlight registry at ${BASE} is unreachable.`,
   )
 const guideSrc = path.join(ROOT, "moonlight/AI-GUIDE.md")
@@ -247,7 +256,7 @@ console.log(`registry.json: ${registryItems.length} items, base ${BASE}`)
 execSync("npx shadcn build", { cwd: ROOT, stdio: "inherit" })
 
 // ---- AI catalog (public/r/llms.txt) -----------------------------------------------------------------------------
-const guide = fill(read("moonlight/AI-GUIDE.md"))
+const guide = fill(read("moonlight/AI-GUIDE.md"), ROOT)
 const exportsOf = (files) => {
   const out = new Set()
   for (const f of files) for (const m of read(f).matchAll(/^export\s+(?:default\s+)?(?:async\s+)?(?:function|const|class)\s+([A-Z]\w+)/gm)) out.add(m[1])
@@ -292,7 +301,7 @@ console.log("public/r/llms.txt written")
 // current rules (a stale copy there is what the AI actually reads). MOONLIGHT_SKILL_INSTALL=0 skips the copy.
 const skillDir = path.join(ROOT, "moonlight/skill/moonlight")
 fs.mkdirSync(skillDir, { recursive: true })
-const skill = `---
+const skillFor = (guide) => `---
 name: moonlight
 description: Use whenever the user mentions Moonlight or Moonlight UI, and whenever you build or change UI in a React/Next.js/Tailwind project — ALWAYS when shadcn/ui is involved (npx shadcn add, components.json), and for pages, dashboards, forms, tables, charts, layouts or a new project. Moonlight is our design system: shadcn/ui on Base UI restyled, installed with the shadcn CLI from the Moonlight registry. Install it with the CLI; never recreate its components or look by hand.
 ---
@@ -302,11 +311,11 @@ ${guide}
 # Component catalog
 
 ${lines.join("\n")}`
-fs.writeFileSync(path.join(skillDir, "SKILL.md"), skill)
+fs.writeFileSync(path.join(skillDir, "SKILL.md"), skillFor(fill(read("moonlight/AI-GUIDE.md"))))
 console.log("skill written: moonlight/skill/moonlight/SKILL.md")
 if (process.env.MOONLIGHT_SKILL_INSTALL !== "0") {
   const home = path.join(os.homedir(), ".claude/skills/moonlight")
   fs.mkdirSync(home, { recursive: true })
-  fs.writeFileSync(path.join(home, "SKILL.md"), skill)
+  fs.writeFileSync(path.join(home, "SKILL.md"), skillFor(guide))
   console.log(`skill installed: ${home}/SKILL.md`)
 }

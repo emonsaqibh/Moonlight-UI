@@ -46,15 +46,19 @@ npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
    `radix-*`, the project's components are Radix. Convert them now; Moonlight is Base UI and the two don't compose. If
    `git status` shows uncommitted changes under `components/ui`, ask the user first; otherwise convert without asking:
    a. Set `"style": "base-nova"` in `components.json`.
-   b. Reinstall every existing component as its Base UI version:
-      `ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | xargs npx shadcn@latest add --overwrite --yes`
+   b. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes
+      the whole `add` fail (while still exiting 0):
+      `comm -12 <(ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | sort) <(curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 | sort) | xargs npx shadcn@latest add --overwrite --yes`
+      Files that are not stock shadcn (the user's own components, subfolders) are left alone. Step d's `tsc` run catches any
+      of them that break against the new primitives; fix those in place, don't delete them.
    c. Do step 4 (install Moonlight), then come back here for d and e.
    d. Run `npx tsc --noEmit`. It lists every Radix prop left in app code. Convert `asChild` to `render`:
       `<DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger>` becomes
       `<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>`. When a `Button` renders a link,
       write `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. For any other error, read the
       component's new source in `components/ui`.
-   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them. `npx tsc --noEmit` and
+   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them (if one of the user's own files still
+      does, keep the package and say so). `npx tsc --noEmit` and
       `npm run build` must pass. Tell the user the project was converted from Radix to Base UI.
 4. **Install Moonlight**: all four commands, in order:
 
