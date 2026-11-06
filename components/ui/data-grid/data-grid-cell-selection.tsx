@@ -73,7 +73,7 @@ function serializeDataGridClipboardField(field: string): string {
   // Excel and Sheets quote a field containing a delimiter and double inner
   // quotes; everything else ships bare.
   return /[\t\n\r"]/.test(field)
-    ? '"' + field.replaceAll('"', '""') + '"'
+    ? '"' + field.replace(/"/g, '""') + '"'
     : field
 }
 
@@ -167,9 +167,9 @@ function tileDataGridClipboardBlock(
 
 function escapeDataGridClipboardHtml(value: string): string {
   return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
 }
 
 // A minimal text/html flavor alongside the TSV keeps type fidelity when the

@@ -160,9 +160,9 @@ function DataGridPagination(props: DataGridPaginationProps): JSX.Element {
   // routes through the i18n label function, where word order is free.
   const paginationInfo = mergedProps.info
     ? mergedProps.info
-        .replaceAll("{from}", from.toString())
-        .replaceAll("{to}", to.toString())
-        .replaceAll("{count}", recordCount.toString())
+        .replace(/\{from\}/g, from.toString())
+        .replace(/\{to\}/g, to.toString())
+        .replace(/\{count\}/g, recordCount.toString())
     : i18n.labels.paginationInfo({ from, to, count: recordCount })
 
   const paginationItems = getDataGridPaginationItems(
