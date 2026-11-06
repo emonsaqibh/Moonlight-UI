@@ -105,7 +105,9 @@ const localCheck = (root) => {
   return `${expect}. This registry is served from this machine, so fix anything else yourself:
 
 - **Nothing printed** (connection refused): start it in the background with \`npm --prefix "${checkout}" run registry:serve\`,
-  wait a second and re-check.${root ? "" : " If you can't find the checkout, ask the user where their Moonlight clone is."}
+  wait a second and re-check.${root ? "" : ` Find the checkout yourself with
+  \`find ~ -maxdepth 6 -path '*/moonlight/build-registry.mjs' -not -path '*/node_modules/*' 2>/dev/null || true\` (the checkout is two
+  levels up from the match; if there are several, take the most recently modified). Ask the user only if nothing is found.`}
 - **${root ? "A different path printed" : "The printed path doesn't exist or has no `moonlight/build-registry.mjs`"}**, or "Address
   already in use" while a path prints: a stale copy of Moonlight holds port ${PORT}. Stop it with
   \`lsof -ti tcp:${PORT} -sTCP:LISTEN | xargs kill\`, start the right one as above and re-check. Never install from the stale copy.

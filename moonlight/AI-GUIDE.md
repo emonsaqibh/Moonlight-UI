@@ -35,7 +35,14 @@ npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
 **B. Next.js project without `components.json`** (shadcn not set up yet): check Tailwind (C.1), run
 `npx shadcn@latest init -d -b base` (Base UI, neutral), then continue with C.
 
-**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead.
+**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead. The steps
+replace stock components with Moonlight's and convert the app code that uses them; that is the job, not damage to avoid.
+
+*Theme only*: if the user explicitly asks for just Moonlight's colors/tokens and to keep their current components (e.g. "only
+theme it", "don't touch my components"), do step 1, then run only
+`npx shadcn@latest add {{REGISTRY_URL}}/moonlight-theme.json --overwrite --yes` and stop. Tell them their components keep
+stock shadcn shapes, and that Moonlight components and blocks need the full install. Never pick this route yourself to avoid
+the conversion.
 
 1. **Tailwind v4.** `package.json` must have `"tailwindcss": "^4…"`. On v3 (a `tailwind.config.*` file, `@tailwind base;` in the
    CSS), upgrade first with `npx @tailwindcss/upgrade` (it wants a clean git tree, so commit first), then make sure
@@ -48,7 +55,10 @@ npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
    a. Set `"style": "base-nova"` in `components.json`.
    b. Reinstall every existing stock component as its Base UI version. Filter to shadcn's own names: one unknown name makes
       the whole `add` fail (while still exiting 0):
-      `comm -12 <(ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | sort) <(curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 | sort) | xargs npx shadcn@latest add --overwrite --yes`
+      ```sh
+      curl -sf https://ui.shadcn.com/r/index.json | grep -o '"name": *"[^"]*"' | cut -d'"' -f4 > /tmp/shadcn-names.txt
+      ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | grep -Fx -f /tmp/shadcn-names.txt | xargs -r npx shadcn@latest add --overwrite --yes
+      ```
       Files that are not stock shadcn (the user's own components, subfolders) are left alone. Step d's `tsc` run catches any
       of them that break against the new primitives; fix those in place, don't delete them.
    c. Do step 4 (install Moonlight), then come back here for d and e.
