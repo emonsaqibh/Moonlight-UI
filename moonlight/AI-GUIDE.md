@@ -19,8 +19,7 @@ from memory, do not "make it look like Moonlight" with hand-written Tailwind. Ev
 curl -sf {{REGISTRY_URL}}/moonlight-source.txt
 ```
 
-It must print `{{SOURCE}}`. Nothing printed: {{REGISTRY_DOWN}} Anything else: a different (stale) copy of Moonlight is being
-served on that port. Stop and tell the user; do not install from it.
+{{REGISTRY_CHECK}}
 
 ## Step 1 — make sure the project has Moonlight
 
@@ -33,16 +32,31 @@ script), a sample page and an `AGENTS.md` with these rules:
 npx shadcn@latest init -d -n my-app {{REGISTRY_URL}}/moonlight-starter.json
 ```
 
-**B. Next.js project without `components.json`** (shadcn not set up yet): run `npx shadcn@latest init -d -b base` first (Base UI,
-neutral), then continue with C.
+**B. Next.js project without `components.json`** (shadcn not set up yet): check Tailwind (C.1), run
+`npx shadcn@latest init -d -b base` (Base UI, neutral), then continue with C.
 
-**C. `components.json` exists.**
+**C. `components.json` exists.** Work through every step; none of them is a reason to stop and hand-roll instead.
 
-1. `"style"` must start with `base-` (e.g. `base-nova`). If it is `new-york`, `default` or `radix-*`, the project uses Radix:
-   stop and ask the user before converting (Moonlight is Base UI; mixing the two breaks composition).
-2. Already set up? `grep -q '"@moonlight"' components.json && grep -q 'muted:' components/ui/button.tsx && echo installed`.
+1. **Tailwind v4.** `package.json` must have `"tailwindcss": "^4…"`. On v3 (a `tailwind.config.*` file, `@tailwind base;` in the
+   CSS), upgrade first with `npx @tailwindcss/upgrade` (it wants a clean git tree, so commit first), then make sure
+   `npm run build` passes. Moonlight's theme and components use v4 syntax and break on v3.
+2. **Already set up?** `grep -q '"@moonlight"' components.json && grep -q 'muted:' components/ui/button.tsx && echo installed`.
    If it prints `installed`, skip to **Adding components**.
-3. Otherwise install Moonlight — all four commands, in order:
+3. **Base UI, not Radix.** If `"style"` starts with `base-` (e.g. `base-nova`), go on to step 4. If it is `new-york`, `default` or
+   `radix-*`, the project's components are Radix. Convert them now; Moonlight is Base UI and the two don't compose. If
+   `git status` shows uncommitted changes under `components/ui`, ask the user first; otherwise convert without asking:
+   a. Set `"style": "base-nova"` in `components.json`.
+   b. Reinstall every existing component as its Base UI version:
+      `ls components/ui/*.tsx | xargs -n1 basename | sed 's/\.tsx$//' | xargs npx shadcn@latest add --overwrite --yes`
+   c. Do step 4 (install Moonlight), then come back here for d and e.
+   d. Run `npx tsc --noEmit`. It lists every Radix prop left in app code. Convert `asChild` to `render`:
+      `<DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger>` becomes
+      `<DialogTrigger render={<Button variant="outline" />}>Open</DialogTrigger>`. When a `Button` renders a link,
+      write `<Button nativeButton={false} render={<Link href="/x" />}>Docs</Button>`. For any other error, read the
+      component's new source in `components/ui`.
+   e. Once nothing imports `radix-ui` or `@radix-ui/*` any more, `npm uninstall` them. `npx tsc --noEmit` and
+      `npm run build` must pass. Tell the user the project was converted from Radix to Base UI.
+4. **Install Moonlight**: all four commands, in order:
 
 ```bash
 npx shadcn@latest registry add "@moonlight={{REGISTRY_URL}}/{name}.json"
@@ -53,12 +67,13 @@ npx shadcn@latest add {{REGISTRY_URL}}/moonlight-layout.json --overwrite --yes  
 
    - `--overwrite` is **required** on Moonlight items. `shadcn init` already wrote a stock `button.tsx`; without the flag the CLI
      stops at "button.tsx already exists. Overwrite? (y/N)", which a non-interactive shell answers No, and it **silently installs
-     almost nothing** (exit code 0). The theme also needs it, or the project's stock colors win.
+     almost nothing** (exit code 0). The theme also needs it, or the project's stock colors win. With the flag, a
+     "Skipped N files (files might be identical…)" line is normal: those files already match.
    - `moonlight-layout` replaces `app/layout.tsx` with Inter (`--font-inter`), the theme init script and `TooltipProvider`. Use it
      when the layout is still the `shadcn init` / `create-next-app` default (Geist fonts, `ThemeProvider`), then delete
-     `components/theme-provider.tsx` if nothing else imports it. If the layout has real app code, wire it by hand instead —
+     `components/theme-provider.tsx` and the `next-themes` package if nothing else imports them. If the layout has real app code, wire it by hand instead —
      see **Root layout** below. Without Inter the app renders in the system font and won't match.
-4. Verify: `ls components/ui | wc -l` shows 35+, and the `installed` check from step 2 passes. Remove any leftover
+5. **Verify**: `ls components/ui | wc -l` shows 35+, and the `installed` check from step 2 passes. Remove any leftover
    `body { font-family }` / `prefers-color-scheme` rules from `globals.css`.
 
 ## Adding components
@@ -85,6 +100,7 @@ npx shadcn@latest add @moonlight/run-time-chart --overwrite --yes
 
 Blocks install to `components/<area>/<name>.tsx` with demo data in `lib/data/*-data.ts`. Keep the block's markup and classes,
 replace the data import with the project's own data, and rename labels. This is what makes pages match Moonlight one-to-one.
+Blocks use container queries (`@lg:`, `@4xl:`), so render them inside `PageBody` (or another `@container` parent).
 
 ## Charts
 
@@ -166,9 +182,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ## App shell (sidebar + header + body)
 
-`moonlight-app-sidebar` is a **template**: edit the `nav` array (and the `EDIT:` workspace name) in
-`components/app/app-sidebar.tsx` to the project's own routes. `moonlight-page-header` (breadcrumbs + sidebar trigger + theme
-toggle) and `moonlight-page-body` complete the shell.
+`moonlight-app-sidebar` is a **template**: edit the `nav` array, the `EDIT:` workspace name and the footer links in
+`components/app/app-sidebar.tsx` to the project's own routes, and drop icon imports you no longer use. `moonlight-page-header` (breadcrumbs + sidebar trigger + theme
+toggle) and `moonlight-page-body` complete the shell. In an app that already has pages, put the shell layout on the route
+group of the pages that should get it; don't move existing pages into it unless the user asks.
 
 ```tsx
 // app/(app)/layout.tsx

@@ -52,8 +52,9 @@ npx shadcn@latest init -d -n my-app <REGISTRY_URL>/moonlight-starter.json
 
 ### Existing shadcn project
 
-Requires Next.js with Tailwind v4 and a `components.json` with `"style": "base-nova"` (Moonlight is built on Base UI; a Radix style such as
-`new-york` will mix libraries when you add stock components).
+Requires Next.js with Tailwind v4 and a `components.json` with `"style": "base-nova"`. Moonlight is built on Base UI. An agent using
+the skill converts a Radix project (`new-york`, `radix-*`) first: it switches the style, reinstalls the existing components as Base UI
+versions and rewrites `asChild` to `render`. It also upgrades a Tailwind v3 project with `npx @tailwindcss/upgrade`.
 
 ```bash
 # 1. Register the @moonlight namespace in components.json.
@@ -170,7 +171,7 @@ Moonlight is designed to be built against by coding agents. The build step gener
 
 `npm run registry:build` also installs the skill to `~/.claude/skills/moonlight`, so every project on this machine gets the current
 rules (set `MOONLIGHT_SKILL_INSTALL=0` to skip). Before installing anything the agent checks `<REGISTRY_URL>/moonlight-source.txt`,
-which catches a registry that is down or a stale copy of Moonlight served on the same port.
+and fixes what it finds: it starts the local registry if it is down, and replaces a stale copy of Moonlight served on the same port.
 
 New projects need nothing extra: `moonlight-starter` installs the same rules as `AGENTS.md` (Claude reads it through `CLAUDE.md`; Codex, Cursor,
 Copilot and Windsurf read `AGENTS.md` directly). For an existing project, paste the "UI" snippet from the guide into its `AGENTS.md` or `CLAUDE.md`.

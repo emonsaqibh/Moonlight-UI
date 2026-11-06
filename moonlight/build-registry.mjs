@@ -93,12 +93,21 @@ Object.assign(targets, targets_)
 
 // the AI guide with the registry URL filled in; also written out as the new project's AGENTS.md (read by the scan + build below)
 const LOCAL_REGISTRY = /\/\/(localhost|127\.0\.0\.1)[:/]/.test(BASE)
+const PORT = new URL(BASE).port || "80"
+const SOURCE = LOCAL_REGISTRY ? ROOT : "moonlight"
 const fill = (src) =>
-  src.replaceAll("{{REGISTRY_URL}}", BASE).replaceAll("{{SOURCE}}", LOCAL_REGISTRY ? ROOT : "moonlight").replaceAll(
-    "{{REGISTRY_DOWN}}",
+  src.replaceAll("{{REGISTRY_URL}}", BASE).replaceAll(
+    "{{REGISTRY_CHECK}}",
     LOCAL_REGISTRY
-      ? `it is served from this machine. Start it in the background with \`npm --prefix "${ROOT}" run registry:serve\`, wait a second and re-check. "Address already in use" means another (stale) copy of Moonlight holds port ${new URL(BASE).port}: stop and tell the user to stop that process. If the re-check still fails, stop and tell the user.`
-      : "stop and tell the user the Moonlight registry is unreachable.",
+      ? `It must print \`${SOURCE}\`. This registry is served from this machine, so fix anything else yourself:
+
+- **Nothing printed** (connection refused): start it in the background with \`npm --prefix "${SOURCE}" run registry:serve\`,
+  wait a second and re-check.
+- **A different path printed**, or "Address already in use" while a path prints: a stale copy of Moonlight holds port ${PORT}.
+  Stop it with \`lsof -ti tcp:${PORT} -sTCP:LISTEN | xargs kill\`, start the right one as above and re-check. Never install
+  from the stale copy.
+- **Still failing**, or port ${PORT} is held by something that is not Moonlight (no path prints): stop and tell the user.`
+      : `It must print \`${SOURCE}\`. If it doesn't, stop and tell the user the Moonlight registry at ${BASE} is unreachable.`,
   )
 const guideSrc = path.join(ROOT, "moonlight/AI-GUIDE.md")
 fs.writeFileSync(path.join(ROOT, "registry/starter/agents.generated.md"), fill(fs.readFileSync(guideSrc, "utf8")))
@@ -275,7 +284,7 @@ for (const cat of [["ui", "UI components (registry:ui)"], ["shell", "App shell p
   lines.push("")
 }
 // marker the guide's Step 0 checks, so a stale server on the same port (an old clone) is caught instead of silently installed from
-fs.writeFileSync(path.join(ROOT, "public/r/moonlight-source.txt"), `${LOCAL_REGISTRY ? ROOT : "moonlight"}\n`)
+fs.writeFileSync(path.join(ROOT, "public/r/moonlight-source.txt"), `${SOURCE}\n`)
 fs.writeFileSync(path.join(ROOT, "public/r/llms.txt"), `${guide}\n# Component catalog\n\n${lines.join("\n")}`)
 console.log("public/r/llms.txt written")
 
